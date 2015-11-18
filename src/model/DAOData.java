@@ -54,6 +54,15 @@ public class DAOData {
 		public ArrayList<DOData> findAll() {
 			return dataList;
 		}
+		
+		/**
+		 * 
+		 * 
+		 * @return
+		 */
+		public DOData getLastData() {
+			return dataList.get(dataList.size() - 1);
+		}
 
 
 	/*	----- MUTATOR -----	*/

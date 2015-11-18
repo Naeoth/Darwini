@@ -25,6 +25,8 @@ public class LearnedData {
 
 		/**
 		 * 
+		 * 
+		 * @param robot
 		 */
 		public LearnedData(Darwini robot) {
 			this.robot = robot;
@@ -35,6 +37,8 @@ public class LearnedData {
 	
 		/**
 		 * Launch a DOData creation with all the parameters necessary
+		 * 
+		 * @param e
 		 */
 		public DOData acquisition(ScannedRobotEvent e) {
 			return new DOData(
@@ -48,25 +52,28 @@ public class LearnedData {
 					getHeadingInDegrees()
 					);
 		}
+
 	
 	/*	----- ACQUISITION METHODS -----	*/
 		
 		/**
-		 * Convert the robot.getGunHeadingRadians' result in Degrees
-		 * @return The robot gun heading in Degrees
+		 * Convert the robot.getGunHeadingRadians' result in Degrees.
+		 * 
+		 * @return the robot gun heading in Degrees
 		 */
 		
 		public double getGunHeadingInDegrees(){
-			return ((this.robot.getGunHeadingRadians() * 180)/Math.PI);
+			return ( (robot.getGunHeadingRadians() * 180) / Math.PI );
 		}
 		
 		/**
-		 * Convert the robot.getHeadingRadians' result in Degrees
+		 * Convert the robot.getHeadingRadians' result in Degrees.
+		 * 
 		 * @return the robot heading in Degrees
 		 */
 		
 		public double getHeadingInDegrees(){
-			return ((this.robot.getHeadingRadians() * 180)/Math.PI);
+			return ( (robot.getHeadingRadians() * 180) / Math.PI );
 		}
 		
 
