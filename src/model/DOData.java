@@ -21,6 +21,11 @@ package model;
 public class DOData {
 
 	/*	----- ATTRIBUTES -----	*/
+	
+		/**
+		 * 
+		 */
+		private int hit;
 		
 		/**
 		 * 
@@ -70,6 +75,7 @@ public class DOData {
 		 *
 		 */
 		public DOData(double bearing, double distance, double advEnergy, double myEnergy, double advVelocity, double myVelocity, double myGunHeading, double myHeading) {
+			hit = 0;
 			this.bearing = bearing;
 			this.distance = distance;
 			this.advEnergy = advEnergy;
@@ -78,17 +84,22 @@ public class DOData {
 			this.myVelocity = myVelocity;
 			this.myGunHeading = myGunHeading;
 			this.myHeading = myHeading;
-			
 		}
 
 
-	/*	----- ACCESSORS -----	*/
-
+	/*	----- MUTATORS -----	*/
+		
+		/**
+		 * 
+		 */
+		public void setHit(int hit) {
+			this.hit = hit;
+		}
 
 	/*	----- OTHER METHODS -----	*/
 
 		public String toString() {
-			return 0 + " 1:" + bearing + " 2:" + distance + " 3:" + advEnergy + " 4:" + myEnergy + " 5:" + advVelocity + " 6:" + myVelocity + " 7:" + myGunHeading + " 8:" + myHeading;
+			return hit + " 1:" + bearing + " 2:" + distance + " 3:" + advEnergy + " 4:" + myEnergy + " 5:" + advVelocity + " 6:" + myVelocity + " 7:" + myGunHeading + " 8:" + myHeading;
 		}
 
 }

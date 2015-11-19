@@ -42,15 +42,15 @@ public class LearnedData {
 		 */
 		public DOData acquisition(ScannedRobotEvent e) {
 			return new DOData(
-					e.getBearing(),
-					e.getDistance(),
-					e.getEnergy(),
-					robot.getEnergy(),
-					e.getVelocity(),
-					robot.getVelocity(),
-					getGunHeadingInDegrees(),
-					getHeadingInDegrees()
-					);
+				e.getBearing(),
+				e.getDistance(),
+				e.getEnergy(),
+				robot.getEnergy(),
+				e.getVelocity(),
+				robot.getVelocity(),
+				getGunHeadingInDegrees(),
+				getHeadingInDegrees()
+			);
 		}
 
 	
@@ -61,7 +61,6 @@ public class LearnedData {
 		 * 
 		 * @return the robot gun heading in Degrees
 		 */
-		
 		public double getGunHeadingInDegrees(){
 			return ( (robot.getGunHeadingRadians() * 180) / Math.PI );
 		}
@@ -71,7 +70,6 @@ public class LearnedData {
 		 * 
 		 * @return the robot heading in Degrees
 		 */
-		
 		public double getHeadingInDegrees(){
 			return ( (robot.getHeadingRadians() * 180) / Math.PI );
 		}
