@@ -8,8 +8,6 @@
 
 package controller;
 
-import java.io.IOException;
-
 import robocode.BattleEndedEvent;
 import robocode.Bullet;
 import robocode.BulletHitBulletEvent;
@@ -18,9 +16,6 @@ import robocode.BulletMissedEvent;
 import robocode.RoundEndedEvent;
 import robocode.ScannedRobotEvent;
 import robocode.SkippedTurnEvent;
-
-import model.DAOData;
-import model.LearnedData;
 
 /**
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
@@ -34,18 +29,6 @@ import model.LearnedData;
  * @author VAILLAND Guillaume
  */
 public class Darwini extends SuperClass {
-
-	/*	----- ATTRIBUTE -----	*/
-
-		/**
-		 *
-		 */
-		private DAOData knowledge;
-		
-		/**
-		 * 
-		 */
-		private LearnedData ld;
 
 	/*	----- CONSTRUCTOR -----	*/
 	
