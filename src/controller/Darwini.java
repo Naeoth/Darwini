@@ -78,7 +78,6 @@ public class Darwini extends SuperClass {
 			ahead(Math.sqrt(Math.pow(to.getX() - getX(), 2) + Math.pow(to.getY() - getY(), 2)));
 		}*/
 		
-		// REDEFINING FIRING (whether the bot should actually shoot or not)
 		@Override
 		public void fire(double power) {
 			super.fire(power);
@@ -101,7 +100,7 @@ public class Darwini extends SuperClass {
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			if(getGunHeat() == 0)
+			if ( getGunHeat() < getGunCoolingRate() )
 				knowledge.insert( ld.acquisition(e) );
 
 			super.onScannedRobot(e);
@@ -125,7 +124,7 @@ public class Darwini extends SuperClass {
 		}
 	
 		@Override
-		public void onBattleEnded(BattleEndedEvent e) {
+		public void onBattleEnded(BattleEndedEvent e) {				
 			super.onBattleEnded(e);
 		}
 		
@@ -137,8 +136,9 @@ public class Darwini extends SuperClass {
 		
 		@Override
 		public void onRoundEnded(RoundEndedEvent event) {
-			writeDataInFile();
 			super.onRoundEnded(event);
+			
+			writeDataInFile();
 		}
 		
 		/**
