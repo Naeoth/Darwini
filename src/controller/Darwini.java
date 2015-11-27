@@ -100,7 +100,7 @@ public class Darwini extends SuperClass {
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			if ( getGunHeat()<getGunCoolingRate() )
+			if ( getGunHeat() < getGunCoolingRate() )
 				knowledge.insert( ld.acquisition(e) );
 
 			super.onScannedRobot(e);
@@ -108,6 +108,7 @@ public class Darwini extends SuperClass {
 	
 		@Override
 		public void onBulletHit(BulletHitEvent e) {
+			knowledge.getLastData().setHit(1);
 			super.onBulletHit(e);
 		}
 		
@@ -119,8 +120,6 @@ public class Darwini extends SuperClass {
 		@Override
 		public void onBulletHitBullet(BulletHitBulletEvent e) {		
 			super.onBulletHitBullet(e);
-			
-			knowledge.getLastData().setHit(1);
 		}
 	
 		@Override
