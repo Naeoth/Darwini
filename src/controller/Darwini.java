@@ -54,9 +54,6 @@ public class Darwini extends SuperClass {
 		 */
 		public Darwini() {
 			super();
-
-			knowledge = new DAOData();
-			ld = new LearnedData(this);
 		}
 		
 		
@@ -100,15 +97,11 @@ public class Darwini extends SuperClass {
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			if ( getGunHeat() < getGunCoolingRate() )
-				knowledge.insert( ld.acquisition(e) );
-
 			super.onScannedRobot(e);
 		}
 	
 		@Override
 		public void onBulletHit(BulletHitEvent e) {
-			knowledge.getLastData().setHit(1);
 			super.onBulletHit(e);
 		}
 		
@@ -136,20 +129,6 @@ public class Darwini extends SuperClass {
 		@Override
 		public void onRoundEnded(RoundEndedEvent event) {
 			super.onRoundEnded(event);
-			writeDataInFile();
-		}
-		
-		/**
-		 * 
-		 */
-		private void writeDataInFile() {
-			try {
-				knowledge.printData( getDataFile("darwini.ssvm") );
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-				System.err.println("Failed to save collected data.");
-			}
 		}
 		
 }
