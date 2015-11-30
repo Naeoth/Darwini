@@ -9,6 +9,8 @@
 package model;
 
 import controller.Darwini;
+import controller.AcquisitionBot;
+import controller.SuperClass;
 import robocode.ScannedRobotEvent;
 
 public class LearnedData {
@@ -18,7 +20,7 @@ public class LearnedData {
 		/**
 		 * 
 		 */
-		private Darwini robot;
+		private SuperClass robot;
 		
 	
 	/*	----- CONSTRUCTOR -----	*/
@@ -28,7 +30,7 @@ public class LearnedData {
 		 * 
 		 * @param robot
 		 */
-		public LearnedData(Darwini robot) {
+		public LearnedData(SuperClass robot) {
 			this.robot = robot;
 		}
 		
