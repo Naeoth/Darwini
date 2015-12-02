@@ -8,8 +8,6 @@
 
 package model;
 
-import controller.Darwini;
-import controller.AcquisitionBot;
 import controller.SuperClass;
 import robocode.ScannedRobotEvent;
 

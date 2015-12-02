@@ -11,13 +11,9 @@ package controller;
 import java.io.IOException;
 
 import robocode.BattleEndedEvent;
-import robocode.Bullet;
-import robocode.BulletHitBulletEvent;
 import robocode.BulletHitEvent;
-import robocode.BulletMissedEvent;
 import robocode.RoundEndedEvent;
 import robocode.ScannedRobotEvent;
-import robocode.SkippedTurnEvent;
 
 import model.DAOData;
 import model.LearnedData;
@@ -47,6 +43,7 @@ public class AcquisitionBot extends SuperClass {
 		 */
 		private LearnedData ld;
 
+		
 	/*	----- CONSTRUCTOR -----	*/
 	
 		/**
