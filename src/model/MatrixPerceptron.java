@@ -9,6 +9,7 @@
 package model;
 
 import java.io.File;
+import java.util.Iterator;
 
 import no.uib.cipr.matrix.sparse.CompDiagMatrix;
 
@@ -65,8 +66,8 @@ public class MatrixPerceptron {
 			MaP2 = new CompDiagMatrix(nbrNeuroneCaches, nbrNeuroneEntres);
 			
 			//remplissage des matrices
-			MaP1 = centrerEtReduire(MaP1);
-			MaP2 = centrerEtReduire(MaP2);
+			MaP1 = scaleAndReduce(MaP1);
+			MaP2 = scaleAndReduce(MaP2);
 		}
 		
 		
@@ -76,8 +77,21 @@ public class MatrixPerceptron {
 		 * Sert à centrer et réduire les matrices
 		 * 
 		 */
-		public CompDiagMatrix centrerEtReduire(CompDiagMatrix matrix) {
+		public CompDiagMatrix scaleAndReduce(CompDiagMatrix matrix) {
+			double sum=0;
+			int size=matrix.numRows()*matrix.numColumns();
+				for(int x=0 ; x<matrix.numRows() ; x++){
+					for(int y=0 ; y<matrix.numColumns(); y++){
+						sum=sum+matrix.get(x,y);
+					}
+				double moy = sum/size;
+					
+			
+			
+			
+			
 			return null;
+		}
 		}
 	
 		/**
@@ -87,7 +101,7 @@ public class MatrixPerceptron {
 			//entry est le vecteur des entrées collectées représenté sous forme de matrice
 			//pour plus de simplicité
 			CompDiagMatrix vcouche = new CompDiagMatrix(nbrNeuroneCaches, 1);
-			entry = centrerEtReduire(entry);
+			entry = scaleAndReduce(entry);
 			MaP1.mult(entry, vcouche);
 			
 			for (int i = 0; i < nbrNeuroneCaches; i++)
