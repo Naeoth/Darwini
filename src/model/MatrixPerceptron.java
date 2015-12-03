@@ -9,6 +9,7 @@
 package model;
 
 import java.io.File;
+import java.lang.Math;
 
 import no.uib.cipr.matrix.sparse.CompDiagMatrix;
 
@@ -67,12 +68,12 @@ public class MatrixPerceptron {
 			//Ouverture du fichier
 			maP1 = new CompDiagMatrix(nbrNeuroneCaches, nbrNeuroneEntres);
 			maP2 = new CompDiagMatrix(nbrNeuroneSortie, nbrNeuroneCaches);
-			neurnBiais = new CompDiagMatrix(nbrNeuroneCaches,1);
+			neuronBiais = new CompDiagMatrix(nbrNeuroneCaches,1);
 			
 			
 			//remplissage des matrices
-			maP1 = centrerEtReduire(MaP1);
-			maP2 = centrerEtReduire(MaP2);
+			maP1 = centrerEtReduire(maP1);
+			maP2 = centrerEtReduire(maP2);
 		}
 		
 		
