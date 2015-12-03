@@ -72,9 +72,9 @@ public class MatrixPerceptron {
 			
 			
 			//remplissage des matrices
-			maP1 = centrerEtReduire(maP1);
-			maP2 = centrerEtReduire(maP2);
-		}
+			maP1 = scaleAndReduce(maP1);
+			maP2 = scaleAndReduce(maP2);
+			}
 		
 		
 	/*	----- MATRIX METHODS -----	*/
@@ -83,10 +83,37 @@ public class MatrixPerceptron {
 		 * Sert à centrer et réduire les matrices
 		 * 
 		 */
-		public CompDiagMatrix centrerEtReduire(CompDiagMatrix matrix) {
-			return null;
+		public CompDiagMatrix scaleAndReduce(CompDiagMatrix matrix) {
+			double sum=0;
+			double pvar=0;
+			int size=matrix.numRows()*matrix.numColumns();
+			for(int x=0 ; x<matrix.numRows() ; x++){
+				for(int y=0 ; y<matrix.numColumns(); y++){
+					sum+=matrix.get(x,y);
+				}
+			}
+
+			double moy = sum/size;
+
+			for(int i=0 ; i<matrix.numRows() ; i++){
+				for(int j=0 ; j<matrix.numColumns(); j++){
+					pvar+=(matrix.get(i, j)-moy)*(matrix.get(i, j)-moy);
+				}
+			}
+
+			double var = pvar/size;
+			double ectType = Math.sqrt(var);
+			for(int k=0 ; k<matrix.numRows() ; k++){
+				for(int l=0 ; l<matrix.numColumns(); l++){
+					double coeffScaled=(matrix.get(k,l)-moy)/ectType;
+					matrix.set(k, l, coeffScaled); 
+				}
+			}
+			
+			return matrix;
+			
 		}
-	
+
 		/**
 		 * Calcule le premiuer vecteur sortant des neurones de couches
 		 */
@@ -94,7 +121,8 @@ public class MatrixPerceptron {
 			//entry est le vecteur des entrées collectées représenté sous forme de matrice
 			//pour plus de simplicité
 			CompDiagMatrix vcouche = new CompDiagMatrix(nbrNeuroneCaches, 1);
-			entry = centrerEtReduire(entry);
+
+			entry = scaleAndReduce(entry);
 			maP1.mult(entry, vcouche);
 			
 			for (int i = 0; i < nbrNeuroneCaches; i++)
