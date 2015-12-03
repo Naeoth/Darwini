@@ -30,22 +30,26 @@ public class MatrixPerceptron {
 		/**
 		 * 
 		 */
-		private static final int NEURON_V = 4; //A changer !
-	
+		private CompDiagMatrix neuronBiais;	
 		/**
 		 * 
 		 */
-		private CompDiagMatrix MaP1;
+		private CompDiagMatrix maP1;
 		
 		/**
 		 * 
 		 */
-		private CompDiagMatrix MaP2;
+		private CompDiagMatrix maP2;
 		
 		/**
 		 * 
 		 */
 		private int nbrNeuroneEntres; //A definir
+		
+		/**
+		 * 
+		 */
+		private int nbrNeuroneSortie;
 		
 		/**
 		 * 
@@ -62,12 +66,16 @@ public class MatrixPerceptron {
 		 */
 		public MatrixPerceptron(File f) {
 			//Ouverture du fichier
-			MaP1 = new CompDiagMatrix(nbrNeuroneCaches, nbrNeuroneEntres);
-			MaP2 = new CompDiagMatrix(nbrNeuroneCaches, nbrNeuroneEntres);
+			maP1 = new CompDiagMatrix(nbrNeuroneCaches, nbrNeuroneEntres);
+			maP2 = new CompDiagMatrix(nbrNeuroneSortie, nbrNeuroneCaches);
+			neurnBiais = new CompDiagMatrix(nbrNeuroneCaches,1);
+			
 			
 			//remplissage des matrices
 			MaP1 = scaleAndReduce(MaP1);
 			MaP2 = scaleAndReduce(MaP2);
+
+			
 		}
 		
 		
@@ -115,11 +123,12 @@ public class MatrixPerceptron {
 			//entry est le vecteur des entrées collectées représenté sous forme de matrice
 			//pour plus de simplicité
 			CompDiagMatrix vcouche = new CompDiagMatrix(nbrNeuroneCaches, 1);
+
 			entry = scaleAndReduce(entry);
 			MaP1.mult(entry, vcouche);
 			
 			for (int i = 0; i < nbrNeuroneCaches; i++)
-				vcouche.add(i, 1, NEURON_V);
+				vcouche.add(i, 0, neuronBiais.get(i,0));
 			
 			return vcouche;
 		}
@@ -129,8 +138,8 @@ public class MatrixPerceptron {
 		 */
 		public CompDiagMatrix secondTreatment(CompDiagMatrix couche) {
 			//couche est le vecteur résultant du premier traitement, le vecteur sortant des neurones de couche
-			CompDiagMatrix vsortie = new CompDiagMatrix(nbrNeuroneCaches, 1); //encore réfléchir sur la taille de la matrice de sortie
-			couche.mult(MaP2, vsortie);
+			CompDiagMatrix vsortie = new CompDiagMatrix(nbrNeuroneSortie, 1); //encore réfléchir sur la taille de la matrice de sortie
+			maP2.mult(couche, vsortie);
 			
 			return vsortie;
 		}
