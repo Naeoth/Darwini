@@ -9,7 +9,7 @@
 package model;
 
 import java.io.File;
-import java.util.Iterator;
+import java.lang.Math;
 
 import no.uib.cipr.matrix.sparse.CompDiagMatrix;
 
@@ -79,21 +79,35 @@ public class MatrixPerceptron {
 		 */
 		public CompDiagMatrix scaleAndReduce(CompDiagMatrix matrix) {
 			double sum=0;
+			double pvar=0;
 			int size=matrix.numRows()*matrix.numColumns();
-				for(int x=0 ; x<matrix.numRows() ; x++){
-					for(int y=0 ; y<matrix.numColumns(); y++){
-						sum=sum+matrix.get(x,y);
-					}
-				double moy = sum/size;
-					
+			for(int x=0 ; x<matrix.numRows() ; x++){
+				for(int y=0 ; y<matrix.numColumns(); y++){
+					sum+=matrix.get(x,y);
+				}
+			}
+
+			double moy = sum/size;
+
+			for(int i=0 ; i<matrix.numRows() ; i++){
+				for(int j=0 ; j<matrix.numColumns(); j++){
+					pvar+=(matrix.get(i, j)-moy)*(matrix.get(i, j)-moy);
+				}
+			}
+
+			double var = pvar/size;
+			double ectType = Math.sqrt(var);
+			for(int k=0 ; k<matrix.numRows() ; k++){
+				for(int l=0 ; l<matrix.numColumns(); l++){
+					double coeffScaled=(matrix.get(k,l)-moy)/ectType;
+					matrix.set(k, l, coeffScaled); 
+				}
+			}
 			
+			return matrix;
 			
-			
-			
-			return null;
 		}
-		}
-	
+
 		/**
 		 * Calcule le premiuer vecteur sortant des neurones de couches
 		 */
@@ -134,5 +148,4 @@ public class MatrixPerceptron {
 			
 			return res;
 		}
-	
 }
