@@ -32,6 +32,12 @@ public class DOData {
 		 */
 		private double bearing;
 		
+		
+		/**
+		 * 
+		 */
+		private double gunBearing;
+		
 		/**
 		 * 
 		 */
@@ -60,30 +66,30 @@ public class DOData {
 		/**
 		 * 
 		 */
-		private double myGunHeading;
+		private double advHeading;
 		
 		/**
 		 * 
 		 */
-		private double myHeading;
-
-
+		
+		
+		
 
 	/*	----- CONSTRUCTOR -----	*/
 
 		/**
 		 *
 		 */
-		public DOData(double bearing, double distance, double advEnergy, double myEnergy, double advVelocity, double myVelocity, double myGunHeading, double myHeading) {
+		public DOData(double bearing, double gunBearing, double distance, double advEnergy, double myEnergy, double advVelocity, double myVelocity, double advHeading) {
 			hit = 0;
 			this.bearing = bearing;
+			this.gunBearing = gunBearing;
 			this.distance = distance;
 			this.advEnergy = advEnergy;
 			this.myEnergy = myEnergy;
 			this.advVelocity = advVelocity;
 			this.myVelocity = myVelocity;
-			this.myGunHeading = myGunHeading;
-			this.myHeading = myHeading;
+			this.advHeading = advHeading;
 		}
 
 
@@ -99,7 +105,7 @@ public class DOData {
 	/*	----- OTHER METHODS -----	*/
 
 		public String toString() {
-			return hit + " 1:" + bearing + " 2:" + distance + " 3:" + advEnergy + " 4:" + myEnergy + " 5:" + advVelocity + " 6:" + myVelocity + " 7:" + myGunHeading + " 8:" + myHeading;
+			return hit + " 1:" + bearing + " 3:" + gunBearing + " 4:" + distance + " 5:" + advEnergy + " 6:" + myEnergy + " 7:" + advVelocity + " 8:" + myVelocity + " 9:" + advHeading;
 		}
 
 }

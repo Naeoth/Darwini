@@ -43,36 +43,27 @@ public class LearnedData {
 		public DOData acquisition(ScannedRobotEvent e) {
 			return new DOData(
 				e.getBearing(),
+				0,
 				e.getDistance(),
 				e.getEnergy(),
 				robot.getEnergy(),
 				e.getVelocity(),
 				robot.getVelocity(),
-				getGunHeadingInDegrees(),
-				getHeadingInDegrees()
+				e.getHeading()
 			);
 		}
 
 	
 	/*	----- ACQUISITION METHODS -----	*/
 		
-		/**
-		 * Convert the robot.getGunHeadingRadians' result in Degrees.
-		 * 
-		 * @return the robot gun heading in Degrees
-		 */
-		public double getGunHeadingInDegrees(){
-			return ( (robot.getGunHeadingRadians() * 180) / Math.PI );
-		}
 		
 		/**
-		 * Convert the robot.getHeadingRadians' result in Degrees.
 		 * 
-		 * @return the robot heading in Degrees
 		 */
-		public double getHeadingInDegrees(){
-			return ( (robot.getHeadingRadians() * 180) / Math.PI );
+		public void getGunBearing(){
+			
 		}
+		
 		
 
 }
