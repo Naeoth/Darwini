@@ -36,17 +36,8 @@ public class DOData {
 		/**
 		 * 
 		 */
-		private double gunBearing;
-		
-		/**
-		 * 
-		 */
 		private double distance;
 		
-		/**
-		 * 
-		 */
-		private double advEnergy;
 		
 		/**
 		 * 
@@ -80,12 +71,10 @@ public class DOData {
 		/**
 		 *
 		 */
-		public DOData(double bearing, double gunBearing, double distance, double advEnergy, double myEnergy, double advVelocity, double myVelocity, double advHeading) {
+		public DOData(double bearing, double distance, double myEnergy, double advVelocity, double myVelocity, double advHeading) {
 			hit = 0;
 			this.bearing = bearing;
-			this.gunBearing = gunBearing;
 			this.distance = distance;
-			this.advEnergy = advEnergy;
 			this.myEnergy = myEnergy;
 			this.advVelocity = advVelocity;
 			this.myVelocity = myVelocity;
@@ -105,7 +94,7 @@ public class DOData {
 	/*	----- OTHER METHODS -----	*/
 
 		public String toString() {
-			return hit + " 1:" + bearing + " 3:" + gunBearing + " 4:" + distance + " 5:" + advEnergy + " 6:" + myEnergy + " 7:" + advVelocity + " 8:" + myVelocity + " 9:" + advHeading;
+			return hit + " 1:" + bearing + " 2:" + distance + " 3:" + myEnergy + " 4:" + advVelocity + " 5:" + myVelocity + " 6:" + advHeading;
 		}
 
 }

@@ -43,16 +43,14 @@ public class LearnedData {
 		public DOData acquisition(ScannedRobotEvent e) {
 			return new DOData(
 				e.getBearing(),
-				0,
 				e.getDistance(),
-				e.getEnergy(),
 				robot.getEnergy(),
 				e.getVelocity(),
 				robot.getVelocity(),
 				e.getHeading()
 			);
 		}
-
+		
 	
 	/*	----- ACQUISITION METHODS -----	*/
 		

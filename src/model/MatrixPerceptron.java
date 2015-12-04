@@ -72,8 +72,6 @@ public class MatrixPerceptron {
 			
 			
 			//remplissage des matrices
-			maP1 = scaleAndReduce(maP1);
-			maP2 = scaleAndReduce(maP2);
 			}
 		
 		
@@ -125,8 +123,10 @@ public class MatrixPerceptron {
 			entry = scaleAndReduce(entry);
 			maP1.mult(entry, vcouche);
 			
-			for (int i = 0; i < nbrNeuroneCaches; i++)
+			for (int i = 0; i < nbrNeuroneCaches; i++){
 				vcouche.add(i, 0, neuronBiais.get(i,0));
+				vcouche.set(i, 0, (1/(1+Math.exp(-vcouche.get(i, 0)))));
+			}
 			
 			return vcouche;
 		}

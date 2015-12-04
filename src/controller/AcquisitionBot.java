@@ -63,8 +63,8 @@ public class AcquisitionBot extends SuperClass {
 		public void onScannedRobot(ScannedRobotEvent e) {
 			if ( getGunHeat() < getGunCoolingRate() )
 				knowledge.insert( ld.acquisition(e) );
-
 			super.onScannedRobot(e);
+			fire(3);
 		}
 	
 		@Override
