@@ -9,7 +9,13 @@
 package model;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.Math;
+
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 
 import no.uib.cipr.matrix.sparse.CompDiagMatrix;
 
@@ -30,31 +36,37 @@ public class MatrixPerceptron {
 		/**
 		 * 
 		 */
-		private CompDiagMatrix neuronBiais;	
+		private Document matrixXML;
+	
 		/**
 		 * 
 		 */
-		private CompDiagMatrix maP1;
+		private int nbInputNeurons;
 		
 		/**
 		 * 
 		 */
-		private CompDiagMatrix maP2;
+		private int nbHiddenNeurons;
 		
 		/**
 		 * 
 		 */
-		private int nbrNeuroneEntres; //A definir
+		private int nbOutputNeurons;
+	
+		/**
+		 * 
+		 */
+		private CompDiagMatrix inputWeights;
 		
 		/**
 		 * 
 		 */
-		private int nbrNeuroneSortie;
-		
+		private CompDiagMatrix outputWeights;
+	
 		/**
 		 * 
 		 */
-		private int nbrNeuroneCaches; //A def
+		private CompDiagMatrix bias;
 	
 
 	/*	----- CONSTRUCTOR -----	*/
@@ -65,17 +77,52 @@ public class MatrixPerceptron {
 		 * @param f
 		 */
 		public MatrixPerceptron(File f) {
-			//Ouverture du fichier
-			maP1 = new CompDiagMatrix(nbrNeuroneCaches, nbrNeuroneEntres);
-			maP2 = new CompDiagMatrix(nbrNeuroneSortie, nbrNeuroneCaches);
-			neuronBiais = new CompDiagMatrix(nbrNeuroneCaches,1);
-			
-			
-			//remplissage des matrices
+			try {
+				SAXBuilder sxb = new SAXBuilder();
+				matrixXML = sxb.build(f);
 			}
+			catch (IOException e) {
+				System.out.println("File not found.\n" + e.getMessage());
+			}
+			catch (JDOMException e) {
+				System.out.println("XML file is invalid.\n" + e.getMessage());
+			}
+			
+			Element perceptron = matrixXML.getRootElement().getChild("learner").getChild("perceptron");
+			
+			// Get the number of neurons
+			nbInputNeurons = Integer.parseInt( perceptron.getAttributeValue("InputNeurons") );
+			nbHiddenNeurons = Integer.parseInt( perceptron.getAttributeValue("HiddenNeurons") );
+			nbOutputNeurons = Integer.parseInt( perceptron.getAttributeValue("OutputNeurons") );
+			
+			// Get the matrix
+			inputWeights = initMatrix( perceptron.getChild("InputWeights") );
+			outputWeights = initMatrix( perceptron.getChild("OutputWeights") );
+			bias = initMatrix( perceptron.getChild("Bias") );
+		}
 		
 		
 	/*	----- MATRIX METHODS -----	*/
+		
+		/**
+		 * 
+		 */
+		private CompDiagMatrix initMatrix(Element matrix) {
+			int rows = Integer.parseInt( matrix.getAttributeValue("Rows") );
+			int cols = Integer.parseInt( matrix.getAttributeValue("Cols") );
+			String[] values = matrix.getAttributeValue("Matrix").split(" ");
+			
+			CompDiagMatrix matrixInitialized = new CompDiagMatrix(rows, cols);
+			
+			// Fill the matrix
+			int index = 0;
+			
+			for (int j = 0; j < cols; j++)
+				for (int i = 0; i < rows; i++)
+					matrixInitialized.set( i, j, Double.parseDouble( values[index++] ) );
+			
+			return matrixInitialized;
+		}
 	
 		/**
 		 * Sert à centrer et réduire les matrices
@@ -109,22 +156,21 @@ public class MatrixPerceptron {
 			}
 			
 			return matrix;
-			
 		}
 
 		/**
-		 * Calcule le premiuer vecteur sortant des neurones de couches
+		 * Calcule le premier vecteur sortant des neurones de couches
 		 */
 		public CompDiagMatrix firstTreatment(CompDiagMatrix entry) {
 			//entry est le vecteur des entrées collectées représenté sous forme de matrice
 			//pour plus de simplicité
-			CompDiagMatrix vcouche = new CompDiagMatrix(nbrNeuroneCaches, 1);
+			CompDiagMatrix vcouche = new CompDiagMatrix(nbHiddenNeurons, 1);
 
 			entry = scaleAndReduce(entry);
-			maP1.mult(entry, vcouche);
+			inputWeights.mult(entry, vcouche);
 			
-			for (int i = 0; i < nbrNeuroneCaches; i++){
-				vcouche.add(i, 0, neuronBiais.get(i,0));
+			for (int i = 0; i < nbHiddenNeurons; i++){
+				vcouche.add(i, 0, bias.get(i,0));
 				vcouche.set(i, 0, (1/(1+Math.exp(-vcouche.get(i, 0)))));
 			}
 			
@@ -136,9 +182,10 @@ public class MatrixPerceptron {
 		 */
 		public CompDiagMatrix secondTreatment(CompDiagMatrix couche) {
 			//couche est le vecteur résultant du premier traitement, le vecteur sortant des neurones de couche
-			CompDiagMatrix vsortie = new CompDiagMatrix(nbrNeuroneSortie, 1); //encore réfléchir sur la taille de la matrice de sortie
-			maP2.mult(couche, vsortie);
+			CompDiagMatrix vsortie = new CompDiagMatrix(nbOutputNeurons, 1); //encore réfléchir sur la taille de la matrice de sortie
+			outputWeights.mult(couche, vsortie);
 			
 			return vsortie;
 		}
+		
 }

@@ -9,6 +9,8 @@
 package controller;
 
 import no.uib.cipr.matrix.sparse.CompDiagMatrix;
+import model.AcquisitionData;
+import model.DOData;
 import model.MatrixPerceptron;
 import robocode.BattleEndedEvent;
 import robocode.Bullet;
@@ -32,7 +34,12 @@ import robocode.SkippedTurnEvent;
  */
 public class Darwini extends SuperClass {
 
-	/*	----- ATTRIBUTE -----	*/
+	/*	----- ATTRIBUTES -----	*/
+		
+		/**
+		 * 
+		 */
+		private AcquisitionData ld;
 	
 		/**
 		 * 
@@ -44,23 +51,23 @@ public class Darwini extends SuperClass {
 		 */
 		private CompDiagMatrix shootEntries;
 		
+		
 	/*	----- CONSTRUCTOR -----	*/
 		
-		
-		public Darwini(){
-			super();
-			this.perceptron = new MatrixPerceptron(file);
-			this.shootEntries = new CompDiagMatrix(6,1);
+		/**
+		 * 
+		 */
+		public Darwini() {
+			//perceptron = new MatrixPerceptron(file);
+			//shootEntries = new CompDiagMatrix(DOData.NB_ENTRIES, 1);
 		}
-		
+			
 		
 	/*	----- OTHER METHODS -----	*/
 		
-		// This method is called when a battle starts
 		@Override
 		public void run() {		
 			super.run();
-			
 		}
 		
 		/**
@@ -97,6 +104,7 @@ public class Darwini extends SuperClass {
 		public void onScannedRobot(ScannedRobotEvent e) {
 			super.onScannedRobot(e);
 			
+			ld.acquisition(e);
 			//fill the shootEntry matrix
 			shootEntries.set(0,0,e.getBearing());
 			shootEntries.set(1,0,e.getDistance());

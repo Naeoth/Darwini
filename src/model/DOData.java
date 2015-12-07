@@ -25,12 +25,17 @@ public class DOData {
 		/**
 		 * 
 		 */
+		public static final int NB_ENTRIES = 6; 
+	
+		/**
+		 * 
+		 */
 		private int hit;
 		
 		/**
 		 * 
 		 */
-		private double bearing;
+		private double myBearing;
 		
 		
 		/**
@@ -47,7 +52,7 @@ public class DOData {
 		/**
 		 * 
 		 */
-		private double advVelocity;
+		private double opponentVelocity;
 		
 		/**
 		 * 
@@ -57,13 +62,7 @@ public class DOData {
 		/**
 		 * 
 		 */
-		private double advHeading;
-		
-		/**
-		 * 
-		 */
-		
-		
+		private double opponentHeading;
 		
 
 	/*	----- CONSTRUCTOR -----	*/
@@ -71,14 +70,14 @@ public class DOData {
 		/**
 		 *
 		 */
-		public DOData(double bearing, double distance, double myEnergy, double advVelocity, double myVelocity, double advHeading) {
+		public DOData(double myBearing, double distance, double myEnergy, double opponentVelocity, double myVelocity, double opponentHeading) {
 			hit = 0;
-			this.bearing = bearing;
+			this.myBearing = myBearing;
 			this.distance = distance;
 			this.myEnergy = myEnergy;
-			this.advVelocity = advVelocity;
+			this.opponentVelocity = opponentVelocity;
 			this.myVelocity = myVelocity;
-			this.advHeading = advHeading;
+			this.opponentHeading = opponentHeading;
 		}
 
 
@@ -87,14 +86,14 @@ public class DOData {
 		/**
 		 * 
 		 */
-		public void setHit(int hit) {
-			this.hit = hit;
+		public void setHit() {
+			hit = 1;
 		}
 
 	/*	----- OTHER METHODS -----	*/
 
 		public String toString() {
-			return hit + " 1:" + bearing + " 2:" + distance + " 3:" + myEnergy + " 4:" + advVelocity + " 5:" + myVelocity + " 6:" + advHeading;
+			return hit + " 1:" + myBearing + " 2:" + distance + " 3:" + myEnergy + " 4:" + opponentVelocity + " 5:" + myVelocity + " 6:" + opponentHeading;
 		}
 
 }

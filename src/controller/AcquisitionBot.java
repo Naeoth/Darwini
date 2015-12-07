@@ -16,7 +16,7 @@ import robocode.RoundEndedEvent;
 import robocode.ScannedRobotEvent;
 
 import model.DAOData;
-import model.LearnedData;
+import model.AcquisitionData;
 
 /**
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
@@ -36,12 +36,12 @@ public class AcquisitionBot extends SuperClass {
 		/**
 		 *
 		 */
-		private DAOData knowledge;
+		private DAOData knowledges;
 		
 		/**
 		 * 
 		 */
-		private LearnedData ld;
+		private AcquisitionData ld;
 
 		
 	/*	----- CONSTRUCTOR -----	*/
@@ -52,8 +52,8 @@ public class AcquisitionBot extends SuperClass {
 		public AcquisitionBot() {
 			super();
 
-			knowledge = new DAOData();
-			ld = new LearnedData(this);
+			knowledges = new DAOData();
+			ld = new AcquisitionData(this);
 		}
 		
 		
@@ -61,9 +61,11 @@ public class AcquisitionBot extends SuperClass {
 				
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			if ( getGunHeat() < getGunCoolingRate() )
-				knowledge.insert( ld.acquisition(e) );
 			super.onScannedRobot(e);
+			
+			if ( getGunHeat() < getGunCoolingRate() )
+				knowledges.insert( ld.acquisition(e) );
+			
 			fire(3);
 		}
 	
@@ -71,7 +73,7 @@ public class AcquisitionBot extends SuperClass {
 		public void onBulletHit(BulletHitEvent e) {
 			super.onBulletHit(e);
 			
-			knowledge.getLastData().setHit(1);
+			knowledges.getLastData().setHit();
 		}
 	
 		@Override
@@ -91,7 +93,7 @@ public class AcquisitionBot extends SuperClass {
 		 */
 		private void writeDataInFile() {
 			try {
-				knowledge.printData( getDataFile("darwini.ssvm") );
+				knowledges.printData( getDataFile("darwini.ssvm") );
 			}
 			catch (IOException e) {
 				e.printStackTrace();
