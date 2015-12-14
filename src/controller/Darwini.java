@@ -58,8 +58,8 @@ public class Darwini extends SuperClass {
 		 * 
 		 */
 		public Darwini() {
-			//perceptron = new MatrixPerceptron(file);
-			//shootEntries = new CompDiagMatrix(DOData.NB_ENTRIES, 1);
+			perceptron = new MatrixPerceptron(getDataFile(""));
+			shootEntries = new CompDiagMatrix(DOData.NB_ENTRIES, 1);
 		}
 			
 		
@@ -103,18 +103,7 @@ public class Darwini extends SuperClass {
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
 			super.onScannedRobot(e);
-			
-			ld.acquisition(e);
-			//fill the shootEntry matrix
-			shootEntries.set(0,0,e.getBearing());
-			shootEntries.set(1,0,e.getDistance());
-			shootEntries.set(2,0,this.getEnergy());
-			shootEntries.set(3,0,e.getVelocity());
-			shootEntries.set(4,0,this.getVelocity());
-			shootEntries.set(5,0,e.getHeading());
-			
-			//check for the perceptron decision
-			if(perceptron.secondTreatment(perceptron.firstTreatment(shootEntries)).get(0, 0) > 0.5){
+			if(perceptron.secondTreatment(perceptron.firstTreatment(ld.acquisition(e).toMatrix())).get(0, 0) > 0){
 				fire(3);
 			}
 			

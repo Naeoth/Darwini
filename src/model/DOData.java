@@ -8,6 +8,8 @@
 
 package model;
 
+import no.uib.cipr.matrix.sparse.CompDiagMatrix;
+
 /**
  *
  *
@@ -94,6 +96,17 @@ public class DOData {
 
 		public String toString() {
 			return hit + " 1:" + myBearing + " 2:" + distance + " 3:" + myEnergy + " 4:" + opponentVelocity + " 5:" + myVelocity + " 6:" + opponentHeading;
+		}
+		
+		public CompDiagMatrix toMatrix(){
+			CompDiagMatrix shootEntries = new CompDiagMatrix(NB_ENTRIES,1); 
+			shootEntries.set(0,0,myBearing);
+			shootEntries.set(1,0,distance);
+			shootEntries.set(2,0,myEnergy);
+			shootEntries.set(3,0,opponentVelocity);
+			shootEntries.set(4,0,myVelocity);
+			shootEntries.set(5,0,opponentHeading);
+			return shootEntries;
 		}
 
 }
