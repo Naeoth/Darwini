@@ -3,12 +3,10 @@
  * 
  * Development of an IA based on genetic algorithms and neural networks.
  *
- * class DOData.java
+ * class DOShootData.java
  */
 
 package model;
-
-import no.uib.cipr.matrix.sparse.CompDiagMatrix;
 
 /**
  *
@@ -20,7 +18,7 @@ import no.uib.cipr.matrix.sparse.CompDiagMatrix;
  * @author MATHIEU Vianney
  * @author VAILLAND Guillaume
  */
-public class DOData {
+public class DODataShoot {
 
 	/*	----- ATTRIBUTES -----	*/
 	
@@ -72,7 +70,7 @@ public class DOData {
 		/**
 		 *
 		 */
-		public DOData(double myBearing, double distance, double myEnergy, double opponentVelocity, double myVelocity, double opponentHeading) {
+		public DODataShoot(double myBearing, double distance, double myEnergy, double opponentVelocity, double myVelocity, double opponentHeading) {
 			hit = 0;
 			this.myBearing = myBearing;
 			this.distance = distance;
@@ -98,15 +96,17 @@ public class DOData {
 			return hit + " 1:" + myBearing + " 2:" + distance + " 3:" + myEnergy + " 4:" + opponentVelocity + " 5:" + myVelocity + " 6:" + opponentHeading;
 		}
 		
-		public CompDiagMatrix toMatrix(){
-			CompDiagMatrix shootEntries = new CompDiagMatrix(NB_ENTRIES,1); 
-			shootEntries.set(0,0,myBearing);
-			shootEntries.set(1,0,distance);
-			shootEntries.set(2,0,myEnergy);
-			shootEntries.set(3,0,opponentVelocity);
-			shootEntries.set(4,0,myVelocity);
-			shootEntries.set(5,0,opponentHeading);
-			return shootEntries;
+		public Matrix toMatrix(){
+			Matrix matrix = new Matrix(NB_ENTRIES, 1);
+			
+			matrix.set(0, 0, myBearing);
+			matrix.set(1, 0, distance);
+			matrix.set(2, 0, myEnergy);
+			matrix.set(3, 0, opponentVelocity);
+			matrix.set(4, 0, myVelocity);
+			matrix.set(5, 0, opponentHeading);
+			
+			return matrix;
 		}
 
 }

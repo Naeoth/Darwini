@@ -56,10 +56,10 @@ public class AcquisitionData {
 		 * 
 		 * @param e
 		 */
-		public DOData acquisition(ScannedRobotEvent ennemyRobot) {
-			this.opponentRobot = ennemyRobot;
+		public DODataShoot acquisition(ScannedRobotEvent opponentRobot) {
+			this.opponentRobot = opponentRobot;
 			
-			return new DOData(
+			return new DODataShoot(
 				getMyBearing(),
 				getDistance(),
 				getMyEnergy(),
@@ -72,8 +72,8 @@ public class AcquisitionData {
 		/**
 		 * 
 		 */
-		private double convert(double min, double max, double value) {
-			return value / (max - min);
+		private double convert(double max, double value) {
+			return value / max;
 		}
 		
 		
@@ -83,7 +83,7 @@ public class AcquisitionData {
 		 * 
 		 */
 		private double getMyBearing() {
-			return convert( 0, 360, opponentRobot.getBearing() );
+			return convert(360, opponentRobot.getBearing());
 		}
 		
 		/**
@@ -91,7 +91,7 @@ public class AcquisitionData {
 		 * @return
 		 */
 		private double getDistance() {
-			return convert( 0, 800, opponentRobot.getDistance() );
+			return convert(800, opponentRobot.getDistance());
 		}
 
 		/**
@@ -99,7 +99,7 @@ public class AcquisitionData {
 		 * @return
 		 */
 		private double getMyEnergy() {
-			return convert( 0, 800, myRobot.getEnergy() );
+			return convert(800, myRobot.getEnergy());
 		}
 		
 		/**
@@ -107,7 +107,7 @@ public class AcquisitionData {
 		 * @return
 		 */
 		private double getOpponentVelocity() {
-			return convert( 0, 800, opponentRobot.getVelocity() );
+			return convert(800, opponentRobot.getVelocity());
 		}
 		
 		/**
@@ -115,7 +115,7 @@ public class AcquisitionData {
 		 * @return
 		 */
 		private double getMyVelocity() {
-			return convert( 0, 360, myRobot.getVelocity() );
+			return convert(360, myRobot.getVelocity());
 		}
 		
 		/**
@@ -123,7 +123,7 @@ public class AcquisitionData {
 		 * @return
 		 */
 		private double getOpponentHeading() {
-			return convert( 0, 360, opponentRobot.getBearing() );
+			return convert(360, opponentRobot.getBearing());
 		}
 
 }

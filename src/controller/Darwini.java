@@ -8,10 +8,8 @@
 
 package controller;
 
-import no.uib.cipr.matrix.sparse.CompDiagMatrix;
 import model.AcquisitionData;
-import model.DOData;
-import model.MatrixPerceptron;
+import model.PerceptronShoot;
 import robocode.BattleEndedEvent;
 import robocode.Bullet;
 import robocode.BulletHitBulletEvent;
@@ -44,12 +42,7 @@ public class Darwini extends SuperClass {
 		/**
 		 * 
 		 */
-		private MatrixPerceptron perceptron;
-		
-		/**
-		 * 
-		 */
-		private CompDiagMatrix shootEntries;
+		private PerceptronShoot perceptron;
 		
 		
 	/*	----- CONSTRUCTOR -----	*/
@@ -58,8 +51,7 @@ public class Darwini extends SuperClass {
 		 * 
 		 */
 		public Darwini() {
-			perceptron = new MatrixPerceptron(getDataFile(""));
-			shootEntries = new CompDiagMatrix(DOData.NB_ENTRIES, 1);
+			perceptron = new PerceptronShoot( getDataFile("perceptron.xml") );
 		}
 			
 		
@@ -69,16 +61,6 @@ public class Darwini extends SuperClass {
 		public void run() {		
 			super.run();
 		}
-		
-		/**
-		 * Moves the robot to a certain point on the map, using Robocode's axes.
-		 * Returns when the robot has arrived. (possibly before if there has been an error while moving)
-		 * @param to the coordinate where it should move
-		 */
-		/*private void moveTo(Coordinates to) {
-			turnRight(Coordinates.getVectorDirection(new Coordinates(getX(), getY()), to) - getHeading());
-			ahead(Math.sqrt(Math.pow(to.getX() - getX(), 2) + Math.pow(to.getY() - getY(), 2)));
-		}*/
 		
 		@Override
 		public void fire(double power) {
@@ -102,11 +84,8 @@ public class Darwini extends SuperClass {
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			super.onScannedRobot(e);
-			if(perceptron.secondTreatment(perceptron.firstTreatment(ld.acquisition(e).toMatrix())).get(0, 0) > 0){
+			if ( perceptron.decision( ld.acquisition(e).toMatrix() ) )
 				fire(3);
-			}
-			
 		}
 	
 		@Override

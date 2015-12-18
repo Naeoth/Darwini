@@ -15,7 +15,7 @@ import robocode.BulletHitEvent;
 import robocode.RoundEndedEvent;
 import robocode.ScannedRobotEvent;
 
-import model.DAOData;
+import model.DAODataShoot;
 import model.AcquisitionData;
 
 /**
@@ -36,7 +36,7 @@ public class AcquisitionBot extends SuperClass {
 		/**
 		 *
 		 */
-		private DAOData knowledges;
+		private DAODataShoot knowledges;
 		
 		/**
 		 * 
@@ -51,8 +51,8 @@ public class AcquisitionBot extends SuperClass {
 		 */
 		public AcquisitionBot() {
 			super();
-
-			knowledges = new DAOData();
+			
+			knowledges = new DAODataShoot();
 			ld = new AcquisitionData(this);
 		}
 		
@@ -61,12 +61,10 @@ public class AcquisitionBot extends SuperClass {
 				
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			super.onScannedRobot(e);
-			
 			if ( getGunHeat() < getGunCoolingRate() )
 				knowledges.insert( ld.acquisition(e) );
 			
-			fire(3);
+			super.onScannedRobot(e);
 		}
 	
 		@Override
@@ -93,7 +91,7 @@ public class AcquisitionBot extends SuperClass {
 		 */
 		private void writeDataInFile() {
 			try {
-				knowledges.printData( getDataFile("darwini.ssvm") );
+				knowledges.printData( getDataFile("data.ssvm") );
 			}
 			catch (IOException e) {
 				e.printStackTrace();
