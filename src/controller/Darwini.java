@@ -8,6 +8,11 @@
 
 package controller;
 
+import java.io.FileNotFoundException;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
+
 import model.AcquisitionData;
 import model.PerceptronShoot;
 import robocode.BattleEndedEvent;
@@ -37,12 +42,12 @@ public class Darwini extends SuperClass {
 		/**
 		 * 
 		 */
-		private AcquisitionData ld;
+		private AcquisitionData acquiData;
 	
 		/**
 		 * 
 		 */
-		private PerceptronShoot perceptron;
+		private PerceptronShoot perceptronShoot;
 		
 		
 	/*	----- CONSTRUCTOR -----	*/
@@ -51,7 +56,7 @@ public class Darwini extends SuperClass {
 		 * 
 		 */
 		public Darwini() {
-			perceptron = new PerceptronShoot( getDataFile("perceptron.xml") );
+			acquiData = new AcquisitionData(this);
 		}
 			
 		
@@ -60,6 +65,8 @@ public class Darwini extends SuperClass {
 		@Override
 		public void run() {		
 			super.run();
+			
+			perceptronShoot = new PerceptronShoot( getDataFile("perceptron.xml") );
 		}
 		
 		@Override
@@ -84,8 +91,9 @@ public class Darwini extends SuperClass {
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			if ( perceptron.decision( ld.acquisition(e).toMatrix() ) )
+			if (perceptronShoot.decision( acquiData.acquisition(e).toMatrix() ))
 				fire(3);
+			
 		}
 	
 		@Override

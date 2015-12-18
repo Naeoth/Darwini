@@ -41,7 +41,7 @@ public class AcquisitionBot extends SuperClass {
 		/**
 		 * 
 		 */
-		private AcquisitionData ld;
+		private AcquisitionData acquiData;
 
 		
 	/*	----- CONSTRUCTOR -----	*/
@@ -53,7 +53,7 @@ public class AcquisitionBot extends SuperClass {
 			super();
 			
 			knowledges = new DAODataShoot();
-			ld = new AcquisitionData(this);
+			acquiData = new AcquisitionData(this);
 		}
 		
 		
@@ -62,7 +62,7 @@ public class AcquisitionBot extends SuperClass {
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
 			if ( getGunHeat() < getGunCoolingRate() )
-				knowledges.insert( ld.acquisition(e) );
+				knowledges.insert( acquiData.acquisition(e) );
 			
 			super.onScannedRobot(e);
 		}

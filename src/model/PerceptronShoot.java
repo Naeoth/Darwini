@@ -101,6 +101,7 @@ public class PerceptronShoot {
 			}
 			catch (FileNotFoundException | XMLStreamException | FactoryConfigurationError e) {
 				e.printStackTrace();
+				System.out.println("The XML file is not found");
 			}
 		}
 		
