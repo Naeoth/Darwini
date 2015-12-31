@@ -45,15 +45,6 @@ public class DAOData<T extends AbstractDOData> {
 	
 	
 	/*	----- ACCESSORS -----	*/
-	
-		/**
-		 * Find all the data of the list.
-		 *
-		 * @return all the data
-		 */
-		public ArrayList<T> findAll() {
-			return dataList;
-		}
 		
 		/**
 		 * 
