@@ -38,7 +38,7 @@ public class Matrix {
 		}
 		
 	
-	/*	----- MUTATOR -----	*/
+	/*	----- MUTATORS -----	*/
 		
 		/**
 		 * 
@@ -59,24 +59,22 @@ public class Matrix {
 		
 		/**
 		 * 
-		 * @param B
+		 * @param 
 		 * @return
 		 */
 		
-		public Matrix mult(Matrix B){
-			    Matrix C= new Matrix(this.getRowCount(),B.getColumnCount());
-			    int i,j;
-			    for(i=0;i<this.getRowCount();i++){
-			        for(j=0;j<B.getColumnCount();j++){
-			        	//C[i][j]+=(A[i][j]*B[j][i]);
-			            C.set(i, j, (C.get(i, j) + (this.get(i, j)*B.get(j, i))));
-			        }
-			    }
-			    return C;
+		public Matrix mult(Matrix b) {
+			Matrix res = new Matrix( getRowCount(), b.getColumnCount() );
+
+			for(int i = 0; i < getRowCount(); i++)
+				for(int j = 0; j < b.getColumnCount(); j++)
+					res.set(i, j, res.get(i, j) + get(i, j) * b.get(j, i) );
+
+			return res;
 		}
 		
 	
-	/*	----- ACCESSOR -----	*/
+	/*	----- ACCESSORS -----	*/
 		
 		/**
 		 * 
@@ -98,6 +96,5 @@ public class Matrix {
 		public int getColumnCount() {
 			return matrix[0].length;
 		}
-		
 		
 }

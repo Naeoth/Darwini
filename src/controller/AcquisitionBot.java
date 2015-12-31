@@ -15,7 +15,8 @@ import robocode.BulletHitEvent;
 import robocode.RoundEndedEvent;
 import robocode.ScannedRobotEvent;
 
-import model.DAODataShoot;
+import model.DAOData;
+import model.DODataShoot;
 import model.AcquisitionData;
 
 /**
@@ -36,7 +37,7 @@ public class AcquisitionBot extends SuperClass {
 		/**
 		 *
 		 */
-		private DAODataShoot knowledges;
+		private DAOData<DODataShoot> knowledges;
 		
 		/**
 		 * 
@@ -52,7 +53,7 @@ public class AcquisitionBot extends SuperClass {
 		public AcquisitionBot() {
 			super();
 			
-			knowledges = new DAODataShoot();
+			knowledges = new DAOData<DODataShoot>();
 			acquiData = new AcquisitionData(this);
 		}
 		
@@ -71,7 +72,7 @@ public class AcquisitionBot extends SuperClass {
 		public void onBulletHit(BulletHitEvent e) {
 			super.onBulletHit(e);
 			
-			knowledges.getLastData().setHit();
+			knowledges.getLastData().setSuccess();
 		}
 	
 		@Override
@@ -91,7 +92,7 @@ public class AcquisitionBot extends SuperClass {
 		 */
 		private void writeDataInFile() {
 			try {
-				knowledges.printData( getDataFile("data.ssvm") );
+				knowledges.printSSVM( getDataFile("data.ssvm") );
 			}
 			catch (IOException e) {
 				e.printStackTrace();

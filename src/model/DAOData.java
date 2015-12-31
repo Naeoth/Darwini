@@ -15,43 +15,43 @@ import java.util.ArrayList;
 import robocode.RobocodeFileWriter;
 
 /**
- *
- *
- * @version 1.0 - 17/11/15
- * @author BOIZUMAULT Romain
- * @author BUSSENEAU Alexis
- * @author GEFFRAULT Luc
- * @author MATHIEU Vianney
- * @author VAILLAND Guillaume
- */
-public class DAODataShoot {
-
+*
+*
+* @version 1.0 - 17/11/15
+* @author BOIZUMAULT Romain
+* @author BUSSENEAU Alexis
+* @author GEFFRAULT Luc
+* @author MATHIEU Vianney
+* @author VAILLAND Guillaume
+*/
+public class DAOData<T extends AbstractDOData> {
+	
 	/*	----- ATTRIBUTE -----	*/
-
+	
 		/**
 		 *
 		 */
-		private ArrayList<DODataShoot> dataList;
-
-
+		private ArrayList<T> dataList;
+	
+	
 	/*	----- CONSTRUCTOR -----	*/
-
+	
 		/**
 		 *
 		 */
-		public DAODataShoot() {
-			dataList = new ArrayList<DODataShoot>();
+		public DAOData() {
+			dataList = new ArrayList<>();
 		}
-
-
+	
+	
 	/*	----- ACCESSORS -----	*/
-
+	
 		/**
 		 * Find all the data of the list.
 		 *
 		 * @return all the data
 		 */
-		public ArrayList<DODataShoot> findAll() {
+		public ArrayList<T> findAll() {
 			return dataList;
 		}
 		
@@ -60,13 +60,13 @@ public class DAODataShoot {
 		 * 
 		 * @return
 		 */
-		public DODataShoot getLastData() {
+		public T getLastData() {
 			return dataList.get(dataList.size() - 1);
 		}
-
-
+	
+	
 	/*	----- MUTATOR -----	*/
-
+	
 		/**
 		 * Insert the specified data in the database.
 		 *
@@ -76,13 +76,13 @@ public class DAODataShoot {
 		 *
 		 * @throws NullPointerException if obj is null
 		 */
-		public boolean insert(DODataShoot obj) throws NullPointerException {
+		public boolean insert(T obj) throws NullPointerException {
 			if (obj == null)
 				throw new NullPointerException("The data specified is empty.");
-
+	
 			return dataList.add(obj);
 		}
-
+	
 		/**
 		 *
 		 *
@@ -90,15 +90,15 @@ public class DAODataShoot {
 		 *
 		 * @throws
 		 */
-		public void printData(File f) throws IOException {
+		public void printSSVM(File f) throws IOException {
 			RobocodeFileWriter w = new RobocodeFileWriter(f.getAbsolutePath(), true);
 			String s = "";
 		
-			for (DODataShoot data : dataList)
-				s += data.toString() + "\n";
-
+			for (T data : dataList)
+				s += data.toSSVM() + "\n";
+	
 			w.write(s);
 			w.close();
 		}
-
+		
 }

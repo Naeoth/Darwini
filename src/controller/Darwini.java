@@ -8,11 +8,6 @@
 
 package controller;
 
-import java.io.FileNotFoundException;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-
 import model.AcquisitionData;
 import model.Perceptron;
 import robocode.BattleEndedEvent;
@@ -91,7 +86,7 @@ public class Darwini extends SuperClass {
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			if (perceptronShoot.decision(acquiData.acquisition(e).toMatrix()) > 0)
+			if (perceptronShoot.decision( acquiData.acquisition(e).toMatrix() ) > 0)
 				fire(3);
 		}
 	

@@ -132,6 +132,21 @@ public class Perceptron {
 		 */
 		public double decision(Matrix entries) {
 			// First Treatment
+			//Multiplication du vecteur d'entrée avec la première matrice de poids. On obtient le vecteur de couche sans le neurone de biais
+			Matrix vcouche = inputWeights.mult(entries);
+			//Ajout du neurone de biais et application de la fonction sigmoïde
+			for (int i = 0; i < nbHiddenNeurons; i++) {
+				vcouche.add( i, 0, bias.get(i,0) );
+				vcouche.set( i, 0, 1 / (1 + Math.exp( -vcouche.get(i, 0) )) );
+			}
+			
+			// Second Treatment	
+			//Multiplication du vecteur de couche avec la seconde matrice de poids pour obtenir le vecteur de sortie
+			return outputWeights.mult(vcouche).get(0,0);
+			
+			
+			/*			
+			// First Treatment
 			Matrix vcouche = new Matrix(nbHiddenNeurons, 1);
 			//Multiplication du vecteur d'entrée avec la première matrice de poids. On obtient le vecteur de couche sans le neurone de biais
 			vcouche = inputWeights.mult(entries);
@@ -147,7 +162,7 @@ public class Perceptron {
 			vsortie = outputWeights.mult(vcouche);
 			
 			
-			return vsortie.get(0,0);
+			return vsortie.get(0,0);*/
 		}
 		
 }
