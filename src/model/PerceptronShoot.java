@@ -29,7 +29,7 @@ import javax.xml.stream.events.StartElement;
  * @author MATHIEU Vianney
  * @author VAILLAND Guillaume
  */
-public class PerceptronShoot {
+public class Perceptron {
 	
 	/*	----- ATTRIBUTES -----	*/
 	
@@ -71,7 +71,7 @@ public class PerceptronShoot {
 		 * 
 		 * @param f
 		 */
-		public PerceptronShoot(File f) {
+		public Perceptron(File f) {
 			try {
 			    // Get an input factory and instantiate a reader
 				XMLEventReader xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader( new FileInputStream(f) );
