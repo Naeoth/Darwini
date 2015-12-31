@@ -14,7 +14,7 @@ import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
 import model.AcquisitionData;
-import model.PerceptronShoot;
+import model.Perceptron;
 import robocode.BattleEndedEvent;
 import robocode.Bullet;
 import robocode.BulletHitBulletEvent;
@@ -47,7 +47,7 @@ public class Darwini extends SuperClass {
 		/**
 		 * 
 		 */
-		private PerceptronShoot perceptronShoot;
+		private Perceptron perceptronShoot;
 		
 		
 	/*	----- CONSTRUCTOR -----	*/
@@ -66,7 +66,7 @@ public class Darwini extends SuperClass {
 		public void run() {		
 			super.run();
 			
-			perceptronShoot = new PerceptronShoot( getDataFile("perceptron.xml") );
+			perceptronShoot = new Perceptron( getDataFile("perceptron.xml") );
 		}
 		
 		@Override
