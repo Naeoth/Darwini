@@ -8,6 +8,8 @@
 
 package controller;
 
+import java.io.File;
+
 import model.AcquisitionData;
 import model.Perceptron;
 import robocode.BattleEndedEvent;
@@ -52,6 +54,7 @@ public class Darwini extends SuperClass {
 		 */
 		public Darwini() {
 			acquiData = new AcquisitionData(this);
+			perceptronShoot = new Perceptron( new File("/home/tyren/Documents/Projet/darwini/Darwini/bin/controller/Darwini.data/perceptron.xml"));
 		}
 			
 		
@@ -60,8 +63,6 @@ public class Darwini extends SuperClass {
 		@Override
 		public void run() {		
 			super.run();
-			
-			perceptronShoot = new Perceptron( getDataFile("perceptron.xml") );
 		}
 		
 		@Override
@@ -86,6 +87,7 @@ public class Darwini extends SuperClass {
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
+			super.onScannedRobot(e);
 			if (perceptronShoot.decision( acquiData.acquisition(e).toMatrix() ) > 0)
 				fire(3);
 		}

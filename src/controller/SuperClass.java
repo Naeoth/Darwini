@@ -52,7 +52,6 @@ public class SuperClass extends AdvancedRobot {
 		 * onScannedRobot: Fire hard!
 		 */
 		public void onScannedRobot(ScannedRobotEvent e) {
-			fire(3);
 		}
 	
 		/**

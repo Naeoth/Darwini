@@ -54,7 +54,7 @@ public class Matrix {
 		 * @param value
 		 */
 		public void add(int numRows, int numColumns, double value) {
-			matrix[numRows][numColumns] += value;
+			this.set(numRows,numColumns, (this.get(numRows, numColumns) + value));
 		}
 		
 		/**

@@ -66,6 +66,7 @@ public class AcquisitionBot extends SuperClass {
 				knowledges.insert( acquiData.acquisition(e) );
 			
 			super.onScannedRobot(e);
+			fire(3);
 		}
 	
 		@Override
