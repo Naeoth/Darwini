@@ -91,9 +91,8 @@ public class Darwini extends SuperClass {
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			if (perceptronShoot.decision( acquiData.acquisition(e).toMatrix() ))
+			if (perceptronShoot.decision(acquiData.acquisition(e).toMatrix()) > 0)
 				fire(3);
-			
 		}
 	
 		@Override

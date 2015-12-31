@@ -47,13 +47,29 @@ public class Matrix {
 			matrix[numRows][numColumns] = value;
 		}
 		
-		public Matrix mult(Matrix A, Matrix B){
-			    Matrix C= new Matrix(A.getRowCount(),B.getColumnCount());
+		/**
+		 * 
+		 * @param numRows
+		 * @param numColumns
+		 * @param value
+		 */
+		public void add(int numRows, int numColumns, double value) {
+			matrix[numRows][numColumns] += value;
+		}
+		
+		/**
+		 * 
+		 * @param B
+		 * @return
+		 */
+		
+		public Matrix mult(Matrix B){
+			    Matrix C= new Matrix(this.getRowCount(),B.getColumnCount());
 			    int i,j;
-			    for(i=0;i<A.getRowCount();i++){
+			    for(i=0;i<this.getRowCount();i++){
 			        for(j=0;j<B.getColumnCount();j++){
 			        	//C[i][j]+=(A[i][j]*B[j][i]);
-			            C.set(i, j, (C.get(i, j) + (A.get(i, j)*B.get(j, i))));
+			            C.set(i, j, (C.get(i, j) + (this.get(i, j)*B.get(j, i))));
 			        }
 			    }
 			    return C;
