@@ -12,14 +12,8 @@ import java.io.File;
 
 import model.AcquisitionData;
 import model.Perceptron;
-import robocode.BattleEndedEvent;
-import robocode.Bullet;
-import robocode.BulletHitBulletEvent;
-import robocode.BulletHitEvent;
-import robocode.BulletMissedEvent;
-import robocode.RoundEndedEvent;
+
 import robocode.ScannedRobotEvent;
-import robocode.SkippedTurnEvent;
 
 /**
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
@@ -54,73 +48,23 @@ public class Darwini extends SuperClass {
 		 */
 		public Darwini() {
 			acquiData = new AcquisitionData(this);
-			perceptronShoot = new Perceptron( new File("/home/tyren/Documents/Projet/darwini/Darwini/bin/controller/Darwini.data/perceptron.xml"));
+			perceptronShoot = new Perceptron( new File("/media/alexis/Data/Documents/Cours/INSA/3ème%20Année/Etude%20Pratique/Darwini/bin/controller/Darwini.data/perceptron.xml"));
 		}
-			
+		
 		
 	/*	----- OTHER METHODS -----	*/
 		
 		@Override
 		public void run() {		
 			super.run();
-		}
-		
-		@Override
-		public void fire(double power) {
-			super.fire(power);
-		}
-		
-		@Override
-		public Bullet fireBullet(double power) {
-			return super.fireBullet(power);
-		}
-		
-		@Override
-		public void setFire(double power) {
-			super.setFire(power);
-		}
-		
-		@Override
-		public Bullet setFireBullet(double power) {
-			return super.fireBullet(power);
+			
+			//perceptronShoot = new Perceptron( getDataFile("Darwini.data/perceptron.xml") );
 		}
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			super.onScannedRobot(e);
 			if (perceptronShoot.decision( acquiData.acquisition(e).toMatrix() ) > 0)
 				fire(3);
-		}
-	
-		@Override
-		public void onBulletHit(BulletHitEvent e) {
-			super.onBulletHit(e);
-		}
-		
-		@Override
-		public void onBulletMissed(BulletMissedEvent e) {
-			super.onBulletMissed(e);
-		}
-		
-		@Override
-		public void onBulletHitBullet(BulletHitBulletEvent e) {		
-			super.onBulletHitBullet(e);
-		}
-	
-		@Override
-		public void onBattleEnded(BattleEndedEvent e) {				
-			super.onBattleEnded(e);
-		}
-		
-		@Override
-		public void onSkippedTurn(SkippedTurnEvent e) {
-			System.err.println("Taking too long to compute stuff, another turn was skipped :(");
-			super.onSkippedTurn(e);
-		} 
-		
-		@Override
-		public void onRoundEnded(RoundEndedEvent event) {
-			super.onRoundEnded(event);
 		}
 		
 }

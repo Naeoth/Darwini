@@ -70,8 +70,8 @@ public class Matrix {
 		 * @param m2
 		 * @return
 		 */
-		public Matrix mult(Matrix m2) {	
-			Matrix res = new Matrix( getRowCount(), getRowCount() );
+		public Matrix mult(Matrix m2) {
+			Matrix res = new Matrix(matrix.length, m2.matrix[0].length);
 
 			for (int i = 0; i < matrix.length; i++)
 				for (int k = 0; k < m2.matrix.length; k++)

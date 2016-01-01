@@ -88,14 +88,14 @@ public class Perceptron {
 				nbOutputNeurons = Integer.parseInt( perceptron.getAttributeByName( new QName("OutputNeurons") ).getValue() );
 				
 				// Get matrix values from the other lines
-				inputWeights = initMatrixTranspo( xmlEventReader.nextTag().asStartElement() );
+				inputWeights = initTransposeMatrix( xmlEventReader.nextTag().asStartElement() );
 				// End of the inputWeights
 				xmlEventReader.nextTag();
-				outputWeights = initMatrixTranspo( xmlEventReader.nextTag().asStartElement() );
+				outputWeights = initTransposeMatrix( xmlEventReader.nextTag().asStartElement() );
 				// End of the outputWeights
 				xmlEventReader.nextTag();
 				bias = initMatrix( xmlEventReader.nextTag().asStartElement() );
-			
+				
 				// Close the reader
 				xmlEventReader.close();
 			}
@@ -130,7 +130,7 @@ public class Perceptron {
 		/**
 		 * Initialise la matrice de manière directement transposée
 		 */
-		private Matrix initMatrixTranspo(StartElement matrix) {
+		private Matrix initTransposeMatrix(StartElement matrix) {
 			int rows = Integer.parseInt( matrix.getAttributeByName( new QName("Cols") ).getValue() );
 			int cols = Integer.parseInt( matrix.getAttributeByName( new QName("Rows") ).getValue() );
 			String[] values = matrix.getAttributeByName( new QName("Matrix") ).getValue().split(" ");
@@ -139,13 +139,12 @@ public class Perceptron {
 			
 			// Fill the matrix
 			int index = 0;
-			for (int i = 0; i < rows; i++)
-				for (int j = 0; j < cols; j++)
-					matrixInitialized.set(j, i, Double.parseDouble( values[index++] ));
+			for (int j = 0; j < cols; j++)
+				for (int i = 0; i < rows; i++)
+					matrixInitialized.set(i, j, Double.parseDouble( values[index++] ));
 			
 			return matrixInitialized;
 		}
-		
 		
 		/**
 		 * 
@@ -163,26 +162,6 @@ public class Perceptron {
 			// Second Treatment	
 			//Multiplication du vecteur de couche avec la seconde matrice de poids pour obtenir le vecteur de sortie
 			return outputWeights.mult(vcouche).get(0,0);
-			
-			
-			/*			
-			// First Treatment
-			Matrix vcouche = new Matrix(nbHiddenNeurons, 1);
-			//Multiplication du vecteur d'entrée avec la première matrice de poids. On obtient le vecteur de couche sans le neurone de biais
-			vcouche = inputWeights.mult(entries);
-			//Ajout du neurone de biais et application de la fonction sigmoïde
-			for (int i = 0; i < nbHiddenNeurons; i++){
-				vcouche.add(i, 0, bias.get(i,0));
-				vcouche.set(i, 0, (1/(1+Math.exp(-vcouche.get(i, 0)))));
-			}
-			
-			// Second Treatment	
-			Matrix vsortie = new Matrix(nbOutputNeurons, 1); 
-			//Multiplication du vecteur de couche avec la seconde matrice de poids pour obtenir le vecteur de sortie
-			vsortie = outputWeights.mult(vcouche);
-			
-			
-			return vsortie.get(0,0);*/
 		}
 		
 }
