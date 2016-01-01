@@ -88,10 +88,10 @@ public class Perceptron {
 				nbOutputNeurons = Integer.parseInt( perceptron.getAttributeByName( new QName("OutputNeurons") ).getValue() );
 				
 				// Get matrix values from the other lines
-				inputWeights = initMatrix( xmlEventReader.nextTag().asStartElement() );
+				inputWeights = initMatrixTranspo( xmlEventReader.nextTag().asStartElement() );
 				// End of the inputWeights
 				xmlEventReader.nextTag();
-				outputWeights = initMatrix( xmlEventReader.nextTag().asStartElement() );
+				outputWeights = initMatrixTranspo( xmlEventReader.nextTag().asStartElement() );
 				// End of the outputWeights
 				xmlEventReader.nextTag();
 				bias = initMatrix( xmlEventReader.nextTag().asStartElement() );
@@ -109,7 +109,7 @@ public class Perceptron {
 	/*	----- OTHER METHODS -----	*/
 		
 		/**
-		 * 
+		 * Initialse la matrice dans le sens donné par le XML
 		 */
 		private Matrix initMatrix(StartElement matrix) {
 			int rows = Integer.parseInt( matrix.getAttributeByName( new QName("Rows") ).getValue() );
@@ -126,6 +126,26 @@ public class Perceptron {
 			
 			return matrixInitialized;
 		}
+		
+		/**
+		 * Initialise la matrice de manière directement transposée
+		 */
+		private Matrix initMatrixTranspo(StartElement matrix) {
+			int rows = Integer.parseInt( matrix.getAttributeByName( new QName("Cols") ).getValue() );
+			int cols = Integer.parseInt( matrix.getAttributeByName( new QName("Rows") ).getValue() );
+			String[] values = matrix.getAttributeByName( new QName("Matrix") ).getValue().split(" ");
+			
+			Matrix matrixInitialized = new Matrix(rows, cols);
+			
+			// Fill the matrix
+			int index = 0;
+			for (int i = 0; i < rows; i++)
+				for (int j = 0; j < cols; j++)
+					matrixInitialized.set(j, i, Double.parseDouble( values[index++] ));
+			
+			return matrixInitialized;
+		}
+		
 		
 		/**
 		 * 
