@@ -12,13 +12,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
-
+import javax.xml.stream.XMLStreamReader;
 /**
  *
  *
@@ -32,21 +29,6 @@ import javax.xml.stream.events.StartElement;
 public class Perceptron {
 	
 	/*	----- ATTRIBUTES -----	*/
-	
-		/**
-		 * 
-		 */
-		private int nbInputNeurons;
-		
-		/**
-		 * 
-		 */
-		private int nbHiddenNeurons;
-		
-		/**
-		 * 
-		 */
-		private int nbOutputNeurons;
 	
 		/**
 		 * 
@@ -74,27 +56,22 @@ public class Perceptron {
 		public Perceptron(File f) {
 			try {
 			    // Get an input factory and instantiate a reader
-				XMLEventReader xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader( new FileInputStream(f) );
-				
-				// Skip the header line
-				xmlEventReader.nextTag();
-				// Skip the first line
-				xmlEventReader.nextTag();
-				
-				// Get the number of neurons from the second line
-				StartElement perceptron = xmlEventReader.nextTag().asStartElement();
-				nbInputNeurons = Integer.parseInt( perceptron.getAttributeByName( new QName("InputNeurons") ).getValue() );
-				nbHiddenNeurons = Integer.parseInt( perceptron.getAttributeByName( new QName("HiddenNeurons") ).getValue() );
-				nbOutputNeurons = Integer.parseInt( perceptron.getAttributeByName( new QName("OutputNeurons") ).getValue() );
+				XMLStreamReader xmlEventReader = XMLInputFactory.newInstance().createXMLStreamReader( new FileInputStream(f) );
+	
+				// Skip the first lines
+				for (int i = 0; i < 4; i++)
+					xmlEventReader.nextTag();
 				
 				// Get matrix values from the other lines
-				inputWeights = initTransposeMatrix( xmlEventReader.nextTag().asStartElement() );
-				// End of the inputWeights
+				inputWeights = initTransposeMatrix(xmlEventReader);
+				// Skip the end of the inputWeights
 				xmlEventReader.nextTag();
-				outputWeights = initTransposeMatrix( xmlEventReader.nextTag().asStartElement() );
-				// End of the outputWeights
 				xmlEventReader.nextTag();
-				bias = initMatrix( xmlEventReader.nextTag().asStartElement() );
+				outputWeights = initTransposeMatrix(xmlEventReader);
+				// Skip the end of the outputWeights
+				xmlEventReader.nextTag();
+				xmlEventReader.nextTag();
+				bias = initMatrix(xmlEventReader);
 				
 				// Close the reader
 				xmlEventReader.close();
@@ -111,39 +88,39 @@ public class Perceptron {
 		/**
 		 * Initialse la matrice dans le sens donné par le XML
 		 */
-		private Matrix initMatrix(StartElement matrix) {
-			int rows = Integer.parseInt( matrix.getAttributeByName( new QName("Rows") ).getValue() );
-			int cols = Integer.parseInt( matrix.getAttributeByName( new QName("Cols") ).getValue() );
-			String[] values = matrix.getAttributeByName( new QName("Matrix") ).getValue().split(" ");
+		private Matrix initMatrix(XMLStreamReader xmlEventReader) {
+			int rows = Integer.parseInt( xmlEventReader.getAttributeValue(0) );
+			int cols = Integer.parseInt( xmlEventReader.getAttributeValue(1) );
+			String[] values = xmlEventReader.getAttributeValue(2).split(" ");
 			
-			Matrix matrixInitialized = new Matrix(rows, cols);
+			Matrix matrix = new Matrix(rows, cols);
 			
 			// Fill the matrix
 			int index = 0;
 			for (int i = 0; i < rows; i++)
 				for (int j = 0; j < cols; j++)
-					matrixInitialized.set(i, j, Double.parseDouble( values[index++] ));
+					matrix.set(i, j, Double.parseDouble( values[index++] ));
 			
-			return matrixInitialized;
+			return matrix;
 		}
 		
 		/**
 		 * Initialise la matrice de manière directement transposée
 		 */
-		private Matrix initTransposeMatrix(StartElement matrix) {
-			int rows = Integer.parseInt( matrix.getAttributeByName( new QName("Cols") ).getValue() );
-			int cols = Integer.parseInt( matrix.getAttributeByName( new QName("Rows") ).getValue() );
-			String[] values = matrix.getAttributeByName( new QName("Matrix") ).getValue().split(" ");
+		private Matrix initTransposeMatrix(XMLStreamReader xmlEventReader) {
+			int rows = Integer.parseInt( xmlEventReader.getAttributeValue(1) );
+			int cols = Integer.parseInt( xmlEventReader.getAttributeValue(0) );
+			String[] values = xmlEventReader.getAttributeValue(2).split(" ");
 			
-			Matrix matrixInitialized = new Matrix(rows, cols);
+			Matrix matrix = new Matrix(rows, cols);
 			
 			// Fill the matrix
 			int index = 0;
 			for (int j = 0; j < cols; j++)
 				for (int i = 0; i < rows; i++)
-					matrixInitialized.set(i, j, Double.parseDouble( values[index++] ));
+					matrix.set(i, j, Double.parseDouble( values[index++] ));
 			
-			return matrixInitialized;
+			return matrix;
 		}
 		
 		/**
@@ -154,7 +131,7 @@ public class Perceptron {
 			//Multiplication du vecteur d'entrée avec la première matrice de poids. On obtient le vecteur de couche sans le neurone de biais
 			Matrix vcouche = inputWeights.mult(entries);
 			//Ajout du neurone de biais et application de la fonction sigmoïde
-			for (int i = 0; i < nbHiddenNeurons; i++) {
+			for (int i = 0; i < inputWeights.getRowCount(); i++) {
 				vcouche.add( i, 0, bias.get(i,0) );
 				vcouche.set( i, 0, 1 / (1 + Math.exp( -vcouche.get(i, 0) )) );
 			}

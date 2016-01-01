@@ -48,17 +48,16 @@ public class Darwini extends SuperClass {
 		 */
 		public Darwini() {
 			acquiData = new AcquisitionData(this);
-			perceptronShoot = new Perceptron( new File("/media/alexis/Data/Documents/Cours/INSA/3ème%20Année/Etude%20Pratique/Darwini/bin/controller/Darwini.data/perceptron.xml"));
 		}
-		
+			
 		
 	/*	----- OTHER METHODS -----	*/
 		
 		@Override
-		public void run() {		
-			super.run();
+		public void run() {
+			perceptronShoot = new Perceptron( getDataFile("perceptron.xml") );
 			
-			//perceptronShoot = new Perceptron( getDataFile("Darwini.data/perceptron.xml") );
+			super.run();
 		}
 		
 		@Override
