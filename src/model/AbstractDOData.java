@@ -37,9 +37,10 @@ public abstract class AbstractDOData {
 		
 		/**
 		 * 
+		 * @param myBearing, distance, myEnergy, opponentVelocity, myVelocity, opponentHeading
 		 */
 		protected AbstractDOData(double... entries) {
-			success = 0;
+			success = -1;
 			data = entries;
 		}
 		

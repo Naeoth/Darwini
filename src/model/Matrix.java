@@ -58,25 +58,21 @@ public class Matrix {
 		}
 		
 		/**
-		 * 
-		 * @param 
-		 * @return
-		 */
-		
-		/**
 		 * EXCEPTION A RAJOUTER
-		 * REVOIR L'OPTIMIZATION (Strassen)
 		 * 
 		 * @param m2
 		 * @return
 		 */
 		public Matrix mult(Matrix m2) {
 			Matrix res = new Matrix(matrix.length, m2.matrix[0].length);
-
-			for (int i = 0; i < matrix.length; i++)
-				for (int k = 0; k < m2.matrix.length; k++)
+			
+			double value;
+			for (int k = 0; k < m2.matrix.length; k++) 
+				for (int i = 0; i < matrix.length; i++) {
+					value = matrix[i][k];
 					for (int j = 0; j < m2.matrix[0].length; j++)
-	        			res.matrix[i][j] += matrix[i][k] * m2.matrix[k][j];
+						  res.matrix[i][j] += value * m2.matrix[k][j];
+				}
 	                	
 			return res;
 		}

@@ -22,7 +22,7 @@ import robocode.ScannedRobotEvent;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class SuperClass extends AdvancedRobot {
+public class Robot extends AdvancedRobot {
 	
 	/*	----- OTHER METHODS -----	*/
 
@@ -52,6 +52,7 @@ public class SuperClass extends AdvancedRobot {
 		 * onScannedRobot: Fire hard!
 		 */
 		public void onScannedRobot(ScannedRobotEvent e) {
+			fire(3);
 		}
 	
 		/**

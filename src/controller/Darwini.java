@@ -8,8 +8,6 @@
 
 package controller;
 
-import java.io.File;
-
 import model.AcquisitionData;
 import model.Perceptron;
 
@@ -26,7 +24,7 @@ import robocode.ScannedRobotEvent;
  * @author MATHIEU Vianney
  * @author VAILLAND Guillaume
  */
-public class Darwini extends SuperClass {
+public class Darwini extends Robot {
 
 	/*	----- ATTRIBUTES -----	*/
 		
@@ -55,7 +53,7 @@ public class Darwini extends SuperClass {
 		
 		@Override
 		public void run() {
-			perceptronShoot = new Perceptron( getDataFile("perceptron.xml") );
+			perceptronShoot = new Perceptron( getDataFile("Modele.xml") );
 			
 			super.run();
 		}

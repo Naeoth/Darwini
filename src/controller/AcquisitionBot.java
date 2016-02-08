@@ -30,7 +30,7 @@ import model.AcquisitionData;
  * @author MATHIEU Vianney
  * @author VAILLAND Guillaume
  */
-public class AcquisitionBot extends SuperClass {
+public class AcquisitionBot extends Robot {
 
 	/*	----- ATTRIBUTE -----	*/
 
@@ -66,7 +66,6 @@ public class AcquisitionBot extends SuperClass {
 				knowledges.insert( acquiData.acquisition(e) );
 			
 			super.onScannedRobot(e);
-			fire(3);
 		}
 	
 		@Override
