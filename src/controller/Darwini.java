@@ -60,7 +60,7 @@ public class Darwini extends Robot {
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			if (perceptronShoot.decision( acquiData.acquisition(e).toMatrix() ) > 0)
+			if (perceptronShoot.decision( acquiData.acquisition(e).toMatrix() ).get(0, 0) > 0)
 				fire(3);
 		}
 		
