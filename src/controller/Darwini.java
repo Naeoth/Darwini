@@ -24,7 +24,7 @@ import robocode.ScannedRobotEvent;
  * @author MATHIEU Vianney
  * @author VAILLAND Guillaume
  */
-public class Darwini extends Robot {
+public class Darwini extends InitialRobot {
 
 	/*	----- ATTRIBUTES -----	*/
 		

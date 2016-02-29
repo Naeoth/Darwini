@@ -3,7 +3,7 @@
  * 
  * Development of an IA based on genetic algorithms and neural networks.
  *
- * class AbstractDOData.java
+ * class DOShootData.java
  */
 
 package model;
@@ -18,8 +18,9 @@ package model;
  * @author MATHIEU Vianney
  * @author VAILLAND Guillaume
  */
-public abstract class AbstractDOData {
+public class DOData {
 	
+
 	/*	----- ATTRIBUTES -----	*/
 	
 		/**
@@ -39,7 +40,7 @@ public abstract class AbstractDOData {
 		 * 
 		 * @param myBearing, distance, myEnergy, opponentVelocity, myVelocity, opponentHeading
 		 */
-		protected AbstractDOData(double... entries) {
+		protected DOData(double... entries) {
 			success = -1;
 			data = entries;
 		}
@@ -82,5 +83,5 @@ public abstract class AbstractDOData {
 			
 			return matrix;
 		}
-		
+
 }

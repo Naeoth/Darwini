@@ -16,6 +16,7 @@ import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
 /**
  *
  *
@@ -63,11 +64,11 @@ public class Perceptron {
 					xmlEventReader.nextTag();
 				
 				// Get matrix values from the other lines
-				inputWeights = initTransposeMatrix(xmlEventReader);
+				inputWeights = initMatrix(xmlEventReader).transpose();
 				// Skip the end of the inputWeights
 				xmlEventReader.nextTag();
 				xmlEventReader.nextTag();
-				outputWeights = initTransposeMatrix(xmlEventReader);
+				outputWeights = initMatrix(xmlEventReader).transpose();
 				// Skip the end of the outputWeights
 				xmlEventReader.nextTag();
 				xmlEventReader.nextTag();
@@ -105,25 +106,6 @@ public class Perceptron {
 		}
 		
 		/**
-		 * Initialise la matrice de manière directement transposée
-		 */
-		private Matrix initTransposeMatrix(XMLStreamReader xmlEventReader) {
-			int rows = Integer.parseInt( xmlEventReader.getAttributeValue(1) );
-			int cols = Integer.parseInt( xmlEventReader.getAttributeValue(0) );
-			String[] values = xmlEventReader.getAttributeValue(2).split(" ");
-			
-			Matrix matrix = new Matrix(rows, cols);
-			
-			// Fill the matrix
-			int index = 0;
-			for (int j = 0; j < cols; j++)
-				for (int i = 0; i < rows; i++)
-					matrix.set(i, j, Double.parseDouble( values[index++] ));
-			
-			return matrix;
-		}
-		
-		/**
 		 * 
 		 */
 		public Matrix decision(Matrix entries) {
@@ -139,6 +121,17 @@ public class Perceptron {
 			// Second Treatment	
 			//Multiplication du vecteur de couche avec la seconde matrice de poids pour obtenir le vecteur de sortie
 			return outputWeights.mult(vcouche);
+		}
+		
+		/**
+		 *
+		 *
+		 * @param
+		 *
+		 * @throws
+		 */
+		public void printToXML(File f) {
+			// Ecrire le perceptron sous forme XML
 		}
 		
 }

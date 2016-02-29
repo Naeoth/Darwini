@@ -22,7 +22,7 @@ import robocode.ScannedRobotEvent;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class Robot extends AdvancedRobot {
+public class InitialRobot extends AdvancedRobot {
 	
 	/*	----- OTHER METHODS -----	*/
 

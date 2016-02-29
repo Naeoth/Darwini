@@ -16,7 +16,6 @@ import robocode.RoundEndedEvent;
 import robocode.ScannedRobotEvent;
 
 import model.DAOData;
-import model.DODataShoot;
 import model.AcquisitionData;
 
 /**
@@ -30,14 +29,14 @@ import model.AcquisitionData;
  * @author MATHIEU Vianney
  * @author VAILLAND Guillaume
  */
-public class AcquisitionBot extends Robot {
+public class AcquisitionBot extends InitialRobot {
 
 	/*	----- ATTRIBUTE -----	*/
 
 		/**
 		 *
 		 */
-		private DAOData<DODataShoot> knowledges;
+		private DAOData knowledges;
 		
 		/**
 		 * 
@@ -53,7 +52,7 @@ public class AcquisitionBot extends Robot {
 		public AcquisitionBot() {
 			super();
 			
-			knowledges = new DAOData<DODataShoot>();
+			knowledges = new DAOData();
 			acquiData = new AcquisitionData(this);
 		}
 		
@@ -92,7 +91,7 @@ public class AcquisitionBot extends Robot {
 		 */
 		private void writeDataInFile() {
 			try {
-				knowledges.printSSVM( getDataFile("data.ssvm") );
+				knowledges.printToSSVM( getDataFile("data.ssvm") );
 			}
 			catch (IOException e) {
 				e.printStackTrace();

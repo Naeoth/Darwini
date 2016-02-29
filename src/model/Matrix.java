@@ -77,6 +77,22 @@ public class Matrix {
 			return res;
 		}
 		
+		/**
+		 * 
+		 * 
+		 * @return
+		 */
+		public Matrix transpose() {
+			Matrix res = new Matrix(matrix[0].length, matrix.length);
+			
+			// Fill the matrix
+			for (int i = 0; i < matrix.length; i++)
+				for (int j = 0; i < matrix[0].length; j++)
+					res.set(j, i, matrix[i][j]);
+			
+			return res;
+		}
+		
 	
 	/*	----- ACCESSORS -----	*/
 		

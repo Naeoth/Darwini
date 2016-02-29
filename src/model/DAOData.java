@@ -24,14 +24,14 @@ import robocode.RobocodeFileWriter;
 * @author MATHIEU Vianney
 * @author VAILLAND Guillaume
 */
-public class DAOData<T extends AbstractDOData> {
+public class DAOData {
 	
 	/*	----- ATTRIBUTE -----	*/
 	
 		/**
 		 *
 		 */
-		private ArrayList<T> dataList;
+		private ArrayList<DOData> dataList;
 	
 	
 	/*	----- CONSTRUCTOR -----	*/
@@ -51,7 +51,7 @@ public class DAOData<T extends AbstractDOData> {
 		 * 
 		 * @return
 		 */
-		public T getLastData() {
+		public DOData getLastData() {
 			return dataList.get(dataList.size() - 1);
 		}
 	
@@ -67,7 +67,7 @@ public class DAOData<T extends AbstractDOData> {
 		 *
 		 * @throws NullPointerException if obj is null
 		 */
-		public boolean insert(T obj) throws NullPointerException {
+		public boolean insert(DOData obj) throws NullPointerException {
 			if (obj == null)
 				throw new NullPointerException("The data specified is empty.");
 	
@@ -81,11 +81,11 @@ public class DAOData<T extends AbstractDOData> {
 		 *
 		 * @throws
 		 */
-		public void printSSVM(File f) throws IOException {
+		public void printToSSVM(File f) throws IOException {
 			RobocodeFileWriter w = new RobocodeFileWriter(f.getAbsolutePath(), true);
 			String s = "";
 		
-			for (T data : dataList)
+			for (DOData data : dataList)
 				s += data.toSSVM() + "\n";
 	
 			w.write(s);
