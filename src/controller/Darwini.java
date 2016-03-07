@@ -9,6 +9,8 @@
 package controller;
 
 import model.AcquisitionData;
+import model.GeneticAlgorithm;
+import model.OutputData;
 import model.Perceptron;
 
 import robocode.ScannedRobotEvent;
@@ -38,6 +40,11 @@ public class Darwini extends InitialRobot {
 		 */
 		private Perceptron perceptronShoot;
 		
+		/**
+		 * 
+		 */
+		private OutputData decisions;
+		
 		
 	/*	----- CONSTRUCTOR -----	*/
 		
@@ -54,14 +61,14 @@ public class Darwini extends InitialRobot {
 		@Override
 		public void run() {
 			perceptronShoot = new Perceptron( getDataFile("Modele.xml") );
+			//new GeneticAlgorithm( getDataDirectory() );
 			
 			super.run();
 		}
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			if (perceptronShoot.decision( acquiData.acquisition(e).toMatrix() ).get(0, 0) > 0)
-				fire(3);
+			decisions = perceptronShoot.run( acquiData.acquisition(e).toMatrix() );
 		}
 		
 }

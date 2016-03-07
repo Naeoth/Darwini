@@ -34,6 +34,11 @@ public class Perceptron {
 		/**
 		 * 
 		 */
+		public static final int HIDDEN_NEURONS = 200;
+	
+		/**
+		 * 
+		 */
 		private Matrix inputWeights;
 		
 		/**
@@ -48,6 +53,19 @@ public class Perceptron {
 	
 
 	/*	----- CONSTRUCTOR -----	*/
+		
+		/**
+		 * 
+		 */
+		public Perceptron() {
+			inputWeights = new Matrix(HIDDEN_NEURONS, InputData.INPUT_NEURONS);
+			randomizeMatrix(inputWeights);
+			outputWeights = new Matrix(OutputData.OUTPUT_NEURONS, HIDDEN_NEURONS);
+			randomizeMatrix(outputWeights);
+			bias = new Matrix(HIDDEN_NEURONS, 1);
+			randomizeMatrix(bias);
+		}
+		
 		
 		/**
 		 * 
@@ -79,7 +97,6 @@ public class Perceptron {
 			}
 			catch (FileNotFoundException | XMLStreamException | FactoryConfigurationError e) {
 				e.printStackTrace();
-				System.out.println("The XML file is not found");
 			}
 		}
 		
@@ -107,8 +124,18 @@ public class Perceptron {
 		
 		/**
 		 * 
+		 * @param matrix
 		 */
-		public Matrix decision(Matrix entries) {
+		private void randomizeMatrix(Matrix matrix) {
+			for (int i = 0; i < matrix.getRowCount(); i++)
+				for (int j = 0; j < matrix.getColumnCount(); j++)
+					matrix.set( i, j, Math.random() );
+		}
+		
+		/**
+		 * 
+		 */
+		public OutputData run(Matrix entries) {
 			// First Treatment
 			//Multiplication du vecteur d'entrée avec la première matrice de poids. On obtient le vecteur de couche sans le neurone de biais
 			Matrix vcouche = inputWeights.mult(entries);
@@ -120,7 +147,7 @@ public class Perceptron {
 			
 			// Second Treatment	
 			//Multiplication du vecteur de couche avec la seconde matrice de poids pour obtenir le vecteur de sortie
-			return outputWeights.mult(vcouche);
+			return new OutputData( outputWeights.mult(vcouche) );
 		}
 		
 		/**

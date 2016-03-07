@@ -15,7 +15,7 @@ import robocode.BulletHitEvent;
 import robocode.RoundEndedEvent;
 import robocode.ScannedRobotEvent;
 
-import model.DAOData;
+import model.Database;
 import model.AcquisitionData;
 
 /**
@@ -36,7 +36,7 @@ public class AcquisitionBot extends InitialRobot {
 		/**
 		 *
 		 */
-		private DAOData knowledges;
+		private Database knowledges;
 		
 		/**
 		 * 
@@ -52,7 +52,7 @@ public class AcquisitionBot extends InitialRobot {
 		public AcquisitionBot() {
 			super();
 			
-			knowledges = new DAOData();
+			knowledges = new Database();
 			acquiData = new AcquisitionData(this);
 		}
 		
@@ -71,7 +71,7 @@ public class AcquisitionBot extends InitialRobot {
 		public void onBulletHit(BulletHitEvent e) {
 			super.onBulletHit(e);
 			
-			knowledges.getLastData().setSuccess();
+			knowledges.getLastData().setSuccess(0);
 		}
 	
 		@Override
