@@ -1,26 +1,45 @@
+/*
+ * Projet Darwini - Étude Pratique
+ * 
+ * Development of an IA based on genetic algorithms and neural networks.
+ *
+ * class OutputData.java
+ */
+
 package model;
+
+/**
+*	Object which contains the neural network result
+*
+* @version 1.0 - 17/11/15
+* @author BOIZUMAULT Romain
+* @author BUSSENEAU Alexis
+* @author GEFFRAULT Luc
+* @author MATHIEU Vianney
+* @author VAILLAND Guillaume
+*/
 
 public class OutputData {
 	
 	/*	----- ATTRIBUTES -----	*/
 	
 		/**
-		 *
+		 *  Number of output Neurons of the neural network
 		 */
 		public static final int OUTPUT_NEURONS = 8;
 		
 		/**
-		 * 
+		 * First output neuron
 		 */
 		private double shoot;
 		
 		/**
-		 * 
+		 * Second output neuron
 		 */
 		private double turnRight;
 		
 		/**
-		 * 
+		 * Third output neuron
 		 */
 		private double turnLeft;
 		
@@ -56,13 +75,13 @@ public class OutputData {
 		 */
 		public OutputData(Matrix results) {
 			shoot = results.get(0, 0);
-			turnRight = results.get(1, 0);
-			turnLeft = results.get(2, 0);
-			turnRadarRight = results.get(2, 0);
-			turnRadarLeft = results.get(2, 0);
-			turnGunRight = results.get(2, 0);
-			turnGunLeft = results.get(2, 0);
-			moveAhead = results.get(2, 0);
+			turnRight = results.get(0, 1);
+			turnLeft = results.get(0, 2);
+			turnRadarRight = results.get(0, 3);
+			turnRadarLeft = results.get(0, 4);
+			turnGunRight = results.get(0, 5);
+			turnGunLeft = results.get(0, 6);
+			moveAhead = results.get(0, 7);
 		}
 		
 	

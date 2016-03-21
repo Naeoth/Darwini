@@ -82,11 +82,11 @@ public class Perceptron {
 					xmlEventReader.nextTag();
 				
 				// Get matrix values from the other lines
-				inputWeights = initMatrix(xmlEventReader).transpose();
+				inputWeights = initMatrix(xmlEventReader);
 				// Skip the end of the inputWeights
 				xmlEventReader.nextTag();
 				xmlEventReader.nextTag();
-				outputWeights = initMatrix(xmlEventReader).transpose();
+				outputWeights = initMatrix(xmlEventReader);
 				// Skip the end of the outputWeights
 				xmlEventReader.nextTag();
 				xmlEventReader.nextTag();
@@ -132,22 +132,23 @@ public class Perceptron {
 					matrix.set( i, j, Math.random() );
 		}
 		
+		
 		/**
 		 * 
 		 */
 		public OutputData train(Matrix entries) {
 			// First Treatment
 			//Multiplication du vecteur d'entrée avec la première matrice de poids. On obtient le vecteur de couche sans le neurone de biais
-			Matrix vcouche = inputWeights.mult(entries);
+			Matrix vcouche = entries.mult(inputWeights);
 			//Ajout du neurone de biais et application de la fonction sigmoïde
 			for (int i = 0; i < inputWeights.getRowCount(); i++) {
-				vcouche.add( i, 0, bias.get(i, 0) );
-				vcouche.set( i, 0, 1 / (1 + Math.exp( -vcouche.get(i, 0) )) );
+				vcouche.add( 0, i, bias.get(i, 0) );
+				vcouche.set( 0, i, 1 / (1 + Math.exp( -vcouche.get(0, i) )) );
 			}
 			
 			// Second Treatment	
 			//Multiplication du vecteur de couche avec la seconde matrice de poids pour obtenir le vecteur de sortie
-			return new OutputData( outputWeights.mult(vcouche) );
+			return new OutputData( vcouche.mult(outputWeights) );
 		}
 		
 		/**
