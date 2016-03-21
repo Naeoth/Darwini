@@ -135,7 +135,7 @@ public class Perceptron {
 		/**
 		 * 
 		 */
-		public OutputData run(Matrix entries) {
+		public OutputData train(Matrix entries) {
 			// First Treatment
 			//Multiplication du vecteur d'entrée avec la première matrice de poids. On obtient le vecteur de couche sans le neurone de biais
 			Matrix vcouche = inputWeights.mult(entries);

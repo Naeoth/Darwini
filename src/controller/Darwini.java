@@ -68,7 +68,7 @@ public class Darwini extends InitialRobot {
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			decisions = perceptronShoot.run( acquiData.acquisition(e).toMatrix() );
+			decisions = perceptronShoot.train( acquiData.acquisition(e).toMatrix() );
 		}
 		
 }
