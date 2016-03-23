@@ -10,7 +10,8 @@ package model;
 
 import controller.InitialRobot;
 import robocode.ScannedRobotEvent;
-import java.lang.Math.*;
+import robocode.BattleRules;
+import robocode.control.events.BattleStartedEvent;
 
 /**
  *
@@ -35,7 +36,13 @@ public class AcquisitionData {
 		 * 
 		 */
 		private ScannedRobotEvent opponentRobot;
-		
+
+        /**
+         *
+         */
+        private BattleRules rules;
+
+
 	
 	/*	----- CONSTRUCTOR -----	*/
 
@@ -44,11 +51,12 @@ public class AcquisitionData {
 		 * 
 		 * @param myRobot
 		 */
-		public AcquisitionData(InitialRobot myRobot) {
+		public AcquisitionData(InitialRobot myRobot, BattleRules rules) {
 			this.myRobot = myRobot;
+			this.rules = rules;
 			opponentRobot = null;
 		}
-		
+
 	
 	/*	----- OTHER METHODS -----	*/
 	
@@ -166,22 +174,16 @@ public class AcquisitionData {
 		 * @return
 		 */
 		private double getXDistance() {
-			double angle = myRobot.getRadarHeading();
-			double distance = opponentRobot.getDistance();
-			double ret = 0;
-			
-			if (angle < 90)
-				ret = Math.cos(angle) * distance;
-			else if (angle > 90 && angle < 180)
-				ret = Math.cos(180 - angle) * distance;
-			else if (angle > 180 && angle < 270)
-				ret = Math.cos(angle - 180) * distance;
-			else if (angle > 360)
-				ret = Math.cos(360 - angle) * distance;
-			else if (angle == 90 || angle == 180)
-				ret = distance;
+			double angl=myRobot.getRadarHeading();
+			double dist=opponentRobot.getDistance();
 
-			return ret;
+
+			if(angl<90) return Math.sin(angl)*dist;
+			else if(angl>90 && angl<180) return Math.sin(180-angl)*dist;
+			else if(angl>180 && angl<270) return Math.sin(angl-180)*dist;
+			else if(angl>270) return Math.sin(360-angl)*dist;
+			else if(angl==90 || angl==270) return dist;
+			else return 0;
 		}
 		
 		
@@ -190,22 +192,16 @@ public class AcquisitionData {
 		 * @return
 		 */
 		private double getYDistance() {
-            double angle = myRobot.getRadarHeading();
-            double distance = opponentRobot.getDistance();
-            double ret = 0;
+			double angl=myRobot.getRadarHeading();
+			double dist=opponentRobot.getDistance();
 
-            if (angle < 90)
-                ret = Math.sin(angle) * distance;
-            else if (angle > 90 && angle < 180)
-                ret = Math.sin(180 - angle) * distance;
-            else if (angle > 180 && angle < 270)
-                ret =  Math.sin(angle - 180) * distance;
-            else if (angle > 360)
-                ret = Math.sin(360 - angle) * distance;
-            else if (angle == 0 || angle == 180)
-                ret = distance;
 
-            return ret;
+			if(angl<90) return Math.cos(angl)*dist;
+			else if(angl>90 && angl<180) return Math.cos(180-angl)*dist;
+			else if(angl>180 && angl<270) return Math.cos(angl-180)*dist;
+			else if(angl>270) return Math.cos(360-angl)*dist;
+			else if(angl==0 || angl==180 || angl==360) return dist;
+			else return 0;
 		}
-
+		
 }

@@ -14,6 +14,7 @@ import model.OutputData;
 import model.Perceptron;
 
 import robocode.ScannedRobotEvent;
+import robocode.control.events.BattleStartedEvent;
 
 /**
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
@@ -49,16 +50,6 @@ public class Darwini extends InitialRobot {
 		 * 
 		 */
 		private OutputData decisions;
-		
-		
-	/*	----- CONSTRUCTOR -----	*/
-		
-		/**
-		 * 
-		 */
-		public Darwini() {
-			acquiData = new AcquisitionData(this);
-		}
 			
 		
 	/*	----- OTHER METHODS -----	*/
@@ -75,5 +66,9 @@ public class Darwini extends InitialRobot {
 		public void onScannedRobot(ScannedRobotEvent e) {
 			decisions = perceptronShoot.train( acquiData.acquisition(e) );
 		}
-		
+
+		@Override
+		public void onBattleStarted(BattleStartedEvent event) {
+			acquiData = new AcquisitionData(this, event.getBattleRules());
+		}
 }
