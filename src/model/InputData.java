@@ -154,19 +154,19 @@ public class InputData {
 		 * @return
 		 */
 		public Matrix toMatrix() {
-			Matrix matrix = new Matrix(INPUT_NEURONS, 1);
-			
+			Matrix matrix = new Matrix(1, INPUT_NEURONS);
+
 			matrix.set(0, 0, myBearing);
-			matrix.set(1, 0, distance);
-			matrix.set(2, 0, myEnergy);
-			matrix.set(3, 0, opponentVelocity);
-			matrix.set(4, 0, myVelocity);
-			matrix.set(5, 0, opponentHeading);
-			matrix.set(6, 0, myHeading);
-			matrix.set(7, 0, myRadarHeading);
-			matrix.set(8, 0, myGunHeading);
-			matrix.set(9, 0, xDistance);
-			matrix.set(10, 0, yDistance);
+			matrix.set(0, 1, distance);
+			matrix.set(0, 2, myEnergy);
+			matrix.set(0, 3, opponentVelocity);
+			matrix.set(0, 4, myVelocity);
+			matrix.set(0, 5, opponentHeading);
+			matrix.set(0, 6, myHeading);
+			matrix.set(0, 7, myRadarHeading);
+			matrix.set(0, 8, myGunHeading);
+			matrix.set(0, 9, xDistance);
+			matrix.set(0, 10, yDistance);
 			
 			return matrix;
 		}

@@ -56,7 +56,7 @@ public class Database {
 		}
 	
 	
-	/*	----- MUTATOR -----	*/
+	/*	----- MUTATORS -----	*/
 	
 		/**
 		 * Insert the specified data in the database.
@@ -77,9 +77,9 @@ public class Database {
 		/**
 		 *
 		 *
-		 * @param
+		 * @param f
 		 *
-		 * @throws
+		 * @throws IOException
 		 */
 		public void printToSSVM(File f) throws IOException {
 			RobocodeFileWriter w = new RobocodeFileWriter(f.getAbsolutePath(), true);

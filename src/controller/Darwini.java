@@ -29,6 +29,11 @@ import robocode.ScannedRobotEvent;
 public class Darwini extends InitialRobot {
 
 	/*	----- ATTRIBUTES -----	*/
+
+		/**
+		 *
+		 */
+		public static final String PERCEPTRON_FILE = "Perceptron.xml";
 		
 		/**
 		 * 
@@ -60,7 +65,7 @@ public class Darwini extends InitialRobot {
 		
 		@Override
 		public void run() {
-			perceptronShoot = new Perceptron( getDataFile("Modele.xml") );
+			perceptronShoot = new Perceptron( getDataFile(PERCEPTRON_FILE) );
 			//new GeneticAlgorithm( getDataDirectory() );
 			
 			super.run();
@@ -68,7 +73,7 @@ public class Darwini extends InitialRobot {
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			decisions = perceptronShoot.train( acquiData.acquisition(e).toMatrix() );
+			decisions = perceptronShoot.train( acquiData.acquisition(e) );
 		}
 		
 }

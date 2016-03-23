@@ -48,7 +48,8 @@ public class OutputData {
 		 * 
 		 */
 		private double moveAhead;
-		
+
+
 	/*	----- CONSTRUCTOR -----	*/
 		
 		/**

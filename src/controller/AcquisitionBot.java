@@ -95,7 +95,6 @@ public class AcquisitionBot extends InitialRobot {
 			}
 			catch (IOException e) {
 				e.printStackTrace();
-				System.err.println("Failed to save collected data.");
 			}
 		}
 		

@@ -8,6 +8,8 @@
 
 package model;
 
+import java.util.Locale;
+
 /**
  *
  *
@@ -54,11 +56,11 @@ public class Matrix {
 		 * @param value
 		 */
 		public void add(int numRows, int numColumns, double value) {
-			this.set(numRows,numColumns, (this.get(numRows, numColumns) + value));
+			set(numRows, numColumns, get(numRows, numColumns) + value);
 		}
 		
 		/**
-		 * EXCEPTION A RAJOUTER
+		 *
 		 * 
 		 * @param m2
 		 * @return
@@ -74,22 +76,6 @@ public class Matrix {
 						  res.matrix[i][j] += value * m2.matrix[k][j];
 				}
 	                	
-			return res;
-		}
-		
-		/**
-		 * 
-		 * 
-		 * @return
-		 */
-		public Matrix transpose() {
-			Matrix res = new Matrix(matrix[0].length, matrix.length);
-			
-			// Fill the matrix
-			for (int i = 0; i < matrix.length; i++)
-				for (int j = 0; j < matrix[0].length; j++)
-					res.set(j, i, matrix[i][j]);
-			
 			return res;
 		}
 		
@@ -115,6 +101,21 @@ public class Matrix {
 		 */
 		public int getColumnCount() {
 			return matrix[0].length;
+		}
+
+
+	/*	----- OTHER METHODS -----	*/
+
+		/**
+		 *
+		 */
+		public String toString() {
+			String ret = "";
+			for (int i = 0; i < matrix.length; i++)
+				for (int j = 0; j < matrix[0].length; j++)
+					ret += String.format(Locale.US, "%.6f", matrix[i][j]) + " ";
+
+			return ret;
 		}
 		
 }
