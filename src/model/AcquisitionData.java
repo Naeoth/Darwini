@@ -10,6 +10,9 @@ package model;
 
 import controller.InitialRobot;
 import robocode.ScannedRobotEvent;
+import robocode.BattleRules;
+import robocode.control.events.BattleStartedEvent;
+
 import java.lang.Math.*;
 
 /**
@@ -24,7 +27,7 @@ import java.lang.Math.*;
  */
 public class AcquisitionData {
 	
-	/*	----- ATTRIBUTE -----	*/
+	/*	----- ATTRIBUTES -----	*/
 	
 		/**
 		 * 
@@ -35,6 +38,12 @@ public class AcquisitionData {
 		 * 
 		 */
 		private ScannedRobotEvent opponentRobot;
+
+        /**
+         *
+         */
+        private BattleRules rules;
+
 		
 	
 	/*	----- CONSTRUCTOR -----	*/
@@ -44,11 +53,12 @@ public class AcquisitionData {
 		 * 
 		 * @param robot
 		 */
-		public AcquisitionData(InitialRobot myRobot) {
+		public AcquisitionData(InitialRobot myRobot, BattleRules br) {
 			this.myRobot = myRobot;
 			opponentRobot = null;
+			this.rules = br;
 		}
-		
+
 	
 	/*	----- OTHER METHODS -----	*/
 	
@@ -168,11 +178,12 @@ public class AcquisitionData {
 		private double getXDistance() {
 			double angl=myRobot.getRadarHeading();
 			double dist=opponentRobot.getDistance();
-			
-			if(angl<90) return Math.cos(angl)*dist;
-			else if(angl>90 && angl<180) return Math.cos(180-angl)*dist;
-			else if(angl>180 && angl<270) return Math.cos(angl-180)*dist;
-			else if(angl>360) return Math.cos(360-angl)*dist;
+
+
+			if(angl<90) return Math.sin(angl)*dist;
+			else if(angl>90 && angl<180) return Math.sin(180-angl)*dist;
+			else if(angl>180 && angl<270) return Math.sin(angl-180)*dist;
+			else if(angl>270) return Math.sin(360-angl)*dist;
 			else if(angl==90 || angl==270) return dist;
 			else return 0;
 		}
@@ -185,14 +196,18 @@ public class AcquisitionData {
 		private double getYDistance() {
 			double angl=myRobot.getRadarHeading();
 			double dist=opponentRobot.getDistance();
-			
-			if(angl<90) return Math.sin(angl)*dist;
-			else if(angl>90 && angl<180) return Math.sin(180-angl)*dist;
-			else if(angl>180 && angl<270) return Math.sin(angl-180)*dist;
-			else if(angl>360) return Math.sin(360-angl)*dist;
-			else if(angl==0 || angl==180) return dist;
+
+
+			if(angl<90) return Math.cos(angl)*dist;
+			else if(angl>90 && angl<180) return Math.cos(180-angl)*dist;
+			else if(angl>180 && angl<270) return Math.cos(angl-180)*dist;
+			else if(angl>270) return Math.cos(360-angl)*dist;
+			else if(angl==0 || angl==180 || angl==360) return dist;
 			else return 0;
 		}
-		
+
+    public static void main(String[] args){
+        System.out.println("ceci est un main ET Alexis est un pédé");
+    }
 		
 }
