@@ -128,7 +128,7 @@ public class Perceptron {
         public Matrix getBias() {
             return bias;
         }
-		
+
 		
 	/*	----- OTHER METHODS -----	*/
 		
@@ -180,13 +180,13 @@ public class Perceptron {
 			Matrix vcouche = inputWeights.mult(entries.toMatrix());
 			//Ajout du neurone de biais et application de la fonction sigmoïde
 			for (int i = 0; i < inputWeights.getRowCount(); i++) {
-				vcouche.add(i, 0, bias.get(i, 0));
-				vcouche.set(i, 0, 1 / (1 + Math.exp( -vcouche.get(i, 0) )));
+				vcouche.add( 0, i, bias.get(i, 0) );
+				vcouche.set( 0, i, 1 / (1 + Math.exp( -vcouche.get(0, i) )) );
 			}
 			
 			// Second Treatment	
 			//Multiplication du vecteur de couche avec la seconde matrice de poids pour obtenir le vecteur de sortie
-			return new OutputData( outputWeights.mult(vcouche) );
+			return new OutputData( vcouche.mult(outputWeights) );
 		}
 		
 		/**

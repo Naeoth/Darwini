@@ -3,13 +3,13 @@
  * 
  * Development of an IA based on genetic algorithms and neural networks.
  *
- * class DOShootData.java
+ * class InputData.java
  */
 
 package model;
 
 /**
- *
+ * Object which contains all the entries values that we will use in the neural network decision process
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain
@@ -24,7 +24,7 @@ public class InputData {
 	/*	----- ATTRIBUTES -----	*/
 	
 		/**
-		 * 
+		 * Number of entries
 		 */
 		public static final int INPUT_NEURONS = 11;
 	
@@ -167,7 +167,7 @@ public class InputData {
 			matrix.set(0, 8, myGunHeading);
 			matrix.set(0, 9, xDistance);
 			matrix.set(0, 10, yDistance);
-			
+
 			return matrix;
 		}
 
