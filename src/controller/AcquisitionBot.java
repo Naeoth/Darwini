@@ -31,7 +31,12 @@ import model.AcquisitionData;
  */
 public class AcquisitionBot extends InitialRobot {
 
-	/*	----- ATTRIBUTE -----	*/
+	/*	----- ATTRIBUTES -----	*/
+
+		/**
+		 *
+		 */
+		private static final String SSVM_FILE = "data.ssvm";
 
 		/**
 		 *
@@ -53,7 +58,7 @@ public class AcquisitionBot extends InitialRobot {
 			super();
 			
 			knowledges = new Database();
-			acquiData = new AcquisitionData(this);
+			acquiData = new AcquisitionData(this, null);
 		}
 		
 		
@@ -91,7 +96,7 @@ public class AcquisitionBot extends InitialRobot {
 		 */
 		private void writeDataInFile() {
 			try {
-				knowledges.printToSSVM( getDataFile("data.ssvm") );
+				knowledges.printToSSVM( getDataFile(SSVM_FILE) );
 			}
 			catch (IOException e) {
 				e.printStackTrace();

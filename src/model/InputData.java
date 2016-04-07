@@ -124,7 +124,7 @@ public class InputData {
 
 		/**
 		 * 
-		 * @return
+		 * @return a
 		 */
 		public String toSSVM() {
 			String ret = "";
@@ -151,7 +151,7 @@ public class InputData {
 		
 		/**
 		 * 
-		 * @return
+		 * @return a
 		 */
 		public Matrix toMatrix() {
 			Matrix matrix = new Matrix(1, INPUT_NEURONS);

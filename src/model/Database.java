@@ -3,7 +3,7 @@
  * 
  * Development of an IA based on genetic algorithms and neural networks.
  *
- * class DAOData.java
+ * class Database.java
  */
 
 package model;
@@ -49,7 +49,7 @@ public class Database {
 		/**
 		 * 
 		 * 
-		 * @return
+		 * @return a
 		 */
 		public InputData getLastData() {
 			return dataList.get(dataList.size() - 1);
@@ -77,7 +77,7 @@ public class Database {
 		/**
 		 *
 		 *
-		 * @param f
+		 * @param f a
 		 *
 		 * @throws IOException
 		 */

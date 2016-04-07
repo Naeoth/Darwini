@@ -9,12 +9,10 @@
 package controller;
 
 import model.AcquisitionData;
-import model.GeneticAlgorithm;
 import model.OutputData;
 import model.Perceptron;
 
 import robocode.ScannedRobotEvent;
-import robocode.control.events.BattleStartedEvent;
 
 /**
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
@@ -57,18 +55,16 @@ public class Darwini extends InitialRobot {
 		@Override
 		public void run() {
 			perceptronShoot = new Perceptron( getDataFile(PERCEPTRON_FILE) );
-			//new GeneticAlgorithm( getDataDirectory() );
-			
+            acquiData = new AcquisitionData(this, null);
+
 			super.run();
 		}
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
 			decisions = perceptronShoot.train( acquiData.acquisition(e) );
+
+            System.out.println(decisions.getTurnGunLeft());
 		}
 
-		@Override
-		public void onBattleStarted(BattleStartedEvent event) {
-			acquiData = new AcquisitionData(this, event.getBattleRules());
-		}
 }

@@ -8,7 +8,14 @@
 
 package model;
 
+import controller.Darwini;
+
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
@@ -23,22 +30,35 @@ import java.io.File;
  */
 public class GeneticAlgorithm {
 	
-	/*	----- ATTRIBUTES -----	*/
+	/*	----- PATHS -----	*/
 
         /**
          *
          */
-        private static final String DATA_DIRECTORY = "data/";
+        private static final String DATA_SUBDIRECTORY = "data/population/";
 
         /**
          *
          */
-        private static final String FILENAME = "Individual";
+        private static final String FILES_PATH = DATA_SUBDIRECTORY + "Individual";
 
 		/**
 		 *
 		 */
-		private static final String TEST_DIRECTORY = "bin/controller/Darwini.data/";
+		private static final String PERCEPTRON_DIRECTORY = "out/production/Darwini/controller/Darwini.data/";
+
+        /**
+         *
+         */
+        private static final String ROBOCODE_PATH = "libs/robocode.jar";
+
+        /**
+         *
+         */
+        private static final String BATTLE_PATH = "data/test.battle";
+
+
+	/*	----- GENETIC SETTINGS -----	*/
 
         /**
          *
@@ -48,7 +68,7 @@ public class GeneticAlgorithm {
         /**
          *
          */
-		private static final int POPULATION_SIZE = 205;
+		private static final int POPULATION_SIZE = 5;
 
         /**
          *
@@ -63,7 +83,20 @@ public class GeneticAlgorithm {
 		/**
 		 * 
 		 */
-		private static final double MUTATION_PROBABILITY = 0.01;
+		private static final double MUTATION_PROBABILITY = 0.5;
+
+        /**
+         *
+         */
+        private static final int MUTATION_MIN = 5;
+
+        /**
+         *
+         */
+        private static final int MUTATION_MAX = 10;
+
+
+	/*	----- ATTRIBUTES -----	*/
 		
 		/**
 		 * 
@@ -84,7 +117,7 @@ public class GeneticAlgorithm {
 		public GeneticAlgorithm() {
 			population = new Perceptron[POPULATION_SIZE];
             scores = new Score[POPULATION_SIZE];
-            new File(DATA_DIRECTORY).mkdir();
+            new File(DATA_SUBDIRECTORY).mkdir();
 
             // Number of files to create or load by one thread
             int rangeSize = POPULATION_SIZE / NB_THREADS;
@@ -101,18 +134,19 @@ public class GeneticAlgorithm {
                     // Each thread creates or loads a range of files depending on the its call order
 					File f = null;
 					for (int j = copy * rangeSize; j < (copy + 1) * rangeSize; j++) {
-						f = new File(DATA_DIRECTORY + FILENAME + (j + 1) + ".xml");
+						f = new File(FILES_PATH + (j + 1) + ".xml");
 
                         // If the file exist, loading the perceptron
-						if ( f.exists() )
+						if (f.exists())
 							population[j] = new Perceptron(f);
                         // Else create a random perceptron
-						else {
-                            population[j] = new Perceptron();
-                            population[j].printToXML(f);
-						}
-
-                        scores[j] = fitness(population[j]);
+						else
+                            try {
+                                population[j] = new Perceptron();
+                                population[j].printToXML(f);
+                            } catch (FileNotFoundException | XMLStreamException e) {
+                                e.printStackTrace();
+                            }
 					}
 
 				});
@@ -126,6 +160,9 @@ public class GeneticAlgorithm {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+            for (int i = 0; i < POPULATION_SIZE; i++)
+                scores[i] = fitness(i);
         }
 
 
@@ -140,6 +177,7 @@ public class GeneticAlgorithm {
             int randomIndex;
             for (int i = 1; i < POPULATION_SIZE; i++) {
                 randomIndex = random(0, POPULATION_SIZE);
+
                 if (scores[randomIndex].compareTo(scores[best]) > 1)
                     best = randomIndex;
             }
@@ -183,61 +221,6 @@ public class GeneticAlgorithm {
         /**
          *
          */
-		private void mutation(Perceptron child) {
-            if (Math.random() < MUTATION_PROBABILITY) {
-                mutate(child.getInputWeights());
-                mutate(child.getOutputWeights());
-                mutate(child.getBias());
-            }
-		}
-
-		/**
-		 * 
-		 */
-		private Score fitness(Perceptron individual) {
-			return null;
-		}
-		
-		/**
-		 * 
-		 */
-		public void generate() {
-            Perceptron[] newPopulation = new Perceptron[POPULATION_SIZE];
-            Score[] newScores = new Score[POPULATION_SIZE];
-
-            // Keep the best individual
-            int best = keepBest();
-            newPopulation[0] = population[best];
-            newScores[0] = scores[best];
-
-            Perceptron[] children;
-            for (int i = 1; i < POPULATION_SIZE; i = i + 2) {
-                children = crossover(selection(), selection());
-                mutation(children[0]);
-                mutation(children[1]);
-                newPopulation[i] = children[0];
-                newScores[i] = fitness(children[0]);
-                newPopulation[i] = children[1];
-                newScores[i] = fitness(children[1]);
-            }
-
-            population = newPopulation;
-            scores = newScores;
-		}
-
-
-	/*	----- OTHER METHODS -----	*/
-
-        /**
-         *
-         */
-        private int random(int min, int max) {
-            return (int)(Math.random() * (max - min)) + min;
-        }
-
-        /**
-         *
-         */
         private void cross(Matrix m1, Matrix m2) {
             int size = m1.getRowCount() * m2.getColumnCount();
             int firstCrossing = random(0, size);
@@ -259,8 +242,88 @@ public class GeneticAlgorithm {
         /**
          *
          */
-        private void mutate(Matrix m) {
+		private void mutation(Perceptron child) {
+            if (Math.random() < MUTATION_PROBABILITY)
+                mutate(child.getInputWeights());
+            if (Math.random() < MUTATION_PROBABILITY)
+                mutate(child.getOutputWeights());
+            if (Math.random() < MUTATION_PROBABILITY)
+                mutate(child.getBias());
+		}
 
+        /**
+         *
+         */
+        private void mutate(Matrix m) {
+            int rowCount = m.getRowCount();
+            int columnCount = m.getColumnCount();
+
+            for (int i = 0; i < random(MUTATION_MIN, MUTATION_MAX); i++)
+                m.set(random(0, rowCount), random(0, columnCount) , Math.random() * 2 - 1);
+        }
+
+		/**
+		 * 
+		 */
+		private Score fitness(int individual) {
+            try {
+                new File(PERCEPTRON_DIRECTORY).mkdir();
+                // Copy the tested perceptron in the correct directory
+                FileInputStream is = new FileInputStream(FILES_PATH + (individual + 1) + ".xml");
+                FileOutputStream os = new FileOutputStream(PERCEPTRON_DIRECTORY + Darwini.PERCEPTRON_FILE);
+                byte[] buffer = new byte[1024];
+                int length;
+
+                while ((length = is.read(buffer)) > 0)
+                    os.write(buffer, 0, length);
+
+                is.close();
+                os.close();
+
+                // Launch the test in Robocode
+                Runtime.getRuntime().exec("java -Xmx512M -cp " + ROBOCODE_PATH + " robocode.Robocode -battle " + BATTLE_PATH + " -nodisplay -nosound -results results.txt").waitFor();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return new Score();
+		}
+		
+		/**
+		 * 
+		 */
+		public void generate() {
+            Perceptron[] newPopulation = new Perceptron[POPULATION_SIZE];
+            Score[] newScores = new Score[POPULATION_SIZE];
+
+            // Keep the best individual
+            int best = keepBest();
+            newPopulation[0] = population[best];
+            newScores[0] = scores[best];
+
+            Perceptron[] children;
+            for (int i = 1; i < POPULATION_SIZE; i = i + 2) {
+                children = crossover(selection(), selection());
+                mutation(children[0]);
+                mutation(children[1]);
+                newPopulation[i] = children[0];
+                newScores[i] = fitness(i);
+                newPopulation[i + 1] = children[1];
+                newScores[i + 1] = fitness(i + 1);
+            }
+
+            population = newPopulation;
+            scores = newScores;
+		}
+
+
+	/*	----- OTHER METHODS -----	*/
+
+        /**
+         *
+         */
+        private int random(int min, int max) {
+            return (int)(Math.random() * (max - min)) + min;
         }
 
         /**
@@ -282,7 +345,11 @@ public class GeneticAlgorithm {
                 threads[i] = new Thread( () -> {
 
                     for (int j = copy * rangeSize; j < (copy + 1) * rangeSize; j++)
-                        population[j].printToXML( new File(DATA_DIRECTORY + FILENAME + (j + 1) + ".xml") );
+                        try {
+                            population[j].printToXML( new File(FILES_PATH + (j + 1) + ".xml") );
+                        } catch (FileNotFoundException | XMLStreamException e) {
+                            e.printStackTrace();
+                        }
 
                 });
                 threads[i].start();

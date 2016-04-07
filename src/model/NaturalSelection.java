@@ -3,12 +3,10 @@
  *
  * Development of an IA based on genetic algorithms and neural networks.
  *
- * class GeneticAlgorithm.java
+ * class NaturalSelection.java
  */
 
 package model;
-
-import java.io.File;
 
 /**
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
@@ -21,16 +19,28 @@ import java.io.File;
  * @author MATHIEU Vianney
  * @author VAILLAND Guillaume
  */
-public class Launcher {
+public class NaturalSelection {
+
+    /**
+     *
+     */
+    private static final int NUMBER_GENERATION = 0;
 
     public static void main(String[] args) {
+        System.out.print("The Perceptron is initializing...");
         GeneticAlgorithm ga = new GeneticAlgorithm();
+        System.out.println("DONE");
 
-        for (int i = 0; i < 200; i++)
+
+        for (int i = 0; i < NUMBER_GENERATION; i++) {
+            System.out.print("Generation n°" + (i + 1) + "...");
             ga.generate();
+            System.out.println("DONE");
+        }
 
+        System.out.print("Save of the last generation (may take a while, please wait)...");
         ga.savePopulation();
-        ga.selectBest().printToXML( new File("Darwini.xml") );
+        System.out.println("DONE");
     }
 
 }
