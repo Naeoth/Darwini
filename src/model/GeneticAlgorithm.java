@@ -57,6 +57,11 @@ public class GeneticAlgorithm {
          */
         private static final String BATTLE_PATH = "data/test.battle";
 
+        /**
+         *
+         */
+        private static final String RESULTS_PATH = "/tmp/results.txt";
+
 
 	/*	----- GENETIC SETTINGS -----	*/
 
@@ -68,7 +73,7 @@ public class GeneticAlgorithm {
         /**
          *
          */
-		private static final int POPULATION_SIZE = 5;
+		private static final int POPULATION_SIZE = 205;
 
         /**
          *
@@ -161,8 +166,11 @@ public class GeneticAlgorithm {
                     e.printStackTrace();
                 }
 
-            for (int i = 0; i < POPULATION_SIZE; i++)
+            // Evaluate the fitness for each individual
+            for (int i = 0; i < POPULATION_SIZE; i++) {
                 scores[i] = fitness(i);
+                System.out.println("\t........." + (Math.ceil((100.0 * i) / POPULATION_SIZE * 2) / 2) + "%");
+            }
         }
 
 
@@ -281,12 +289,12 @@ public class GeneticAlgorithm {
                 os.close();
 
                 // Launch the test in Robocode
-                Runtime.getRuntime().exec("java -Xmx512M -cp " + ROBOCODE_PATH + " robocode.Robocode -battle " + BATTLE_PATH + " -nodisplay -nosound -results results.txt").waitFor();
+                Runtime.getRuntime().exec("java -Xmx512M -cp " + ROBOCODE_PATH + " robocode.Robocode -battle " + BATTLE_PATH + " -nodisplay -nosound -results " + RESULTS_PATH).waitFor();
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
 
-            return new Score();
+            return new Score( new File(RESULTS_PATH) );
 		}
 		
 		/**
@@ -324,13 +332,6 @@ public class GeneticAlgorithm {
          */
         private int random(int min, int max) {
             return (int)(Math.random() * (max - min)) + min;
-        }
-
-        /**
-         *
-         */
-        public Perceptron selectBest() {
-            return population[keepBest()];
         }
 
         /**

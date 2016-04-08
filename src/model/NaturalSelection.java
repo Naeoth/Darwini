@@ -24,12 +24,11 @@ public class NaturalSelection {
     /**
      *
      */
-    private static final int NUMBER_GENERATION = 0;
+    private static final int NUMBER_GENERATION = 200;
 
     public static void main(String[] args) {
-        System.out.print("The Perceptron is initializing...");
+        System.out.println("The Perceptron is initializing...");
         GeneticAlgorithm ga = new GeneticAlgorithm();
-        System.out.println("DONE");
 
 
         for (int i = 0; i < NUMBER_GENERATION; i++) {

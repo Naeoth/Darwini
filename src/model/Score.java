@@ -8,6 +8,8 @@
 
 package model;
 
+import java.io.File;
+
 /**
  *
  *
@@ -21,7 +23,7 @@ package model;
 public class Score implements Comparable<Score> {
 
 
-    public Score() {
+    public Score(File f) {
     }
 
     @Override
