@@ -8,7 +8,11 @@
 
 package model;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -22,13 +26,77 @@ import java.io.File;
  */
 public class Score implements Comparable<Score> {
 
+    /*	----- ATTRIBUTES -----	*/
 
-    public Score(File f) {
-    }
+        /**
+         *
+         */
+        private int victory;
 
-    @Override
-    public int compareTo(Score o) {
-        return 0;
-    }
+        /**
+         *
+         */
+        private int survival;
+
+        /**
+         *
+         */
+        private int survivalBonus;
+
+        /**
+         *
+         */
+        private int bulletDamage;
+
+        /**
+         *
+         */
+        private int bulletBonus;
+
+        /**
+         *
+         */
+        private int ramDamage;
+
+        /**
+         *
+         */
+        private int ramBonus;
+
+
+	/*	----- CONSTRUCTOR -----	*/
+
+        /**
+         *
+         * @param file
+         */
+        public Score(FileReader file) {
+            try {
+                BufferedReader br = new BufferedReader(file);
+                br.readLine();
+                br.readLine();
+                String [] tableauResultat = br.readLine().split("\t");
+
+                Matcher m = Pattern.compile("\\((.*)\\s%\\)").matcher(tableauResultat[1]);
+                m.find();
+                victory = Integer.parseInt(m.group(1));
+                survival = Integer.parseInt(tableauResultat[2]);
+                survivalBonus = Integer.parseInt(tableauResultat[3]);
+                bulletDamage = Integer.parseInt(tableauResultat[4]);
+                bulletBonus = Integer.parseInt(tableauResultat[5]);
+                ramDamage = Integer.parseInt(tableauResultat[6]);
+                ramBonus = Integer.parseInt(tableauResultat[7]);
+            } catch (IOException e) {
+                System.out.println("The results file is not found");
+            }
+        }
+
+
+    /*	----- OTHER METHOD -----	*/
+
+        @Override
+        public int compareTo(Score o) {
+            return 0;
+        }
 
 }
