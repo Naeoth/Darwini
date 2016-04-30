@@ -127,26 +127,14 @@ public class InputData {
 		 * @return a
 		 */
 		public String toSSVM() {
-			String ret = "";
+			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < OutputData.OUTPUT_NEURONS; i++)
 				if (success[i])
-					ret += "1 ";
+					sb.append("1 ");
 				else
-					ret += "-1 ";
+					sb.append("-1 ");
 			
-			ret += "1:" + myBearing + " ";
-			ret += "2:" + distance + " ";
-			ret += "3:" + myEnergy + " ";
-			ret += "4:" + opponentVelocity + " ";
-			ret += "5:" + myVelocity + " ";
-			ret += "6:" + opponentHeading + " ";
-			ret += "7:" + myHeading + " ";
-			ret += "8:" + myRadarHeading + " ";
-			ret += "9:" + myGunHeading + " ";
-			ret += "10:" + xDistance + " ";
-			ret += "11:" + yDistance;
-
-			return ret;
+			return sb.toString() + "1:" + myBearing + "2: " + distance + "3: " + myEnergy + "4: " + opponentVelocity + "5: " + myVelocity + "6: " + opponentHeading + "7: " + myHeading + "8: " + myRadarHeading + "9: " + myGunHeading + "10: " + xDistance + "11: " + yDistance;
 		}
 		
 		/**

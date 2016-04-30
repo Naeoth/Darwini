@@ -33,7 +33,6 @@ public class Score implements Comparable<Score> {
          */
         private int victory;
 
-<<<<<<< HEAD
         /**
          *
          */
@@ -99,22 +98,5 @@ public class Score implements Comparable<Score> {
         public int compareTo(Score o) {
             return 0;
         }
-=======
-    @Override
-    public int compareTo(Score o) {
-        if (this.victory > o.getVictory()) {
-            return 1;
-        } else {
-            if (this.victory == o.getVictory()) {
-                if (this.bulletDmg >= o.getBulletDmg()) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        }
-        return 0 ;
-    }
->>>>>>> tmp
 
 }
