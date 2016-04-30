@@ -3,7 +3,7 @@
  * 
  * Development of an IA based on genetic algorithms and neural networks.
  *
- * class DAOData.java
+ * class Database.java
  */
 
 package model;
@@ -49,14 +49,14 @@ public class Database {
 		/**
 		 * 
 		 * 
-		 * @return
+		 * @return a
 		 */
 		public InputData getLastData() {
 			return dataList.get(dataList.size() - 1);
 		}
 	
 	
-	/*	----- MUTATOR -----	*/
+	/*	----- MUTATORS -----	*/
 	
 		/**
 		 * Insert the specified data in the database.
@@ -77,9 +77,9 @@ public class Database {
 		/**
 		 *
 		 *
-		 * @param
+		 * @param f a
 		 *
-		 * @throws
+		 * @throws IOException
 		 */
 		public void printToSSVM(File f) throws IOException {
 			RobocodeFileWriter w = new RobocodeFileWriter(f.getAbsolutePath(), true);

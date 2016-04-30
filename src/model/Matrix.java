@@ -3,13 +3,15 @@
  * 
  * Development of an IA based on genetic algorithms and neural networks.
  *
- * class MatrixPerceptron.java
+ * class Matrix.java
  */
 
 package model;
 
+import java.util.Locale;
+
 /**
- *
+ *   of a matrix system which will be useful for the neural network representation and training
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain
@@ -41,27 +43,22 @@ public class Matrix {
 	/*	----- MUTATORS -----	*/
 		
 		/**
-		 * 
+		 * The procedure to set the value of a matrix's compartment.
+		 *
+		 * @param numRows the compartement's row number that we want to reach
+		 * @param numColumns the compartement's column number that we want to reach
+		 * @param value the value to set
 		 */
 		public void set(int numRows, int numColumns, double value) {
 			matrix[numRows][numColumns] = value;
 		}
 		
 		/**
-		 * 
-		 * @param numRows
-		 * @param numColumns
-		 * @param value
-		 */
-		public void add(int numRows, int numColumns, double value) {
-			this.set(numRows,numColumns, (this.get(numRows, numColumns) + value));
-		}
-		
-		/**
-		 * EXCEPTION A RAJOUTER
-		 * 
-		 * @param m2
-		 * @return
+		 * Multiplication of two matrix
+		 *
+		 * @param m2 the matrix B in the matrix's multiplication A * B
+		 *
+		 * @return the matrix's multiplication's result
 		 */
 		public Matrix mult(Matrix m2) {
 			Matrix res = new Matrix(matrix.length, m2.matrix[0].length);
@@ -76,23 +73,7 @@ public class Matrix {
 	                	
 			return res;
 		}
-		
-		/**
-		 * 
-		 * 
-		 * @return
-		 */
-		public Matrix transpose() {
-			Matrix res = new Matrix(matrix[0].length, matrix.length);
-			
-			// Fill the matrix
-			for (int i = 0; i < matrix.length; i++)
-				for (int j = 0; j < matrix[0].length; j++)
-					res.set(j, i, matrix[i][j]);
-			
-			return res;
-		}
-		
+
 	
 	/*	----- ACCESSORS -----	*/
 		
@@ -104,31 +85,48 @@ public class Matrix {
 		}
 		
 		/**
-		 * 
+		 * @return the number of rows
 		 */
 		public int getRowCount() {
 			return matrix.length;
 		}
 		
 		/**
-		 * 
+		 * @return the number of Column
 		 */
 		public int getColumnCount() {
 			return matrix[0].length;
 		}
+<<<<<<< HEAD
 		
 	/*	----- OTHER METHODS -----	*/
 		
 		/**
 		 * 
+=======
+
+
+	/*	----- OTHER METHODS -----	*/
+
+		/**
+		 *
+>>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
 		 */
 		public String toString() {
 			String ret = "";
 			for (int i = 0; i < matrix.length; i++)
 				for (int j = 0; j < matrix[0].length; j++)
+<<<<<<< HEAD
 					ret += String.format("%.6f", matrix[i][j]) + " ";
 			
 			return ret;			
 		}
 		
+=======
+					ret += String.format(Locale.US, "%.6f", matrix[i][j]) + " ";
+
+			return ret;
+		}
+
+>>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
 }

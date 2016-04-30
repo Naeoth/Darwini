@@ -3,21 +3,30 @@
  * 
  * Development of an IA based on genetic algorithms and neural networks.
  *
- * class MatrixPerceptron.java
+ * class Perceptron.java
  */
 
 package model;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+<<<<<<< HEAD
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
+=======
+>>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+<<<<<<< HEAD
+=======
+import javax.xml.stream.XMLOutputFactory;
+>>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
 import javax.xml.stream.XMLStreamWriter;
 
 /**
@@ -38,9 +47,14 @@ public class Perceptron {
 		 * 
 		 */
 		public static final int HIDDEN_NEURONS = 200;
+<<<<<<< HEAD
 		
 	
 		/**
+=======
+
+        /**
+>>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
 		 * 
 		 */
 		private Matrix inputWeights;
@@ -57,53 +71,84 @@ public class Perceptron {
 	
 
 	/*	----- CONSTRUCTOR -----	*/
-		
+
 		/**
-		 * 
+		 *
 		 */
 		public Perceptron() {
-			inputWeights = new Matrix(HIDDEN_NEURONS, InputData.INPUT_NEURONS);
-			randomizeMatrix(inputWeights);
-			outputWeights = new Matrix(OutputData.OUTPUT_NEURONS, HIDDEN_NEURONS);
-			randomizeMatrix(outputWeights);
+			inputWeights = new Matrix(InputData.INPUT_NEURONS, HIDDEN_NEURONS);
+			randomizeIOMatrix(inputWeights);
+			outputWeights = new Matrix(HIDDEN_NEURONS, OutputData.OUTPUT_NEURONS);
+			randomizeIOMatrix(outputWeights);
 			bias = new Matrix(HIDDEN_NEURONS, 1);
-			randomizeMatrix(bias);
+			randomizeBiasMatrix(bias);
 		}
-		
-		
+
 		/**
 		 * 
 		 * 
-		 * @param f
+		 * @param f a
 		 */
 		public Perceptron(File f) {
 			try {
 			    // Get an input factory and instantiate a reader
-				XMLStreamReader xmlEventReader = XMLInputFactory.newInstance().createXMLStreamReader( new FileInputStream(f) );
-	
+				XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader( new FileInputStream(f) );
+
 				// Skip the first lines
 				for (int i = 0; i < 4; i++)
-					xmlEventReader.nextTag();
-				
+					xmlReader.nextTag();
+
 				// Get matrix values from the other lines
-				inputWeights = initMatrix(xmlEventReader).transpose();
+				inputWeights = initMatrix(xmlReader);
 				// Skip the end of the inputWeights
-				xmlEventReader.nextTag();
-				xmlEventReader.nextTag();
-				outputWeights = initMatrix(xmlEventReader).transpose();
+				xmlReader.nextTag();
+				xmlReader.nextTag();
+				outputWeights = initMatrix(xmlReader);
 				// Skip the end of the outputWeights
-				xmlEventReader.nextTag();
-				xmlEventReader.nextTag();
-				bias = initMatrix(xmlEventReader);
-				
+				xmlReader.nextTag();
+				xmlReader.nextTag();
+				bias = initMatrix(xmlReader);
+
 				// Close the reader
-				xmlEventReader.close();
+				xmlReader.close();
 			}
-			catch (FileNotFoundException | XMLStreamException | FactoryConfigurationError e) {
-				e.printStackTrace();
+			catch (FileNotFoundException e) {
+                System.out.println(f.getAbsolutePath() + " is not found.");
+                System.out.println("The perceptron is not initialized, please put a perceptron in the correct directory.");
 			}
+            catch (XMLStreamException e) {
+                System.out.println(f.getAbsolutePath() + " is invalid.");
+                System.out.println("The perceptron is not initialized, please put a valid perceptron in the directory.");
+            }
 		}
-		
+
+
+    /*	----- MUTATORS -----	*/
+
+        /**
+         *
+         * @return a
+         */
+        public Matrix getInputWeights() {
+            return inputWeights;
+        }
+
+        /**
+         *
+         * @return a
+         */
+        public Matrix getOutputWeights() {
+            return outputWeights;
+        }
+
+        /**
+         *
+         * @return a
+         */
+        public Matrix getBias() {
+            return bias;
+        }
+
 		
 	/*	----- OTHER METHODS -----	*/
 		
@@ -125,42 +170,56 @@ public class Perceptron {
 			
 			return matrix;
 		}
-		
+
 		/**
 		 * 
-		 * @param matrix
+		 * @param matrix a
 		 */
-		private void randomizeMatrix(Matrix matrix) {
+		private void randomizeIOMatrix(Matrix matrix) {
 			for (int i = 0; i < matrix.getRowCount(); i++)
 				for (int j = 0; j < matrix.getColumnCount(); j++)
 					matrix.set(i, j, Math.random() * 2 - 1);
 		}
+
+		/**
+		 *
+		 * @param matrix a
+		 */
+		private void randomizeBiasMatrix(Matrix matrix) {
+			for (int i = 0; i < matrix.getRowCount(); i++)
+				for (int j = 0; j < matrix.getColumnCount(); j++)
+<<<<<<< HEAD
+					matrix.set(i, j, Math.random() * 2 - 1);
+=======
+					matrix.set(i, j, Math.random());
+>>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
+		}
 		
 		/**
 		 * 
 		 */
-		public OutputData train(Matrix entries) {
+		public OutputData train(InputData entries) {
 			// First Treatment
 			//Multiplication du vecteur d'entrée avec la première matrice de poids. On obtient le vecteur de couche sans le neurone de biais
-			Matrix vcouche = inputWeights.mult(entries);
+			Matrix vcouche = entries.toMatrix().mult(inputWeights);
 			//Ajout du neurone de biais et application de la fonction sigmoïde
-			for (int i = 0; i < inputWeights.getRowCount(); i++) {
-				vcouche.add( i, 0, bias.get(i, 0) );
-				vcouche.set( i, 0, 1 / (1 + Math.exp( -vcouche.get(i, 0) )) );
-			}
+			for (int i = 0; i < inputWeights.getColumnCount(); i++)
+				vcouche.set(0, i, 1 / (1 + Math.exp(-vcouche.get(0, i) - bias.get(i, 0))));
 			
 			// Second Treatment	
 			//Multiplication du vecteur de couche avec la seconde matrice de poids pour obtenir le vecteur de sortie
-			return new OutputData( outputWeights.mult(vcouche) );
+			return new OutputData( vcouche.mult(outputWeights) );
 		}
 		
 		/**
 		 *
 		 *
-		 * @param
+		 * @param f a
 		 *
-		 * @throws
+		 * @throws FileNotFoundException
+         * @throws XMLStreamException
 		 */
+<<<<<<< HEAD
 		public void printToXML(File f) {
 			
 		    // Get an input factory and instantiate a writer
@@ -233,5 +292,60 @@ public class Perceptron {
 		File f2 = new File("Test.xml") ;
 		new Perceptron(f).printToXML(f2);
 	}
+=======
+		public void printToXML(File f) throws FileNotFoundException, XMLStreamException {
+            XMLStreamWriter xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter( new FileOutputStream(f) );
+
+			xmlWriter.writeStartElement("meta");
+			xmlWriter.writeAttribute("NbOutputNeurons", Integer.toString(outputWeights.getColumnCount()));
+			xmlWriter.writeAttribute("Learners", "1");
+			xmlWriter.writeCharacters("\n");
+			xmlWriter.writeCharacters("\t");
+
+			xmlWriter.writeStartElement("learner");
+			xmlWriter.writeAttribute("accuracy", "");
+			xmlWriter.writeAttribute("nbInputNeurons", Integer.toString(inputWeights.getRowCount()));
+			xmlWriter.writeAttribute("features_used", "All");
+			xmlWriter.writeCharacters("\n");
+			xmlWriter.writeCharacters("\t\t");
+
+			xmlWriter.writeStartElement("perceptron");
+			xmlWriter.writeAttribute("InputNeurons", Integer.toString(inputWeights.getRowCount()));
+			xmlWriter.writeAttribute("HiddenNeurons", Integer.toString(inputWeights.getColumnCount()));
+			xmlWriter.writeAttribute("OutputNeurons", Integer.toString(outputWeights.getColumnCount()));
+			xmlWriter.writeAttribute("Kernel", "sigmoid");
+			xmlWriter.writeCharacters("\n");
+			xmlWriter.writeCharacters("\t\t\t");
+
+			xmlWriter.writeEmptyElement("InputWeights");
+			xmlWriter.writeAttribute("Rows", Integer.toString(inputWeights.getRowCount()));
+			xmlWriter.writeAttribute("Cols", Integer.toString(inputWeights.getColumnCount()));
+			xmlWriter.writeAttribute("Matrix", inputWeights.toString());
+			xmlWriter.writeCharacters("\n");
+			xmlWriter.writeCharacters("\t\t\t");
+
+			xmlWriter.writeEmptyElement("OutputWeights");
+			xmlWriter.writeAttribute("Rows", Integer.toString(outputWeights.getRowCount()));
+			xmlWriter.writeAttribute("Cols", Integer.toString(outputWeights.getColumnCount()));
+			xmlWriter.writeAttribute("Matrix", outputWeights.toString());
+			xmlWriter.writeCharacters("\n");
+			xmlWriter.writeCharacters("\t\t\t");
+
+			xmlWriter.writeEmptyElement("Bias");
+			xmlWriter.writeAttribute("Rows", Integer.toString(bias.getRowCount()));
+			xmlWriter.writeAttribute("Cols", Integer.toString(bias.getColumnCount()));
+			xmlWriter.writeAttribute("Matrix", bias.toString());
+			xmlWriter.writeCharacters("\n");
+			xmlWriter.writeCharacters("\t\t");
+			xmlWriter.writeEndElement();
+			xmlWriter.writeCharacters("\n");
+			xmlWriter.writeCharacters("\t");
+			xmlWriter.writeEndElement();
+			xmlWriter.writeCharacters("\n");
+			xmlWriter.writeEndElement();
+
+		    xmlWriter.close();
+		}
+>>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
 		
 }
