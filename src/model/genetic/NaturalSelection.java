@@ -6,7 +6,7 @@
  * class NaturalSelection.java
  */
 
-package model;
+package model.genetic;
 
 /**
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
@@ -28,14 +28,8 @@ public class NaturalSelection {
 
     public static void main(String[] args) {
         GeneticAlgorithm ga = new GeneticAlgorithm();
-
-            System.out.print("Generation n°" + (1) + "...");
-            ga.generate(1);
-            System.out.println("DONE");
-
-        //System.out.print("Save of the last generation (may take a while, please wait)...");
+        ga.generate(1);
         ga.savePopulation();
-        //System.out.println("DONE");
     }
 
 }

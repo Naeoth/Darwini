@@ -6,11 +6,12 @@
  * class AcquisitionData.java
  */
 
-package model;
+package model.acquisition;
 
 import controller.InitialRobot;
+import model.perceptron.InputData;
+import robocode.Rules;
 import robocode.ScannedRobotEvent;
-import robocode.BattleRules;
 
 /**
  *
@@ -26,25 +27,29 @@ public class AcquisitionData {
 	
 	/*	----- ATTRIBUTES -----	*/
 
-		/**
-		 *
-		 */
-		private static final int MAX_DEGREE = 360;
+        /**
+         *
+         */
+        private static final double MAX_BEARING = 180.0;
 
         /**
          *
          */
-        private int mapSize = 800;
+        private static final double MAX_DEGREE = 360.0;
 
         /**
          *
          */
-        private int maxEnergy;
+        private double maxEnergy;
 
         /**
          *
          */
-        private int maxVelocity;
+        private double maxWidth;
+        /**
+         *
+         */
+        private double maxHeight;
 	
 		/**
 		 * 
@@ -63,27 +68,24 @@ public class AcquisitionData {
 		 * 
 		 * 
 		 * @param myRobot a
-		 * @param rules a
 		 */
-		public AcquisitionData(InitialRobot myRobot, BattleRules rules) {
+		public AcquisitionData(InitialRobot myRobot) {
 			this.myRobot = myRobot;
-			opponentRobot = null;
-            maxEnergy = 20;
-            mapSize = 800;
-            maxVelocity = 20;
+            maxEnergy = myRobot.getEnergy();
+            maxWidth = myRobot.getBattleFieldWidth();
+            maxHeight = myRobot.getBattleFieldHeight();
 		}
 
 	
 	/*	----- OTHER METHODS -----	*/
 	
 		/**
-		 * Launch a DOData creation with all the parameters necessary
+		 * Launch a InputData creation with all the parameters necessary
 		 * 
 		 * @param opponentRobot a
 		 */
 		public InputData acquisition(ScannedRobotEvent opponentRobot) {
 			this.opponentRobot = opponentRobot;
-			System.out.println(opponentRobot.getEnergy());
 			
 			return new InputData(
 				getMyBearing(),
@@ -109,7 +111,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getMyBearing() {
-			return opponentRobot.getBearing() / MAX_DEGREE;
+			return opponentRobot.getBearing() / MAX_BEARING;
 		}
 		
 		/**
@@ -118,7 +120,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getDistance() {
-			return opponentRobot.getDistance() / mapSize;
+			return opponentRobot.getDistance() / maxWidth;
 		}
 
 		/**
@@ -136,7 +138,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getOpponentVelocity() {
-			return opponentRobot.getVelocity() / maxVelocity;
+			return opponentRobot.getVelocity() / Rules.MAX_VELOCITY;
 		}
 		
 		/**
@@ -145,7 +147,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getMyVelocity() {
-			return myRobot.getVelocity() / maxVelocity;
+			return myRobot.getVelocity() / Rules.MAX_VELOCITY;
 		}
 		
 		/**
@@ -205,7 +207,7 @@ public class AcquisitionData {
 			else if (angle == 90 || angle == 270)
                 ret = distance;
 
-            return ret;
+            return ret;// / maxWidth;
 		}
 
 		/**
@@ -229,7 +231,7 @@ public class AcquisitionData {
 			else if (angle == 0 || angle == 180 || angle == 360)
                 ret = distance;
 
-            return ret;
+            return ret;// / maxHeight;
 		}
 		
 }

@@ -6,7 +6,7 @@
  * class Matrix.java
  */
 
-package model;
+package model.perceptron;
 
 import java.util.Locale;
 

@@ -6,12 +6,13 @@
  * class Database.java
  */
 
-package model;
+package model.acquisition;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.perceptron.InputData;
 import robocode.RobocodeFileWriter;
 
 /**
@@ -61,17 +62,17 @@ public class Database {
 		/**
 		 * Insert the specified data in the database.
 		 *
-		 * @param obj the data to insert
+		 * @param newInputData the data to insert
 		 *
 		 * @return true if the data has been inserted, false otherwise
 		 *
 		 * @throws NullPointerException if obj is null
 		 */
-		public boolean insert(InputData obj) throws NullPointerException {
-			if (obj == null)
-				throw new NullPointerException("The data specified is empty.");
+		public boolean insert(InputData newInputData) throws NullPointerException {
+			if (newInputData == null)
+				throw new NullPointerException("The new InputData specified is empty.");
 	
-			return dataList.add(obj);
+			return dataList.add(newInputData);
 		}
 	
 		/**
@@ -82,14 +83,14 @@ public class Database {
 		 * @throws IOException
 		 */
 		public void printToSSVM(File f) throws IOException {
-			RobocodeFileWriter w = new RobocodeFileWriter(f.getAbsolutePath(), true);
-			String s = "";
+			RobocodeFileWriter writer = new RobocodeFileWriter(f.getAbsolutePath(), true);
+			StringBuilder stringBuilder = new StringBuilder();
 		
 			for (InputData data : dataList)
-				s += data.toSSVM() + "\n";
+				stringBuilder.append(data.toSSVM()).append("\n");
 	
-			w.write(s);
-			w.close();
+			writer.write(stringBuilder.toString());
+			writer.close();
 		}
 		
 }

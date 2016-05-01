@@ -6,7 +6,7 @@
  * class InputData.java
  */
 
-package model;
+package model.perceptron;
 
 /**
  * Object which contains all the entries values that we will use in the neural network decision process
@@ -26,7 +26,7 @@ public class InputData {
 		/**
 		 * Number of entries
 		 */
-		public static final int INPUT_NEURONS = 11;
+		protected static final int INPUT_NEURONS = 11;
 	
 		/**
 		 * 
@@ -133,9 +133,21 @@ public class InputData {
 					sb.append("1 ");
 				else
 					sb.append("-1 ");
-			
-			return sb.toString() + "1:" + myBearing + "2: " + distance + "3: " + myEnergy + "4: " + opponentVelocity + "5: " + myVelocity + "6: " + opponentHeading + "7: " + myHeading + "8: " + myRadarHeading + "9: " + myGunHeading + "10: " + xDistance + "11: " + yDistance;
-		}
+
+			return sb
+					.append("1:").append(myBearing)
+					.append(" 2:").append(distance)
+					.append(" 3:").append(myEnergy)
+					.append(" 4:").append(opponentVelocity)
+					.append(" 5:").append(myVelocity)
+					.append(" 6:").append(opponentHeading)
+					.append(" 7:").append(myHeading)
+					.append(" 8:").append(myRadarHeading)
+					.append(" 9:").append(myGunHeading)
+					.append(" 10:").append(xDistance)
+					.append(" 11:").append(yDistance)
+					.toString();
+        }
 		
 		/**
 		 * 

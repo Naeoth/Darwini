@@ -6,27 +6,16 @@
  * class Perceptron.java
  */
 
-package model;
+package model.perceptron;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
-<<<<<<< HEAD
-import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
-=======
->>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-<<<<<<< HEAD
-=======
-import javax.xml.stream.XMLOutputFactory;
->>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
 import javax.xml.stream.XMLStreamWriter;
 
 /**
@@ -39,22 +28,16 @@ import javax.xml.stream.XMLStreamWriter;
  * @author MATHIEU Vianney
  * @author VAILLAND Guillaume
  */
-public class Perceptron {
+public class NeuralNetwork {
 	
 	/*	----- ATTRIBUTES -----	*/
 	
 		/**
 		 * 
 		 */
-		public static final int HIDDEN_NEURONS = 200;
-<<<<<<< HEAD
-		
-	
-		/**
-=======
+		private static final int HIDDEN_NEURONS = 200;
 
         /**
->>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
 		 * 
 		 */
 		private Matrix inputWeights;
@@ -75,7 +58,7 @@ public class Perceptron {
 		/**
 		 *
 		 */
-		public Perceptron() {
+		public NeuralNetwork() {
 			inputWeights = new Matrix(InputData.INPUT_NEURONS, HIDDEN_NEURONS);
 			randomizeIOMatrix(inputWeights);
 			outputWeights = new Matrix(HIDDEN_NEURONS, OutputData.OUTPUT_NEURONS);
@@ -89,7 +72,7 @@ public class Perceptron {
 		 * 
 		 * @param f a
 		 */
-		public Perceptron(File f) {
+		public NeuralNetwork(File f) {
 			try {
 			    // Get an input factory and instantiate a reader
 				XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader( new FileInputStream(f) );
@@ -188,11 +171,7 @@ public class Perceptron {
 		private void randomizeBiasMatrix(Matrix matrix) {
 			for (int i = 0; i < matrix.getRowCount(); i++)
 				for (int j = 0; j < matrix.getColumnCount(); j++)
-<<<<<<< HEAD
-					matrix.set(i, j, Math.random() * 2 - 1);
-=======
 					matrix.set(i, j, Math.random());
->>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
 		}
 		
 		/**
@@ -219,80 +198,6 @@ public class Perceptron {
 		 * @throws FileNotFoundException
          * @throws XMLStreamException
 		 */
-<<<<<<< HEAD
-		public void printToXML(File f) {
-			
-		    // Get an input factory and instantiate a writer
-			// On part d'un fichier java pour créer un fichier xml
-			try {
-				XMLStreamWriter xmlStreamWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(new FileOutputStream(f));
-				
-				xmlStreamWriter.writeStartElement("meta");
-				xmlStreamWriter.writeAttribute("NbOutputNeurons", Integer.toString(OutputData.OUTPUT_NEURONS));
-				xmlStreamWriter.writeAttribute("Learners", "1");
-				xmlStreamWriter.writeCharacters("\n");
-				xmlStreamWriter.writeCharacters("\t");
-				
-				xmlStreamWriter.writeStartElement("learner");
-				xmlStreamWriter.writeAttribute("accuracy", "0.722775");
-				xmlStreamWriter.writeAttribute("nbInputNeurons", Integer.toString(InputData.INPUT_NEURONS));
-				xmlStreamWriter.writeAttribute("features_used", "All");
-				xmlStreamWriter.writeCharacters("\n");
-				xmlStreamWriter.writeCharacters("\t\t");
-				
-				xmlStreamWriter.writeStartElement("perceptron");
-				xmlStreamWriter.writeAttribute("InputNeurons", Integer.toString(InputData.INPUT_NEURONS));
-				xmlStreamWriter.writeAttribute("HiddenNeurons", Integer.toString(HIDDEN_NEURONS));
-				xmlStreamWriter.writeAttribute("OoutputNeurons", Integer.toString(OutputData.OUTPUT_NEURONS));
-				xmlStreamWriter.writeAttribute("Kernel", "sigmoid");
-				xmlStreamWriter.writeCharacters("\n");
-				xmlStreamWriter.writeCharacters("\t\t\t");
-				
-				xmlStreamWriter.writeEmptyElement("InputWeights");
-				xmlStreamWriter.writeAttribute("Rows", Integer.toString(InputData.INPUT_NEURONS));
-				xmlStreamWriter.writeAttribute("Cols", Integer.toString(HIDDEN_NEURONS));
-				xmlStreamWriter.writeAttribute("Matrix", inputWeights.transpose().toString() );
-				xmlStreamWriter.writeCharacters("\n");
-				xmlStreamWriter.writeCharacters("\t\t\t");
-				
-				xmlStreamWriter.writeEmptyElement("OutputWeights");
-				xmlStreamWriter.writeAttribute("Rows", Integer.toString(HIDDEN_NEURONS));
-				xmlStreamWriter.writeAttribute("Cols", Integer.toString(OutputData.OUTPUT_NEURONS));
-				xmlStreamWriter.writeAttribute("Matrix", outputWeights.transpose().toString() );
-				xmlStreamWriter.writeCharacters("\n");
-				xmlStreamWriter.writeCharacters("\t\t\t");
-				
-				xmlStreamWriter.writeEmptyElement("Bias");
-				xmlStreamWriter.writeAttribute("Rows", Integer.toString(HIDDEN_NEURONS));
-				xmlStreamWriter.writeAttribute("Cols", Integer.toString(OutputData.OUTPUT_NEURONS));
-				xmlStreamWriter.writeAttribute("Matrix", bias.transpose().toString() );		
-				xmlStreamWriter.writeCharacters("\n");
-				xmlStreamWriter.writeCharacters("\t\t");
-				xmlStreamWriter.writeEndElement();
-				xmlStreamWriter.writeCharacters("\n");
-				xmlStreamWriter.writeCharacters("\t");
-				xmlStreamWriter.writeEndElement();
-				xmlStreamWriter.writeCharacters("\n");
-				xmlStreamWriter.writeEndElement();
-				xmlStreamWriter.close();
-				
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				System.out.println("Impossble d'écire dans le xml");
-			}
-			catch ( XMLStreamException e) {
-				e.printStackTrace();
-				System.out.println("Impossible d'écrire dans le xml 2");
-			}
-			
-	}	
-	
-	public static void main(String[] args) {
-		File f = new File("Modele.xml") ;
-		File f2 = new File("Test.xml") ;
-		new Perceptron(f).printToXML(f2);
-	}
-=======
 		public void printToXML(File f) throws FileNotFoundException, XMLStreamException {
             XMLStreamWriter xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter( new FileOutputStream(f) );
 
@@ -346,6 +251,5 @@ public class Perceptron {
 
 		    xmlWriter.close();
 		}
->>>>>>> c1447e217ff12909bc67fdde1b6068b2f544571d
 		
 }
