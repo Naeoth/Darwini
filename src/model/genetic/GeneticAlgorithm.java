@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * @author VAILLAND Guillaume
  */
 public class GeneticAlgorithm {
-	
+
 	/*	----- PATHS -----	*/
 
         /**
@@ -84,14 +84,14 @@ public class GeneticAlgorithm {
          *
          */
         private static final int TOURNAMENT_SIZE = 5;
-		
+
 		/**
-		 * 
+		 *
 		 */
 		private static final double CROSSOVER_PROBABILITY = 0.7;
-		
+
 		/**
-		 * 
+		 *
 		 */
 		private static final double MUTATION_PROBABILITY = 0.5;
 
@@ -107,9 +107,9 @@ public class GeneticAlgorithm {
 
 
 	/*	----- ATTRIBUTES -----	*/
-		
+
 		/**
-		 * 
+		 *
 		 */
 		private NeuralNetwork[] population;
 
@@ -117,12 +117,12 @@ public class GeneticAlgorithm {
          *
          */
         private Score[] scores;
-		
-	
+
+
 	/*	----- CONSTRUCTOR -----	*/
-		
+
 		/**
-		 * 
+		 *
 		 */
 		public GeneticAlgorithm() {
 			population = new NeuralNetwork[POPULATION_SIZE];
@@ -195,12 +195,12 @@ public class GeneticAlgorithm {
                 if (scores[randomIndex].compareTo(scores[chosen]) > 1)
                     chosen = randomIndex;
             }
-			
+
 			return population[chosen];
 		}
-		
+
 		/**
-		 * 
+		 *
 		 */
 		private NeuralNetwork[] crossover(NeuralNetwork mother, NeuralNetwork father) {
 			NeuralNetwork[] children = {mother, father};
@@ -259,7 +259,7 @@ public class GeneticAlgorithm {
         }
 
 		/**
-		 * 
+		 *
 		 */
 		private synchronized Score fitness(int individual) {
             try {
@@ -283,9 +283,9 @@ public class GeneticAlgorithm {
 
             return new Score(RESULTS_PATH, "Darwini");
         }
-		
+
 		/**
-		 * 
+		 *
 		 */
 		public void generate(int numberGeneration) throws IllegalArgumentException {
             if (numberGeneration < 1)

@@ -125,7 +125,12 @@ public class InputData {
 		/**
 		 * 
 		 */
-		public void setSuccess(int index) {
+		public void setSuccess(int index) throws IllegalArgumentException {
+            if (index < 0)
+                throw new IllegalArgumentException("The index must be greater than 0");
+            if (index >= INPUT_NEURONS)
+                throw new IllegalArgumentException("The index must not be greater than or equal to " + INPUT_NEURONS);
+
 			success[index] = true;
 		}
 	

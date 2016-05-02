@@ -96,11 +96,11 @@ public class Score implements Comparable<Score> {
             if (victory > o.victory)
                 return 1;
             else
-                if (victory == o.victory)
-                    if (bulletDamage >= o.bulletDamage)
-                        return 1;
-                    else
-                        return 0;
+            if (victory == o.victory)
+                if (bulletDamage >= o.bulletDamage)
+                    return 1;
+                else
+                    return 0;
 
             return 0 ;
         }

@@ -103,8 +103,8 @@ public class AcquisitionData {
 				getMyHeading(),
 				getMyRadarHeading(),
 				getMyGunHeading(),
-				getXDistance(),
-				getYDistance()
+				getMyX(),
+				getMyY()
 			);
 		}
 		
@@ -197,26 +197,7 @@ public class AcquisitionData {
          *
 		 * @return a
 		 */
-		private double getXDistance() {
-			/*double angle = myRobot.getRadarHeading();
-			double distance = opponentRobot.getDistance();
-            double ret = 0;
-
-			if (angle < 90)
-                ret = Math.sin(angle) * distance;
-			else if (angle > 90 && angle < 180)
-                ret = Math.sin(180 - angle) * distance;
-			else if (angle > 180 && angle < 270)
-                ret = Math.sin(angle - 180) * distance;
-			else if (angle > 270)
-                ret = Math.sin(360 - angle) * distance;
-			else if (angle == 90 || angle == 270)
-                ret = distance;
-
-            return ret;*/// / maxWidth;
-            /*double angle = Math.toRadians((myRobot.getHeading() + opponentRobot.getBearing()) % 360);
-            return (int)(myRobot.getX() + Math.sin(angle) * opponentRobot.getDistance());*/
-
+		private double getMyX() {
             return myRobot.getX() + opponentRobot.getDistance() * Math.sin(myRobot.getHeadingRadians() + opponentRobot.getBearingRadians());
         }
 
@@ -225,23 +206,8 @@ public class AcquisitionData {
          *
 		 * @return a
 		 */
-		private double getYDistance() {
-            double angle = myRobot.getRadarHeading();
-            double distance = opponentRobot.getDistance();
-            double ret = 0;
-
-            if (angle < 90)
-                ret = Math.cos(angle) * distance;
-            else if (angle > 90 && angle < 180)
-                ret = Math.cos(180 - angle) * distance;
-            else if (angle > 180 && angle < 270)
-                ret = Math.cos(angle - 180) * distance;
-            else if (angle > 270)
-                ret = Math.cos(360 - angle) * distance;
-			else if (angle == 0 || angle == 180 || angle == 360)
-                ret = distance;
-
-            return ret;// / maxHeight;
-		}
+		private double getMyY(){
+            return myRobot.getY() + opponentRobot.getDistance() * Math.cos(myRobot.getHeadingRadians() + opponentRobot.getBearingRadians());
+        }
 		
 }
