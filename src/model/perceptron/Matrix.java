@@ -31,7 +31,7 @@ public class Matrix {
 		 * Principle Matrix's features which represent the matrix by a 2D table
 		 * </p>
 		 *
-		 * @see model.Matrix#Matrix(int, int)
+		 * @see Matrix#Matrix(int, int)
 		 *
 		 */
 		private double[][] matrix;

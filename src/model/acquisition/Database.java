@@ -16,21 +16,32 @@ import model.perceptron.InputData;
 import robocode.RobocodeFileWriter;
 
 /**
-*
-*
-* @version 1.0 - 17/11/15
-* @author BOIZUMAULT Romain
-* @author BUSSENEAU Alexis
-* @author GEFFRAULT Luc
-* @author MATHIEU Vianney
-* @author VAILLAND Guillaume
+ * The Database object is a database of InputData's.
+ * This class is only used in the supervised process.
+ * AcquisitionBot uses it to stock its examples before saving it in its SSVM file.
+ *
+ * @see controller.AcquisitionBot
+ * @see InputData
+ *
+ *
+ * @version 1.0 - 17/11/15
+ * @author BOIZUMAULT Romain
+ * @author BUSSENEAU Alexis
+ * @author GEFFRAULT Luc
+ * @author MATHIEU Vianney
+ * @author VAILLAND Guillaume
 */
+
 public class Database {
 	
 	/*	----- ATTRIBUTE -----	*/
 	
 		/**
+		 * <p>
+		 *     The list of InputData
+		 * </p>
 		 *
+		 * @see InputData
 		 */
 		private ArrayList<InputData> dataList;
 	
@@ -38,7 +49,9 @@ public class Database {
 	/*	----- CONSTRUCTOR -----	*/
 	
 		/**
-		 *
+		 * <p>
+		 *     The Database constructor
+		 * </p>
 		 */
 		public Database() {
 			dataList = new ArrayList<>();
@@ -48,9 +61,15 @@ public class Database {
 	/*	----- ACCESSORS -----	*/
 		
 		/**
-		 * 
-		 * 
-		 * @return a
+		 * <p>
+		 *     Accessor to the last data pushed in the dataList.
+		 *     This method is used to set the success value for this method.
+		 * </p>
+		 *
+		 * @return The last InputData pushed
+		 *
+		 * @see InputData
+		 * @see controller.AcquisitionBot
 		 */
 		public InputData getLastData() {
 			return dataList.get(dataList.size() - 1);
@@ -60,13 +79,18 @@ public class Database {
 	/*	----- MUTATORS -----	*/
 	
 		/**
-		 * Insert the specified data in the database.
+		 * <p>
+		 * 		Insert the specified InputData in the database.
+		 * </p>
 		 *
 		 * @param newInputData the data to insert
 		 *
 		 * @return true if the data has been inserted, false otherwise
 		 *
 		 * @throws NullPointerException if obj is null
+		 *
+		 * @see InputData
+		 * @see controller.AcquisitionBot
 		 */
 		public boolean insert(InputData newInputData) throws NullPointerException {
 			if (newInputData == null)
@@ -76,11 +100,15 @@ public class Database {
 		}
 	
 		/**
+		 * <p>
+		 *     Print the database in a SSVM file in the SSVM syntax
+		 * </p>
 		 *
-		 *
-		 * @param f a
+		 * @param f The target file where the database will be printed
 		 *
 		 * @throws IOException
+		 *
+		 * @see controller.AcquisitionBot
 		 */
 		public void printToSSVM(File f) throws IOException {
 			RobocodeFileWriter writer = new RobocodeFileWriter(f.getAbsolutePath(), true);
