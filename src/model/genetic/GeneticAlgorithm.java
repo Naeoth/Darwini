@@ -6,9 +6,11 @@
  * class GeneticAlgorithm.java
  */
 
-package model;
+package model.genetic;
 
 import controller.Darwini;
+import model.perceptron.Matrix;
+import model.perceptron.NeuralNetwork;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
@@ -16,6 +18,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
@@ -35,17 +40,17 @@ public class GeneticAlgorithm {
         /**
          *
          */
-        private static final String DATA_SUBDIRECTORY = "data/population/";
+        private static final String POPULATION_DIRECTORY = "data/population/";
 
         /**
          *
          */
-        private static final String FILES_PATH = DATA_SUBDIRECTORY + "Individual";
+        private static final String ROBOT_DIRECTORY = "out/production/Darwini/controller/Darwini.data/";
 
-		/**
-		 *
-		 */
-		private static final String PERCEPTRON_DIRECTORY = "out/production/Darwini/controller/Darwini.data/";
+        /**
+         *
+         */
+        private static final String INDIVIDUAL_FILENAME = "Individual";
 
         /**
          *
@@ -68,12 +73,12 @@ public class GeneticAlgorithm {
         /**
          *
          */
-        private static final int NB_THREADS = 5;
+        private static final int NB_THREADS = 3 * Runtime.getRuntime().availableProcessors() / 4;
 
         /**
          *
          */
-		private static final int POPULATION_SIZE = 205;
+		private static final int POPULATION_SIZE = 11;
 
         /**
          *
@@ -106,7 +111,7 @@ public class GeneticAlgorithm {
 		/**
 		 * 
 		 */
-		private Perceptron[] population;
+		private NeuralNetwork[] population;
 
         /**
          *
@@ -120,57 +125,42 @@ public class GeneticAlgorithm {
 		 * 
 		 */
 		public GeneticAlgorithm() {
-			population = new Perceptron[POPULATION_SIZE];
+			population = new NeuralNetwork[POPULATION_SIZE];
             scores = new Score[POPULATION_SIZE];
-            new File(DATA_SUBDIRECTORY).mkdir();
+            new File(POPULATION_DIRECTORY).mkdir();
+            new File(ROBOT_DIRECTORY).mkdir();
 
-            // Number of files to create or load by one thread
-            int rangeSize = POPULATION_SIZE / NB_THREADS;
-            // Keep the threads to join all of it
-            Thread[] threads = new Thread[NB_THREADS];
-
-            // Create all the threads
-            for (int i = 0; i < NB_THREADS; i++) {
-                int copy = i;
-
-                // Lambda expression to initialize a thread
-                threads[i] = new Thread( () -> {
-
-                    // Each thread creates or loads a range of files depending on the its call order
-					File f = null;
-					for (int j = copy * rangeSize; j < (copy + 1) * rangeSize; j++) {
-						f = new File(FILES_PATH + (j + 1) + ".xml");
-
-                        // If the file exist, loading the perceptron
-						if (f.exists())
-							population[j] = new Perceptron(f);
-                        // Else create a random perceptron
-						else
-                            try {
-                                population[j] = new Perceptron();
-                                population[j].printToXML(f);
-                            } catch (FileNotFoundException | XMLStreamException e) {
-                                e.printStackTrace();
-                            }
-					}
-
-				});
-                threads[i].start();
-            }
-
-            // Wait the end of all threads previously started
-            for (Thread thread : threads)
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            // Evaluate the fitness for each individual
+            System.out.println(POPULATION_SIZE + " individuals are being initialized...");
+            ExecutorService executor = Executors.newFixedThreadPool(NB_THREADS);
             for (int i = 0; i < POPULATION_SIZE; i++) {
-                scores[i] = fitness(i);
-                System.out.println("\t........." + (Math.ceil((100.0 * i) / POPULATION_SIZE * 2) / 2) + "%");
+                int individual = i;
+                executor.submit(() -> {
+                    File file = new File(POPULATION_DIRECTORY + INDIVIDUAL_FILENAME + (individual + 1) + ".xml");
+
+                    // If the file exist, loading the perceptron
+                    if (file.exists())
+                        population[individual] = new NeuralNetwork(file);
+                    // Else create a random perceptron
+                    else
+                        try {
+                            population[individual] = new NeuralNetwork();
+                            population[individual].printToXML(file);
+                        } catch (FileNotFoundException | XMLStreamException e) {
+                            e.printStackTrace();
+                        }
+
+                    scores[individual] = fitness(individual);
+                    System.out.println("\tIndividual n°" + (individual + 1) + "...OK");
+                });
             }
+            executor.shutdown();
+            try {
+                executor.awaitTermination(6000, TimeUnit.SECONDS);
+            }
+            catch (InterruptedException e) {
+                System.out.println("Initialization takes too much time, please change your computer");
+            }
+            System.out.println("DONE");
         }
 
 
@@ -196,7 +186,7 @@ public class GeneticAlgorithm {
         /**
          *
          */
-		private Perceptron selection() {
+		private NeuralNetwork selection() {
             int chosen = random(0, POPULATION_SIZE);
 
             int randomIndex;
@@ -212,10 +202,8 @@ public class GeneticAlgorithm {
 		/**
 		 * 
 		 */
-		private Perceptron[] crossover(Perceptron mother, Perceptron father) {
-			Perceptron[] children = new Perceptron[2];
-            children[0] = mother;
-            children[1] = father;
+		private NeuralNetwork[] crossover(NeuralNetwork mother, NeuralNetwork father) {
+			NeuralNetwork[] children = {mother, father};
 
             if (Math.random() < CROSSOVER_PROBABILITY) {
                 cross(mother.getInputWeights(), father.getInputWeights());
@@ -250,7 +238,7 @@ public class GeneticAlgorithm {
         /**
          *
          */
-		private void mutation(Perceptron child) {
+		private void mutation(NeuralNetwork child) {
             if (Math.random() < MUTATION_PROBABILITY)
                 mutate(child.getInputWeights());
             if (Math.random() < MUTATION_PROBABILITY)
@@ -273,12 +261,11 @@ public class GeneticAlgorithm {
 		/**
 		 * 
 		 */
-		private Score fitness(int individual) {
+		private synchronized Score fitness(int individual) {
             try {
-                new File(PERCEPTRON_DIRECTORY).mkdir();
                 // Copy the tested perceptron in the correct directory
-                FileInputStream is = new FileInputStream(FILES_PATH + (individual + 1) + ".xml");
-                FileOutputStream os = new FileOutputStream(PERCEPTRON_DIRECTORY + Darwini.PERCEPTRON_FILE);
+                FileInputStream is = new FileInputStream(POPULATION_DIRECTORY + INDIVIDUAL_FILENAME + (individual + 1) + ".xml");
+                FileOutputStream os = new FileOutputStream(ROBOT_DIRECTORY + Darwini.PERCEPTRON_FILE);
                 byte[] buffer = new byte[1024];
                 int length;
 
@@ -289,39 +276,48 @@ public class GeneticAlgorithm {
                 os.close();
 
                 // Launch the test in Robocode
-                Runtime.getRuntime().exec("java -Xmx512M -cp " + ROBOCODE_PATH + " robocode.Robocode -battle " + BATTLE_PATH + " -nodisplay -nosound -results " + RESULTS_PATH).waitFor();
+                Runtime.getRuntime().exec("java -Xmx512M -DWORKINGDIRECTORY=data -cp " + ROBOCODE_PATH + " robocode.Robocode -nosound -nodisplay -battle " + BATTLE_PATH + " -results " + RESULTS_PATH).waitFor();
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
 
-            return new Score( new File(RESULTS_PATH) );
-		}
+            return new Score(RESULTS_PATH, "Darwini");
+        }
 		
 		/**
 		 * 
 		 */
-		public void generate() {
-            Perceptron[] newPopulation = new Perceptron[POPULATION_SIZE];
+		public void generate(int numberGeneration) throws IllegalArgumentException {
+            if (numberGeneration < 1)
+                throw new IllegalArgumentException("The number of generation must be greater than 0");
+
+            NeuralNetwork[] newPopulation = new NeuralNetwork[POPULATION_SIZE];
             Score[] newScores = new Score[POPULATION_SIZE];
+            NeuralNetwork[] children;
+            int best;
 
-            // Keep the best individual
-            int best = keepBest();
-            newPopulation[0] = population[best];
-            newScores[0] = scores[best];
+            for (int i = 0; i < numberGeneration; i++) {
+                System.out.println("Generation n°" + i + 1 + "...");
+                // Keep the best individual
+                best = keepBest();
+                newPopulation[0] = population[best];
+                newScores[0] = scores[best];
 
-            Perceptron[] children;
-            for (int i = 1; i < POPULATION_SIZE; i = i + 2) {
-                children = crossover(selection(), selection());
-                mutation(children[0]);
-                mutation(children[1]);
-                newPopulation[i] = children[0];
-                newScores[i] = fitness(i);
-                newPopulation[i + 1] = children[1];
-                newScores[i + 1] = fitness(i + 1);
+                for (int j = 1; j < POPULATION_SIZE; j = j + 2) {
+                    children = crossover(selection(), selection());
+                    mutation(children[0]);
+                    newPopulation[j] = children[0];
+                    newScores[j] = fitness(j);
+                    if (j != POPULATION_SIZE - 1) {
+                        mutation(children[1]);
+                        newPopulation[j + 1] = children[1];
+                        newScores[j + 1] = fitness(j + 1);
+                    }
+                }
+
+                population = newPopulation;
+                scores = newScores;
             }
-
-            population = newPopulation;
-            scores = newScores;
 		}
 
 
@@ -338,30 +334,23 @@ public class GeneticAlgorithm {
          *
          */
 		public void savePopulation() {
-            int rangeSize = POPULATION_SIZE / NB_THREADS;
-            Thread[] threads = new Thread[NB_THREADS];
-
-            for (int i = 0; i < NB_THREADS; i++) {
-                int copy = i;
-                threads[i] = new Thread( () -> {
-
-                    for (int j = copy * rangeSize; j < (copy + 1) * rangeSize; j++)
-                        try {
-                            population[j].printToXML( new File(FILES_PATH + (j + 1) + ".xml") );
-                        } catch (FileNotFoundException | XMLStreamException e) {
-                            e.printStackTrace();
-                        }
-
+            ExecutorService executor = Executors.newFixedThreadPool(NB_THREADS);
+            for (int i = 0; i < POPULATION_SIZE; i++) {
+                int individual = i;
+                executor.submit(() -> {
+                    try {
+                        population[individual].printToXML( new File(POPULATION_DIRECTORY + INDIVIDUAL_FILENAME + (individual + 1) + ".xml") );
+                    } catch (FileNotFoundException | XMLStreamException e) {
+                        e.printStackTrace();
+                    }
                 });
-                threads[i].start();
             }
+            executor.shutdown();
+            try {
+                executor.awaitTermination(6000, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                System.out.println("Saving the population takes too much time, please change your computer");
+            }
+        }
 
-            for (Thread thread : threads)
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-		}
-		
 }

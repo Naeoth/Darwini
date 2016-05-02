@@ -10,16 +10,15 @@ package controller;
 
 import java.io.IOException;
 
-import robocode.BattleEndedEvent;
 import robocode.BulletHitEvent;
 import robocode.RoundEndedEvent;
 import robocode.ScannedRobotEvent;
 
-import model.Database;
-import model.AcquisitionData;
+import model.acquisition.Database;
+import model.acquisition.AcquisitionData;
 
 /**
- * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
+ * A robot based on an existing one, however this one is used to collect data only useful in the creation
  * Must extend an operational robot extending AdvancedRobot
  *
  * @version 1.0 - 17/11/15
@@ -46,7 +45,7 @@ public class AcquisitionBot extends InitialRobot {
 		/**
 		 * 
 		 */
-		private AcquisitionData acquiData;
+		private AcquisitionData acquisitionData;
 
 		
 	/*	----- CONSTRUCTOR -----	*/
@@ -54,11 +53,12 @@ public class AcquisitionBot extends InitialRobot {
 		/**
 		 *
 		 */
-		public AcquisitionBot() {
-			super();
-			
+        @Override
+        public void run() {
 			knowledges = new Database();
-			acquiData = new AcquisitionData(this, null);
+			acquisitionData = new AcquisitionData(this);
+
+            super.run();
 		}
 		
 		
@@ -66,35 +66,27 @@ public class AcquisitionBot extends InitialRobot {
 				
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			if ( getGunHeat() < getGunCoolingRate() )
-				knowledges.insert( acquiData.acquisition(e) );
-			
 			super.onScannedRobot(e);
+
+            // Get all data required for construct an InputData and save it in a database
+			knowledges.insert( acquisitionData.acquisition(e) );
+
+            System.out.println(acquisitionData.acquisition(e).toSSVM());
 		}
 	
 		@Override
 		public void onBulletHit(BulletHitEvent e) {
 			super.onBulletHit(e);
-			
+
+            // Set a success for the first output neuron in OutputData when the robot hits another robot
 			knowledges.getLastData().setSuccess(0);
-		}
-	
-		@Override
-		public void onBattleEnded(BattleEndedEvent e) {				
-			super.onBattleEnded(e);
 		}
 		
 		@Override
 		public void onRoundEnded(RoundEndedEvent event) {
 			super.onRoundEnded(event);
-			
-			writeDataInFile();
-		}
-		
-		/**
-		 * 
-		 */
-		private void writeDataInFile() {
+
+            // At the end, save all the data collected in a SSVM format file
 			try {
 				knowledges.printToSSVM( getDataFile(SSVM_FILE) );
 			}
