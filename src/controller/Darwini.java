@@ -31,6 +31,7 @@ public class Darwini extends InitialRobot {
 
 		/**
 		 * The NeuralNetwork xml file
+		 *
 		 * <p>
 		 * The file which contains the perceptron's weighting coefficients that our Darwini robot will use. 
 		 * This file is charged during the perceptron creation 
@@ -43,7 +44,7 @@ public class Darwini extends InitialRobot {
 		
 		/**
 		 * The object "AcquisitionData"
-		 * 
+		 *
 		 * <p>
 		 * Thanks to this object, we will be able to collect the environment data of the robot (used as entries in
 		 * the perceptron) every turn.
@@ -103,7 +104,6 @@ public class Darwini extends InitialRobot {
 		 * @see controller.Darwini#PERCEPTRON_FILE
 		 * 
 		 */
-		
 		@Override
 		public void run() {
 			perceptron = new NeuralNetwork( getDataFile(PERCEPTRON_FILE) );
@@ -120,14 +120,12 @@ public class Darwini extends InitialRobot {
 		 * perceptron decisions to act
 		 * </p>
 		 * 
-		 * @param e
-		 * 			the scanned robot
+		 * @param e the scanned robot
 		 * 
 		 * @see controller.Darwini#acquisitionData
 		 * @see controller.Darwini#decisions
 		 * @see controller.Darwini#perceptron
 		 */
-		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
 			decisions = perceptron.train( acquisitionData.acquisition(e) );

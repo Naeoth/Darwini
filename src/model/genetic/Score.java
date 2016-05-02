@@ -95,14 +95,13 @@ public class Score implements Comparable<Score> {
         public int compareTo(Score o) {
             if (victory > o.victory)
                 return 1;
-            else
             if (victory == o.victory)
-                if (bulletDamage >= o.bulletDamage)
-                    return 1;
-                else
-                    return 0;
-
-            return 0 ;
+                    if (bulletDamage >= o.bulletDamage)
+                        return 1;
+                    if (bulletDamage == o.bulletDamage)
+                        return 0;
+            else
+                        return -1 ;
         }
 
 }

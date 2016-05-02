@@ -9,9 +9,25 @@
 package model.perceptron;
 
 /**
- * Object which contains all the entries values that we will use in the neural network decision process.
- * The parameters are collected when our robot scanned an other which will be the "enemy" for this turn.
+ * <p>
+ * This object is created every turn, filled with the environment data from AcquisitionData and load in the neural network
+ * in order to take a decision.
+ * The environment data are collected by AcquisitionData when our robot Darwini scanned an other one which will be the "enemy" for this turn.
  * Thanks to those parameters, our robot will take a decision for this turn until the next scanned.
+ * </p>
+ *
+ * @see NeuralNetwork
+ * @see model.acquisition.AcquisitionData
+ * @see controller.Darwini
+ *
+ * <p>
+ * This object is also used in the supervised process to set the perceptron's ponderation coefficient.
+ * AcquisitionBot collects the environment data as an example, create a new InputData and stocks it into a SSVM file.
+ * Then this file is used in iriselm to create perceptron's weights.
+ * </p>
+ *
+ * @see model.acquisition.AcquisitionData
+ * @see controller.AcquisitionBot
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain
@@ -26,85 +42,141 @@ public class InputData {
 	/*	----- ATTRIBUTES -----	*/
 	
 		/**
-		 * Number of entries
+		 * <p>
+		 * 		Number of entries
+		 * </p>
 		 */
-		protected static final int INPUT_NEURONS = 11;
+		 static final int INPUT_NEURONS = 13;
 	
 
 		/**
-		 * 
+		 * <p>
+		 *  	The success or not of an action (only useful in the supervised process
+		 * </p>
 		 */
 		private boolean success[];
-		
 
 
 		/**
-		 * The direction our robot is going relative to the enemy our robot has scanned
+		 * <p>
+		 *     The direction our robot is going relative to the enemy our robot has scanned
+		 * </p>
+		 *
 		 */
 		private double myBearing;
 		
 
 		/**
-		 * The distance to the enemy our robot has scanned
+		 * <p>
+		 * 		The distance to the enemy our robot has scanned
+		 * </p>
 		 */
 		private double distance;
 		
 
 		/**
-		 * Our robot's energy
+		 * <p>
+		 * 		Our robot's energy
+		 * </p>
 		 */
 		private double myEnergy;
 		
 
 		/**
-		 * The enemy's velocity
+		 * <p>
+		 * 		The enemy's velocity
+		 * </p>
 		 */
 		private double opponentVelocity;
 
 
 		/**
-		 * Our robot velocity
+		 * <p>
+		 * 		Our robot velocity
+		 * </p>
 		 */
 		private double myVelocity;
 
 
 		/**
-		 * The direction the enemy is facing
+		 * <p>
+		 * 		The direction the enemy is facing
+		 * </p>
 		 */
 		private double opponentHeading;
 
 		/**
-		 * The direction our robot is facing
+		 * <p>
+		 * 		The direction our robot is facing
+		 * </p>
 		 */
 		private double myHeading;
 		
 		/**
-		 * The direction our radar is facing
+		 * <p>
+		 * 		The direction our radar is facing
+		 * </p>
 		 */
 		private double myRadarHeading;
 		
 		/**
-		 * The direction our gun is facing
+		 * <p>
+		 * 		The direction our gun is facing
+		 * </p>
 		 */
 		private double myGunHeading;
+
+		/**
+		 * <p>
+		 * 		Our x coordinate
+		 * </p>
+		 */
+		private double x;
+
+		/**
+		 * <p>
+		 * 		Our y coordinate
+		 * </p>
+		 */
+		private double y;
 		
 		/**
-		 * The x distance to the enemy
+		 * <p>
+		 * 		The x distance to the enemy
+		 * </p>
 		 */
-		private double xDistance;
+		private double enemyX;
 		
 		/**
-		 * The y distance to our enemy
+		 * <p>
+		 * 		The y distance to our enemy
+		 * </p>
 		 */
-		private double yDistance;
+		private double enemyY;
+
 		
 	/*	----- CONSTRUCTOR -----	*/
 		
 		/**
-		 * 
-		 * @param myBearing, distance, myEnergy, opponentVelocity, myVelocity, opponentHeading
+		 * The InputData constructor
+		 *
+		 * @param myBearing Number of entries
+		 * @param distance The success or not of an action (only useful in the supervised process
+		 * @param myEnergy The direction our robot is going relative to the enemy our robot has scanned
+		 * @param opponentVelocity The distance to the enemy our robot has scanned
+		 * @param myVelocity Our robot velocity
+		 * @param opponentHeading The direction the enemy is facing
+		 * @param myHeading The direction our robot is facing
+		 * @param myGunHeading The direction our gun is facing
+		 * @param myRadarHeading The direction our radar is facing
+		 * @param x Our x coordinate
+		 * @param y our y coordinate
+		 * @param enemyX The x distance to the enemy
+		 * @param enemyY The y distance to our enemy
+		 *
+		 * @see InputData
 		 */
-		public InputData(double myBearing, double distance, double myEnergy, double opponentVelocity, double myVelocity, double opponentHeading, double myHeading, double myRadarHeading, double myGunHeading, double xDistance, double yDistance) {
+		public InputData(double myBearing, double distance, double myEnergy, double opponentVelocity, double myVelocity, double opponentHeading, double myHeading, double myRadarHeading, double myGunHeading, double x, double y, double enemyX, double enemyY) {
 			success = new boolean[OutputData.OUTPUT_NEURONS];
 			this.myBearing = myBearing;
 			this.distance = distance;
@@ -115,15 +187,25 @@ public class InputData {
 			this.myHeading = myHeading;
 			this.myRadarHeading = myRadarHeading;
 			this.myGunHeading = myGunHeading;
-			this.xDistance = xDistance;
-			this.yDistance = yDistance;
+			this.x = x;
+			this.y = y;
+			this.enemyX = enemyX;
+			this.enemyY = enemyY;
 		}
 		
 		
 	/*	----- MUTATOR -----	*/
 		
 		/**
-		 * 
+		 *	<p>
+		 *	   The seter of the Sucess attribute. It's used in the supervised process to set
+		 *	   the succes or not of a collected example
+		 *	</p>
+		 *
+		 * 	@param index The index of the success table space that we want to set true
+		 *
+		 *	@see controller.AcquisitionBot
+		 *	@see model.acquisition.AcquisitionData
 		 */
 		public void setSuccess(int index) throws IllegalArgumentException {
             if (index < 0)
@@ -138,8 +220,15 @@ public class InputData {
 	/*	----- OTHER METHODS -----	*/
 
 		/**
-		 * 
-		 * @return a
+		 * <p>
+		 *		Procedure to transform an InputData object in a SSVM File usable in iriselm
+		 *		This procedure is useful in the supervised process. Thus, it used the attribute "sucess".
+		 * </p>
+		 *
+		 * @return SSVM File containing the examples collected by AcquisitionBot
+		 *
+		 * @see model.acquisition.AcquisitionData
+		 * @see controller.AcquisitionBot
 		 */
 		public String toSSVM() {
 			StringBuilder sb = new StringBuilder();
@@ -150,7 +239,7 @@ public class InputData {
 					sb.append("-1 ");
 
 			return sb
-					.append("1:").append(myBearing)
+					.append(" 1:").append(myBearing)
 					.append(" 2:").append(distance)
 					.append(" 3:").append(myEnergy)
 					.append(" 4:").append(opponentVelocity)
@@ -159,14 +248,23 @@ public class InputData {
 					.append(" 7:").append(myHeading)
 					.append(" 8:").append(myRadarHeading)
 					.append(" 9:").append(myGunHeading)
-					.append(" 10:").append(xDistance)
-					.append(" 11:").append(yDistance)
+					.append(" 10:").append(x)
+					.append(" 11:").append(y)
+					.append(" 12:").append(enemyX)
+					.append(" 13:").append(enemyY)
 					.toString();
         }
 		
 		/**
-		 * 
-		 * @return a
+		 * <p>
+		 *     Procedure to transform an InputData object in a Matrix ready to be load in the neural network.
+		 *     This procedure is used by Darwini.
+		 * </p>
+		 *
+		 * @return Matrix containing the actual environments data
+		 *
+		 * @see controller.Darwini
+		 * @see NeuralNetwork
 		 */
 		public Matrix toMatrix() {
 			Matrix matrix = new Matrix(1, INPUT_NEURONS);
@@ -180,8 +278,10 @@ public class InputData {
 			matrix.set(0, 6, myHeading);
 			matrix.set(0, 7, myRadarHeading);
 			matrix.set(0, 8, myGunHeading);
-			matrix.set(0, 9, xDistance);
-			matrix.set(0, 10, yDistance);
+			matrix.set(0, 9, x);
+			matrix.set(0, 10, y);
+			matrix.set(0, 11, enemyX);
+			matrix.set(0, 12, enemyY);
 
 			return matrix;
 		}

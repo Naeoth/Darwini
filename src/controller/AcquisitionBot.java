@@ -18,8 +18,13 @@ import model.acquisition.Database;
 import model.acquisition.AcquisitionData;
 
 /**
- * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
- * Must extend an operational robot extending AdvancedRobot
+ * A robot based on an existing one, however this one is used to collect
+ * examples (which are represented by the environment data when the robot does an action and the success
+ * of this action as a boolean).
+ * Those examples are used in the supervised process only.
+ * For now we only collect examples when the robot is shooting.
+ * Careful to make AcquisitionBot fight against one robot at a time
+ *
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain
@@ -33,17 +38,30 @@ public class AcquisitionBot extends InitialRobot {
 	/*	----- ATTRIBUTES -----	*/
 
 		/**
-		 *
+		 * <p>
+		 *     The name of the SSVM file where AcquisitionBot is saving it examples.
+		 * </p>
 		 */
 		private static final String SSVM_FILE = "data.ssvm";
 
+
 		/**
+		 * <p>
+		 * 		The list of InputData (examples) of the current round
+		 * </p>
 		 *
+		 * @see Database
+		 * @see model.perceptron.InputData
 		 */
 		private Database knowledges;
-		
+
+
 		/**
-		 * 
+		 * <p>
+		 *     The AcquisitionData of the AcquisitionBot
+		 * </p>
+		 *
+		 * @see AcquisitionData
 		 */
 		private AcquisitionData acquisitionData;
 
@@ -51,7 +69,13 @@ public class AcquisitionBot extends InitialRobot {
 	/*	----- CONSTRUCTOR -----	*/
 	
 		/**
+		 * <p>
+		 * 		When the robot is first running, it create a new database for the current round and a new AcquisitionData
+		 * </p>
 		 *
+		 * @see Database
+		 * @see InitialRobot
+		 * @see AcquisitionData
 		 */
         @Override
         public void run() {
@@ -63,7 +87,22 @@ public class AcquisitionBot extends InitialRobot {
 		
 		
 	/*	----- OTHER METHODS -----	*/
-				
+
+
+		/**
+		 * <p>
+		 *     Procedure called when AcquisitionBot has scanned an enemy.
+		 *     As we saw in InitialRobot, when this method is called,
+		 *     the robot creates a new InputData throw the calling of the acquisition method of AcquisitionData
+		 *     and then inserts this InputData in his database knowledges
+		 * </p>
+		 *
+		 * @param e The enemy robot our AcquisitionBot has scanned
+		 *
+		 * @see model.perceptron.InputData
+		 * @see InitialRobot
+		 * @see AcquisitionData
+		 */
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
 			super.onScannedRobot(e);
@@ -73,7 +112,19 @@ public class AcquisitionBot extends InitialRobot {
 
             System.out.println(acquisitionData.acquisition(e).toSSVM());
 		}
-	
+
+
+		/**
+		 * <p>
+		 *     Procedure called when AcquisitionBot's bullet hits an enemy.
+		 *     Because we are just collecting examples for the action "shoot",
+		 *     we set the example as a success if the bullet does not miss the enemy robot
+		 * </p>
+		 *
+		 * @param e The enemy robot our AcquisitionBot has scanned
+		 *
+		 * @see model.perceptron.InputData
+		 */
 		@Override
 		public void onBulletHit(BulletHitEvent e) {
 			super.onBulletHit(e);
@@ -81,7 +132,19 @@ public class AcquisitionBot extends InitialRobot {
             // Set a success for the first output neuron in OutputData when the robot hits another robot
 			knowledges.getLastData().setSuccess(0);
 		}
-		
+
+
+		/**
+		 * <p>
+		 *     Procedure called when the round is ended
+		 *     We save the database in the SSVM_File
+		 * </p>
+		 *
+		 * @param event
+		 *
+		 * @see model.perceptron.InputData
+		 *
+		 */
 		@Override
 		public void onRoundEnded(RoundEndedEvent event) {
 			super.onRoundEnded(event);

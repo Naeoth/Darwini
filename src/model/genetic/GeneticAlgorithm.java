@@ -169,15 +169,13 @@ public class GeneticAlgorithm {
         /**
          *
          */
-        private int keepBest() {
+        public int keepBest() {
             int best = 0;
 
-            int randomIndex;
             for (int i = 1; i < POPULATION_SIZE; i++) {
-                randomIndex = random(0, POPULATION_SIZE);
 
-                if (scores[randomIndex].compareTo(scores[best]) > 1)
-                    best = randomIndex;
+                if (scores[i].compareTo(scores[best]) > 0)
+                    best = i;
             }
 
             return best;
@@ -351,6 +349,10 @@ public class GeneticAlgorithm {
             } catch (InterruptedException e) {
                 System.out.println("Saving the population takes too much time, please change your computer");
             }
+        }
+
+        public Score[] getScores() {
+            return this.scores;
         }
 
 }
