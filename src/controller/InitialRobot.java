@@ -18,9 +18,13 @@ import robocode.ScannedRobotEvent;
  * SpinBot - a sample robot by Mathew Nelson.
  * <p/>
  * Moves in a circle, firing hard when an enemy is detected.
- *
+// *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ */
+/**
+ * @author romain
+ *
  */
 public class InitialRobot extends AdvancedRobot {
 	
