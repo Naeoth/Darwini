@@ -28,8 +28,11 @@ public class NaturalSelection {
 
     public static void main(String[] args) {
         GeneticAlgorithm ga = new GeneticAlgorithm();
-        ga.generate(1);
-        ga.savePopulation();
+        System.out.println("Le meilleur de tous les robots se situe à l'indice n°" +ga.keepBest());
+
+        //ga.generate(1);
+        //ga.savePopulation();
+
     }
 
 }

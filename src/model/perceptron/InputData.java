@@ -46,7 +46,7 @@ public class InputData {
 		 * 		Number of entries
 		 * </p>
 		 */
-		 static final int INPUT_NEURONS = 11;
+		 static final int INPUT_NEURONS = 13;
 	
 
 		/**
@@ -125,20 +125,35 @@ public class InputData {
 		 * </p>
 		 */
 		private double myGunHeading;
+
+		/**
+		 * <p>
+		 * 		Our x coordinate
+		 * </p>
+		 */
+		private double x;
+
+		/**
+		 * <p>
+		 * 		Our y coordinate
+		 * </p>
+		 */
+		private double y;
 		
 		/**
 		 * <p>
 		 * 		The x distance to the enemy
 		 * </p>
 		 */
-		private double xDistance;
+		private double enemyX;
 		
 		/**
 		 * <p>
 		 * 		The y distance to our enemy
 		 * </p>
 		 */
-		private double yDistance;
+		private double enemyY;
+
 		
 	/*	----- CONSTRUCTOR -----	*/
 		
@@ -154,12 +169,14 @@ public class InputData {
 		 * @param myHeading The direction our robot is facing
 		 * @param myGunHeading The direction our gun is facing
 		 * @param myRadarHeading The direction our radar is facing
-		 * @param xDistance The x distance to the enemy
-		 * @param yDistance The y distance to our enemy
+		 * @param x Our x coordinate
+		 * @param y our y coordinate
+		 * @param enemyX The x distance to the enemy
+		 * @param enemyY The y distance to our enemy
 		 *
 		 * @see InputData
 		 */
-		public InputData(double myBearing, double distance, double myEnergy, double opponentVelocity, double myVelocity, double opponentHeading, double myHeading, double myRadarHeading, double myGunHeading, double xDistance, double yDistance) {
+		public InputData(double myBearing, double distance, double myEnergy, double opponentVelocity, double myVelocity, double opponentHeading, double myHeading, double myRadarHeading, double myGunHeading, double x, double y, double enemyX, double enemyY) {
 			success = new boolean[OutputData.OUTPUT_NEURONS];
 			this.myBearing = myBearing;
 			this.distance = distance;
@@ -170,8 +187,10 @@ public class InputData {
 			this.myHeading = myHeading;
 			this.myRadarHeading = myRadarHeading;
 			this.myGunHeading = myGunHeading;
-			this.xDistance = xDistance;
-			this.yDistance = yDistance;
+			this.x = x;
+			this.y = y;
+			this.enemyX = enemyX;
+			this.enemyY = enemyY;
 		}
 		
 		
@@ -213,7 +232,7 @@ public class InputData {
 					sb.append("-1 ");
 
 			return sb
-					.append("1:").append(myBearing)
+					.append(" 1:").append(myBearing)
 					.append(" 2:").append(distance)
 					.append(" 3:").append(myEnergy)
 					.append(" 4:").append(opponentVelocity)
@@ -222,8 +241,10 @@ public class InputData {
 					.append(" 7:").append(myHeading)
 					.append(" 8:").append(myRadarHeading)
 					.append(" 9:").append(myGunHeading)
-					.append(" 10:").append(xDistance)
-					.append(" 11:").append(yDistance)
+					.append(" 10:").append(x)
+					.append(" 11:").append(y)
+					.append(" 12:").append(enemyX)
+					.append(" 13:").append(enemyY)
 					.toString();
         }
 		
@@ -250,8 +271,10 @@ public class InputData {
 			matrix.set(0, 6, myHeading);
 			matrix.set(0, 7, myRadarHeading);
 			matrix.set(0, 8, myGunHeading);
-			matrix.set(0, 9, xDistance);
-			matrix.set(0, 10, yDistance);
+			matrix.set(0, 9, x);
+			matrix.set(0, 10, y);
+			matrix.set(0, 11, enemyX);
+			matrix.set(0, 12, enemyY);
 
 			return matrix;
 		}

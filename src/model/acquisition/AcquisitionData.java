@@ -103,6 +103,8 @@ public class AcquisitionData {
 				getMyHeading(),
 				getMyRadarHeading(),
 				getMyGunHeading(),
+				myRobot.getX(),
+				myRobot.getY(),
 				getXDistance(),
 				getYDistance()
 			);
