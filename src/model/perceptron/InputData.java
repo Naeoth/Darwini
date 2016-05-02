@@ -9,7 +9,9 @@
 package model.perceptron;
 
 /**
- * Object which contains all the entries values that we will use in the neural network decision process
+ * Object which contains all the entries values that we will use in the neural network decision process.
+ * The parameters are collected when our robot scanned an other which will be the "enemy" for this turn.
+ * Thanks to those parameters, our robot will take a decision for this turn until the next scanned.
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain
@@ -28,63 +30,71 @@ public class InputData {
 		 */
 		protected static final int INPUT_NEURONS = 11;
 	
+
 		/**
 		 * 
 		 */
 		private boolean success[];
 		
+
+
 		/**
-		 * 
+		 * The direction our robot is going relative to the enemy our robot has scanned
 		 */
 		private double myBearing;
 		
+
 		/**
-		 * 
+		 * The distance to the enemy our robot has scanned
 		 */
 		private double distance;
 		
+
 		/**
-		 * 
+		 * Our robot's energy
 		 */
 		private double myEnergy;
 		
+
 		/**
-		 * 
+		 * The enemy's velocity
 		 */
 		private double opponentVelocity;
-		
-		/*
-		 * 
+
+
+		/**
+		 * Our robot velocity
 		 */
 		private double myVelocity;
-		
+
+
 		/**
-		 * 
+		 * The direction the enemy is facing
 		 */
 		private double opponentHeading;
 
 		/**
-		 * 
+		 * The direction our robot is facing
 		 */
 		private double myHeading;
 		
 		/**
-		 * 
+		 * The direction our radar is facing
 		 */
 		private double myRadarHeading;
 		
 		/**
-		 * 
+		 * The direction our gun is facing
 		 */
 		private double myGunHeading;
 		
 		/**
-		 * 
+		 * The x distance to the enemy
 		 */
 		private double xDistance;
 		
 		/**
-		 * 
+		 * The y distance to our enemy
 		 */
 		private double yDistance;
 		
