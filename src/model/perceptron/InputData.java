@@ -183,6 +183,8 @@ public class InputData {
 		 *	   the succes or not of a collected example
 		 *	</p>
 		 *
+		 * 	@param index The index of the success table space that we want to set true
+		 *
 		 *	@see controller.AcquisitionBot
 		 *	@see model.acquisition.AcquisitionData
 		 */
