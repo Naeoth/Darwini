@@ -11,7 +11,7 @@ package model;
 import java.util.Locale;
 
 /**
- *   of a matrix system which will be useful for the neural network representation and training
+ *   Implementation of a matrix system which will be used in the neural network representation and training
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain
@@ -20,11 +20,18 @@ import java.util.Locale;
  * @author MATHIEU Vianney
  * @author VAILLAND Guillaume
  */
+
 public class Matrix {
 	
 	/*	----- ATTRIBUTE -----	*/
 
 		/**
+		 * The matrix table
+		 * <p>
+		 * Principle Matrix's features which represent the matrix by a 2D table
+		 * </p>
+		 *
+		 * @see model.Matrix#Matrix(int, int)
 		 *
 		 */
 		private double[][] matrix;
@@ -33,7 +40,12 @@ public class Matrix {
 	/*	----- CONSTRUCTOR -----	*/
 
 		/**
+		 * The matrix's constructor
 		 *
+		 * @param numColumns Matrix's number of columns
+		 * @param numRows Matrix's number of rows
+		 *
+		 * @see Matrix
 		 */
 		public Matrix(int numRows, int numColumns) {
 			matrix = new double[numRows][numColumns];
@@ -78,21 +90,30 @@ public class Matrix {
 	/*	----- ACCESSORS -----	*/
 		
 		/**
-		 * 
+		 * Accessor to a value contains in the matrix thanks to its row's number and column's number
+		 *
+		 * @param numRows the row's number of the value you want
+		 * @param numColumns the column's number of the value you want
+		 *
+		 * @return the value contains in matrix[numRows][numColumns]
 		 */
 		public double get(int numRows, int numColumns) {
 			return matrix[numRows][numColumns];
 		}
 		
 		/**
-		 * @return the number of rows
+		 * Count the number of rows
+		 *
+		 * @return the rows' number of th matrix
 		 */
 		public int getRowCount() {
 			return matrix.length;
 		}
 		
 		/**
-		 * @return the number of Column
+		 * Count the number of columns
+		 *
+		 * @return the columns' number of the matrix
 		 */
 		public int getColumnCount() {
 			return matrix[0].length;
@@ -102,8 +123,9 @@ public class Matrix {
 	/*	----- OTHER METHODS -----	*/
 
 		/**
-		 *
+		 * Print a matrix
 		 */
+
 		public String toString() {
 			String ret = "";
 			for (int i = 0; i < matrix.length; i++)
