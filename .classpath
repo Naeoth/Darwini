@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/media/romain/Data/Documents/Insa3Ainfo/Projet3A/Projet2014-2015/Robocode/libs/robocode.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
