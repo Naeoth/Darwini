@@ -6,17 +6,16 @@
  * class Perceptron.java
  */
 
-package model;
+package model.perceptron;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
-
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
@@ -29,14 +28,14 @@ import javax.xml.stream.XMLStreamWriter;
  * @author MATHIEU Vianney
  * @author VAILLAND Guillaume
  */
-public class Perceptron {
+public class NeuralNetwork {
 	
 	/*	----- ATTRIBUTES -----	*/
 	
 		/**
 		 * 
 		 */
-		public static final int HIDDEN_NEURONS = 200;
+		private static final int HIDDEN_NEURONS = 200;
 
         /**
 		 * 
@@ -59,7 +58,7 @@ public class Perceptron {
 		/**
 		 *
 		 */
-		public Perceptron() {
+		public NeuralNetwork() {
 			inputWeights = new Matrix(InputData.INPUT_NEURONS, HIDDEN_NEURONS);
 			randomizeIOMatrix(inputWeights);
 			outputWeights = new Matrix(HIDDEN_NEURONS, OutputData.OUTPUT_NEURONS);
@@ -73,7 +72,7 @@ public class Perceptron {
 		 * 
 		 * @param f a
 		 */
-		public Perceptron(File f) {
+		public NeuralNetwork(File f) {
 			try {
 			    // Get an input factory and instantiate a reader
 				XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader( new FileInputStream(f) );

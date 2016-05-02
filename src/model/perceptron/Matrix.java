@@ -6,7 +6,7 @@
  * class Matrix.java
  */
 
-package model;
+package model.perceptron;
 
 import java.util.Locale;
 
@@ -127,12 +127,12 @@ public class Matrix {
 		 */
 
 		public String toString() {
-			String ret = "";
+			StringBuilder sb = new StringBuilder(matrix.length * matrix[0].length);
 			for (int i = 0; i < matrix.length; i++)
 				for (int j = 0; j < matrix[0].length; j++)
-					ret += String.format(Locale.US, "%.6f", matrix[i][j]) + " ";
+					sb.append(String.format(Locale.US, "%.6f", matrix[i][j])).append(" ");
 
-			return ret;
+			return sb.toString();
 		}
 
 }

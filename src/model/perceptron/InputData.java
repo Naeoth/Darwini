@@ -6,7 +6,7 @@
  * class InputData.java
  */
 
-package model;
+package model.perceptron;
 
 /**
  * Object which contains all the entries values that we will use in the neural network decision process.
@@ -28,7 +28,7 @@ public class InputData {
 		/**
 		 * Number of entries
 		 */
-		public static final int INPUT_NEURONS = 11;
+		protected static final int INPUT_NEURONS = 11;
 	
 
 		/**
@@ -137,27 +137,27 @@ public class InputData {
 		 * @return a
 		 */
 		public String toSSVM() {
-			String ret = "";
+			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < OutputData.OUTPUT_NEURONS; i++)
 				if (success[i])
-					ret += "1 ";
+					sb.append("1 ");
 				else
-					ret += "-1 ";
-			
-			ret += "1:" + myBearing + " ";
-			ret += "2:" + distance + " ";
-			ret += "3:" + myEnergy + " ";
-			ret += "4:" + opponentVelocity + " ";
-			ret += "5:" + myVelocity + " ";
-			ret += "6:" + opponentHeading + " ";
-			ret += "7:" + myHeading + " ";
-			ret += "8:" + myRadarHeading + " ";
-			ret += "9:" + myGunHeading + " ";
-			ret += "10:" + xDistance + " ";
-			ret += "11:" + yDistance;
+					sb.append("-1 ");
 
-			return ret;
-		}
+			return sb
+					.append("1:").append(myBearing)
+					.append(" 2:").append(distance)
+					.append(" 3:").append(myEnergy)
+					.append(" 4:").append(opponentVelocity)
+					.append(" 5:").append(myVelocity)
+					.append(" 6:").append(opponentHeading)
+					.append(" 7:").append(myHeading)
+					.append(" 8:").append(myRadarHeading)
+					.append(" 9:").append(myGunHeading)
+					.append(" 10:").append(xDistance)
+					.append(" 11:").append(yDistance)
+					.toString();
+        }
 		
 		/**
 		 * 

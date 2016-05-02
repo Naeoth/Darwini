@@ -6,11 +6,12 @@
  * class AcquisitionData.java
  */
 
-package model;
+package model.acquisition;
 
 import controller.InitialRobot;
+import model.perceptron.InputData;
+import robocode.Rules;
 import robocode.ScannedRobotEvent;
-import robocode.BattleRules;
 
 /**
  *
@@ -24,7 +25,31 @@ import robocode.BattleRules;
  */
 public class AcquisitionData {
 	
-	/*	----- ATTRIBUTE -----	*/
+	/*	----- ATTRIBUTES -----	*/
+
+        /**
+         *
+         */
+        private static final double MAX_BEARING = 180.0;
+
+        /**
+         *
+         */
+        private static final double MAX_DEGREE = 360.0;
+
+        /**
+         *
+         */
+        private double maxEnergy;
+
+        /**
+         *
+         */
+        private double maxWidth;
+        /**
+         *
+         */
+        private double maxHeight;
 	
 		/**
 		 * 
@@ -36,12 +61,6 @@ public class AcquisitionData {
 		 */
 		private ScannedRobotEvent opponentRobot;
 
-        /**
-         *
-         */
-        private BattleRules rules;
-
-
 	
 	/*	----- CONSTRUCTOR -----	*/
 
@@ -49,19 +68,19 @@ public class AcquisitionData {
 		 * 
 		 * 
 		 * @param myRobot a
-		 * @param rules a
 		 */
-		public AcquisitionData(InitialRobot myRobot, BattleRules rules) {
+		public AcquisitionData(InitialRobot myRobot) {
 			this.myRobot = myRobot;
-			this.rules = rules;
-			opponentRobot = null;
+            maxEnergy = myRobot.getEnergy();
+            maxWidth = myRobot.getBattleFieldWidth();
+            maxHeight = myRobot.getBattleFieldHeight();
 		}
 
 	
 	/*	----- OTHER METHODS -----	*/
 	
 		/**
-		 * Launch a DOData creation with all the parameters necessary
+		 * Launch a InputData creation with all the parameters necessary
 		 * 
 		 * @param opponentRobot a
 		 */
@@ -83,13 +102,6 @@ public class AcquisitionData {
 			);
 		}
 		
-		/**
-		 * 
-		 */
-		private double convert(double max, double value) {
-			return value / max;
-		}
-		
 		
 	/*	----- ACQUISITION METHODS -----	*/
 			
@@ -99,7 +111,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getMyBearing() {
-			return convert(360, opponentRobot.getBearing());
+			return opponentRobot.getBearing() / MAX_BEARING;
 		}
 		
 		/**
@@ -108,7 +120,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getDistance() {
-			return convert(800, opponentRobot.getDistance());
+			return opponentRobot.getDistance() / maxWidth;
 		}
 
 		/**
@@ -117,7 +129,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getMyEnergy() {
-			return convert(800, myRobot.getEnergy());
+			return myRobot.getEnergy() / maxEnergy;
 		}
 		
 		/**
@@ -126,7 +138,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getOpponentVelocity() {
-			return convert(800, opponentRobot.getVelocity());
+			return opponentRobot.getVelocity() / Rules.MAX_VELOCITY;
 		}
 		
 		/**
@@ -135,7 +147,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getMyVelocity() {
-			return convert(360, myRobot.getVelocity());
+			return myRobot.getVelocity() / Rules.MAX_VELOCITY;
 		}
 		
 		/**
@@ -144,7 +156,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getOpponentHeading() {
-			return convert(360, opponentRobot.getHeading());
+			return opponentRobot.getHeading() / MAX_DEGREE;
 		}
 		
 		/**
@@ -153,7 +165,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getMyHeading(){
-			return myRobot.getHeading();
+			return myRobot.getHeading() / MAX_DEGREE;
 		}
 
 		/**
@@ -162,7 +174,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getMyRadarHeading(){
-			return myRobot.getRadarHeading();
+			return myRobot.getRadarHeading() / MAX_DEGREE;
 		}
 		
 		/**
@@ -171,7 +183,7 @@ public class AcquisitionData {
          * @return a
 		 */
 		private double getMyGunHeading(){
-			return myRobot.getGunHeading();
+			return myRobot.getGunHeading() / MAX_DEGREE;
 		}
 		
 		/**
@@ -195,7 +207,7 @@ public class AcquisitionData {
 			else if (angle == 90 || angle == 270)
                 ret = distance;
 
-            return ret;
+            return ret;// / maxWidth;
 		}
 
 		/**
@@ -219,7 +231,7 @@ public class AcquisitionData {
 			else if (angle == 0 || angle == 180 || angle == 360)
                 ret = distance;
 
-            return ret;
+            return ret;// / maxHeight;
 		}
 		
 }

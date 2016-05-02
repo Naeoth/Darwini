@@ -6,7 +6,7 @@
  * class OutputData.java
  */
 
-package model;
+package model.perceptron;
 
 /**
  *	Object which contains the neural network result. Every parameters incarnates a decision's value.
@@ -28,7 +28,7 @@ public class OutputData {
 		/**
 		 *  Number of output Neurons of the neural network
 		 */
-		public static final int OUTPUT_NEURONS = 8;
+		protected static final int OUTPUT_NEURONS = 8;
 		
 		/**
 		 * First output neuron

@@ -8,9 +8,9 @@
 
 package controller;
 
-import model.AcquisitionData;
-import model.OutputData;
-import model.Perceptron;
+import model.acquisition.AcquisitionData;
+import model.perceptron.OutputData;
+import model.perceptron.NeuralNetwork;
 
 import robocode.ScannedRobotEvent;
 
@@ -30,13 +30,13 @@ public class Darwini extends InitialRobot {
 	/*	----- ATTRIBUTES -----	*/
 
 		/**
-		 * The Perceptron xml file
+		 * The NeuralNetwork xml file
 		 * <p>
 		 * The file which contains the perceptron's weighting coefficients that our Darwini robot will use. 
 		 * This file is charged during the perceptron creation 
 		 * </p>
 		 * 
-		 * @see model.Perceptron
+		 * @see NeuralNetwork
 		 * @see controller.Darwini#run()
 		 */
 		public static final String PERCEPTRON_FILE = "Perceptron.xml";
@@ -53,28 +53,25 @@ public class Darwini extends InitialRobot {
 		 * (Every time it scans an enemy)
 		 * </p>
 		 * 
-		 * @see model.AcquisitionData
+		 * @see AcquisitionData
 		 * @see controller.Darwini#run()
 		 * @see controller.Darwini#onScannedRobot(ScannedRobotEvent)
 		 */
-		private AcquisitionData acquiData;
-	
-		
+		private AcquisitionData acquisitionData;
+
 		/**
-		 * The perceptron "perceptronShoot"
+		 * The perceptron "neuralNetworkShoot"
 		 * 
 		 * <p>
 		 * This is the perceptron used in the Darwini's decision process.
 		 * </p>
 		 * 
-		 * @see model.Perceptron
+		 * @see NeuralNetwork
 		 * @see controller.Darwini#run()
 		 * @see controller.Darwini#onScannedRobot(ScannedRobotEvent)
 		 * 
 		 */
-		private Perceptron perceptronShoot;
-		
-		
+		private NeuralNetwork perceptron;
 		
 		/**
 		 * The OutputData "decisions"
@@ -84,7 +81,7 @@ public class Darwini extends InitialRobot {
 		 * gets methods
 		 * </p>
 		 * 
-		 * @see model.OutputData
+		 * @see OutputData
 		 * @see controller.Darwini#onScannedRobot(ScannedRobotEvent)
 		 * 
 		 */
@@ -97,45 +94,45 @@ public class Darwini extends InitialRobot {
 		 * The run methods
 		 * 
 		 * <p>
-		 * We initialized the Darwini's perceptron which will take all decisions and the object acquiData which will 
+		 * We initialized the Darwini's perceptron which will take all decisions and the object acquisitionData which will
 		 * be collecting, every turns, the environment data needed in the decision process.
 		 * </p>
 		 * 
-		 * @see controller.Darwini#perceptronShoot
-		 * @see controller.Darwini#acquiData
+		 * @see controller.Darwini#perceptron
+		 * @see controller.Darwini#acquisitionData
 		 * @see controller.Darwini#PERCEPTRON_FILE
 		 * 
 		 */
 		
 		@Override
 		public void run() {
-			perceptronShoot = new Perceptron( getDataFile(PERCEPTRON_FILE) );
-            acquiData = new AcquisitionData(this, null);
+			perceptron = new NeuralNetwork( getDataFile(PERCEPTRON_FILE) );
+            acquisitionData = new AcquisitionData(this);
 
-			super.run();
+            super.run();
 		}
 		
 		/**
 		 * The reaction of Darwini when it has scanned an enemy
 		 * 
 		 * <p>
-		 * We load the environment data (thanks to acquiData) in the Darwini's perceptron and collect the different
+		 * We load the environment data (thanks to acquisitionData) in the Darwini's perceptron and collect the different
 		 * perceptron decisions to act
 		 * </p>
 		 * 
 		 * @param e
 		 * 			the scanned robot
 		 * 
-		 * @see controller.Darwini#acquiData
+		 * @see controller.Darwini#acquisitionData
 		 * @see controller.Darwini#decisions
-		 * @see controller.Darwini#perceptronShoot
+		 * @see controller.Darwini#perceptron
 		 */
 		
 		@Override
 		public void onScannedRobot(ScannedRobotEvent e) {
-			decisions = perceptronShoot.train( acquiData.acquisition(e) );
+			decisions = perceptron.train( acquisitionData.acquisition(e) );
 
-            System.out.println(decisions.getTurnGunLeft());
+            System.out.println(decisions.toString());
 		}
 
 }
