@@ -18,7 +18,7 @@ import model.acquisition.Database;
 import model.acquisition.AcquisitionData;
 
 /**
- * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
+ * A robot based on an existing one, however this one is used to collect data only useful in the creation
  * Must extend an operational robot extending AdvancedRobot
  *
  * @version 1.0 - 17/11/15

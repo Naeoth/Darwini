@@ -26,55 +26,73 @@ public class OutputData {
 	/*	----- ATTRIBUTES -----	*/
 	
 		/**
-		 *  Number of output Neurons of the neural network
+		 * <p>
+		 *  	Number of output Neurons of the neural network
+		 * </p>
 		 */
 		protected static final int OUTPUT_NEURONS = 8;
 		
 		/**
-		 * First output neuron
-		 * The shooting decision
+		 * <p>
+		 * 		First output neuron
+		 * 		The shooting decision
+		 * </p>
 		 */
 		private double shoot;
 		
 		/**
-		 * Second output neuron
-		 * The turn right decision
+		 * <p>
+		 * 		Second output neuron
+		 * 		The turn right decision
+		 * </p>
 		 */
 		private double turnRight;
 		
 		/**
-		 * Third output neuron
-		 * The turn left decision
+		 * <p>
+		 * 		Third output neuron
+		 * 		The turn left decision
+		 * </p>
 		 */
 		private double turnLeft;
 		
 		/**
-		 * Fourth output neuron
-		 * The gun turn right decision
+		 * <p>
+		 * 		Fourth output neuron
+		 * 		The gun turn right decision
+		 * </p>
 		 */
 		private double turnGunRight;
 		
 		/**
-		 * Fifth ouput neuron
-		 * The gun turn left decision
+		 * <p>
+		 * 		Fifth ouput neuron
+		 * 		The gun turn left decision
+		 * </p>
 		 */
 		private double turnGunLeft;
 		
 		/**
-		 * Sixth output neuron
-		 * The radar turn right decision
+		 * <p>
+		 * 		Sixth output neuron
+		 * 		The radar turn right decision
+		 * </p>
 		 */
 		private double turnRadarRight;
 		
 		/**
-		 * Seventh output neuron
-		 * The radar turn left decision
+		 * <p>
+		 * 		Seventh output neuron
+		 * 		The radar turn left decision
+		 * </p>
 		 */
 		private double turnRadarLeft;
 		
 		/**
-		 * Eighth output neuron
-		 * The move ahead decision
+		 * <p>
+		 * 		Eighth output neuron
+		 * 		The move ahead decision
+		 * </p>
 		 */
 		private double moveAhead;
 
@@ -82,7 +100,9 @@ public class OutputData {
 	/*	----- CONSTRUCTOR -----	*/
 		
 		/**
-		 * 
+		 * The OutputData constructor
+		 *
+		 * @param results The neural network output matrix
 		 */
 		public OutputData(Matrix results) {
 			shoot = results.get(0, 0);
