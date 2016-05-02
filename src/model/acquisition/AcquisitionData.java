@@ -40,16 +40,22 @@ public class AcquisitionData {
         /**
          *
          */
-        private double maxEnergy;
+        private static final double MAX_ENERGY = 100.0;
 
         /**
          *
          */
         private double maxWidth;
+
         /**
          *
          */
         private double maxHeight;
+
+        /**
+         *
+         */
+        private double maxDistance;
 	
 		/**
 		 * 
@@ -71,9 +77,9 @@ public class AcquisitionData {
 		 */
 		public AcquisitionData(InitialRobot myRobot) {
 			this.myRobot = myRobot;
-            maxEnergy = myRobot.getEnergy();
             maxWidth = myRobot.getBattleFieldWidth();
             maxHeight = myRobot.getBattleFieldHeight();
+            maxDistance = Math.sqrt(Math.pow(maxWidth, 2) + Math.pow(maxHeight, 2));
 		}
 
 	
@@ -120,7 +126,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getDistance() {
-			return opponentRobot.getDistance() / maxWidth;
+			return opponentRobot.getDistance() / maxDistance;
 		}
 
 		/**
@@ -129,7 +135,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getMyEnergy() {
-			return myRobot.getEnergy() / maxEnergy;
+			return myRobot.getEnergy() / MAX_ENERGY;
 		}
 		
 		/**
@@ -192,7 +198,7 @@ public class AcquisitionData {
 		 * @return a
 		 */
 		private double getXDistance() {
-			double angle = myRobot.getRadarHeading();
+			/*double angle = myRobot.getRadarHeading();
 			double distance = opponentRobot.getDistance();
             double ret = 0;
 
@@ -207,8 +213,12 @@ public class AcquisitionData {
 			else if (angle == 90 || angle == 270)
                 ret = distance;
 
-            return ret;// / maxWidth;
-		}
+            return ret;*/// / maxWidth;
+            /*double angle = Math.toRadians((myRobot.getHeading() + opponentRobot.getBearing()) % 360);
+            return (int)(myRobot.getX() + Math.sin(angle) * opponentRobot.getDistance());*/
+
+            return myRobot.getX() + opponentRobot.getDistance() * Math.sin(myRobot.getHeadingRadians() + opponentRobot.getBearingRadians());
+        }
 
 		/**
 		 *
