@@ -19,7 +19,26 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
+ * <p>
+ *     This object represent a Neural Network used in the perceptron process.
+ *     We load a matrix of environment data (from InputData) and after few calculations the neural network gives us
+ *     a matrix of values representing decisions and transformed as an object OutputData.
+ *     Those calculations (described further) needs some weighting coefficients which are the parameters of a neural network.
+ *     Our job is to define the right weighting coefficient for the neural network to be efficient.
+ *     We can set those coefficient thanks to supervised process (AcquitisionBot and iriselm)
+ *     or un-supervised process (Genetic algorithm)
  *
+ * </p>
+ *
+ * @see InputData
+ * @see OutputData
+ *
+ * @see controller.AcquisitionBot
+ *
+ * @see controller.Darwini
+ * @see	model.genetic.GeneticAlgorithm
+ * @see model.genetic.Score
+ * @see model.genetic.NaturalSelection
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain
@@ -33,22 +52,32 @@ public class NeuralNetwork {
 	/*	----- ATTRIBUTES -----	*/
 	
 		/**
-		 * 
+		 * <p>
+		 *     Number of hidden neuron of the neural network
+		 * </p>
 		 */
 		private static final int HIDDEN_NEURONS = 200;
 
         /**
-		 * 
+		 * <p>
+		 *     The first matrix of weighting coefficient
+		 *     We'll call it the input weights matrix
+		 * </p>
 		 */
 		private Matrix inputWeights;
 		
 		/**
-		 * 
+		 * <p>
+		 *     The second matrix of weighting coefficient
+		 *     We'll call it the output weight matrix
+		 * </p>
 		 */
 		private Matrix outputWeights;
 	
 		/**
-		 * 
+		 * <p>
+		 *     The bias vector (bias neuron)
+		 * </p>
 		 */
 		private Matrix bias;
 	
@@ -56,7 +85,10 @@ public class NeuralNetwork {
 	/*	----- CONSTRUCTOR -----	*/
 
 		/**
-		 *
+		 * <p>
+		 *     The neural network constructor with random weighting coefficient
+		 *     (used in the genetic algorithm process)
+		 * </p>
 		 */
 		public NeuralNetwork() {
 			inputWeights = new Matrix(InputData.INPUT_NEURONS, HIDDEN_NEURONS);
@@ -68,9 +100,12 @@ public class NeuralNetwork {
 		}
 
 		/**
+		 * <p>
+		 *     The neural network constructor with a file containing the weighting coefficients
+		 *     from the supervised process (from iriselm treatment)
+		 * </p>
 		 * 
-		 * 
-		 * @param f a
+		 * @param f The file containing the coefficients
 		 */
 		public NeuralNetwork(File f) {
 			try {
@@ -109,24 +144,21 @@ public class NeuralNetwork {
     /*	----- MUTATORS -----	*/
 
         /**
-         *
-         * @return a
+         * @return The input weights Matrix
          */
         public Matrix getInputWeights() {
             return inputWeights;
         }
 
         /**
-         *
-         * @return a
+         * @return The output weights Matrix
          */
         public Matrix getOutputWeights() {
             return outputWeights;
         }
 
         /**
-         *
-         * @return a
+         * @return The bias vector
          */
         public Matrix getBias() {
             return bias;
@@ -136,7 +168,11 @@ public class NeuralNetwork {
 	/*	----- OTHER METHODS -----	*/
 		
 		/**
-		 * Initialse la matrice dans le sens donné par le XML
+		 * <p>
+		 * 		Permute the matrix to the right direction for the xml presentation
+		 * </p>
+		 *
+		 * @see  NeuralNetwork#initMatrix(XMLStreamReader)
 		 */
 		private Matrix initMatrix(XMLStreamReader xmlEventReader) {
 			int rows = Integer.parseInt( xmlEventReader.getAttributeValue(0) );
@@ -154,9 +190,13 @@ public class NeuralNetwork {
 			return matrix;
 		}
 
+
 		/**
-		 * 
-		 * @param matrix a
+		 *	<p>
+		 *	   Change the value of a matrix in randomize values (multiplicated by 2 and minus one)
+		 *	</p>
+		 *
+		 * @param matrix The matrix we want to change
 		 */
 		private void randomizeIOMatrix(Matrix matrix) {
 			for (int i = 0; i < matrix.getRowCount(); i++)
@@ -165,8 +205,11 @@ public class NeuralNetwork {
 		}
 
 		/**
+		 * <p>
+		 *     Change the value of a matrix in randomize values
+		 * </p>
 		 *
-		 * @param matrix a
+		 * @param matrix The matrix we want to change
 		 */
 		private void randomizeBiasMatrix(Matrix matrix) {
 			for (int i = 0; i < matrix.getRowCount(); i++)
@@ -175,7 +218,18 @@ public class NeuralNetwork {
 		}
 		
 		/**
-		 * 
+		 * <p>
+		 *     The training process (decision process). We load an InputData containing the environment values of a current
+		 *     turn in this method. Then, this method calculate (thanks to the weighting coeffcients) the decision values
+		 *     (load in a Outputdata)
+		 * </p>
+		 *
+		 * @param entries The InputData containing the environment data of the current turn
+		 *
+		 * @return An OutputData object created from the perceptron results
+		 *
+		 * @see InputData
+		 * @see OutputData
 		 */
 		public OutputData train(InputData entries) {
 			// First Treatment
@@ -191,9 +245,12 @@ public class NeuralNetwork {
 		}
 		
 		/**
+		 * <p>
+		 *     This method is used to print a neural network in a XML file.
+		 *     A neural network is represented by its weighting coefficients.
+		 * </p>
 		 *
-		 *
-		 * @param f a
+		 * @param f The file where the neural network is printed
 		 *
 		 * @throws FileNotFoundException
          * @throws XMLStreamException
