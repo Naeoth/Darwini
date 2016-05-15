@@ -18,12 +18,14 @@ import model.acquisition.Database;
 import model.acquisition.AcquisitionData;
 
 /**
+ * <p>
  * A robot based on an existing one, however this one is used to collect
  * examples (which are represented by the environment data when the robot does an action and the success
  * of this action as a boolean).
  * Those examples are used in the supervised process only.
  * For now we only collect examples when the robot is shooting.
  * Careful to make AcquisitionBot fight against one robot at a time
+ * </p>
  *
  *
  * @version 1.0 - 17/11/15

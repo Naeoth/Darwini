@@ -15,8 +15,10 @@ import model.perceptron.NeuralNetwork;
 import robocode.ScannedRobotEvent;
 
 /**
+ * <p>
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
  * Must extend an operational robot extending AdvancedRobot
+ * </p>
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain

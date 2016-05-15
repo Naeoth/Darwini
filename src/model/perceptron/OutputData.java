@@ -9,9 +9,14 @@
 package model.perceptron;
 
 /**
+ * <p>
  *	Object which contains the neural network result. Every parameters incarnates a decision's value.
  *	Those values will be tested in the darwini execution. If the the value is superior to a predefined threshold
  *	then Darwini will take this decision.
+ * </p>
+ *
+ * @see NeuralNetwork
+ * @see InputData
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain

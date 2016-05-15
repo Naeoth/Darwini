@@ -16,7 +16,13 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
+ *  <p>
+ *  Class called by the Genetic algorithm after the ten games of the individuals. It creates an object Score for every individuals (robots)
+ *  generate by the genetic algorithm. It allows us to compare the efficiency of those robots.
+ *  </p>
  *
+ * @see GeneticAlgorithm
+ * @see NaturalSelection
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain
@@ -30,7 +36,9 @@ public class Score implements Comparable<Score> {
     /*	----- ATTRIBUTES -----	*/
 
         /**
-         *
+         *  <p>
+         *      The robot's number of victories
+         *  </p>
          */
         private int victory;
 
@@ -45,7 +53,9 @@ public class Score implements Comparable<Score> {
         private int survivalBonus;
 
         /**
-         *
+         *  <p>
+         *      The robot's number of damage it gave
+         *  </p>
          */
         private int bulletDamage;
 
@@ -68,6 +78,9 @@ public class Score implements Comparable<Score> {
 	/*	----- CONSTRUCTOR -----	*/
 
         /**
+         * <p>
+         *     The construction of this object is based on the file we get when the games are over.
+         * </p>
          *
          * @param fileName
          */
@@ -90,6 +103,14 @@ public class Score implements Comparable<Score> {
 
 
     /*	----- OTHER METHOD -----	*/
+
+        /**
+         * <p>
+         *     Method used to compare the score of two robots
+         * </p>
+         *
+         * @param o the score of the second robot
+         */
 
         @Override
         public int compareTo(Score o) {

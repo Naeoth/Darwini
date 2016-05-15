@@ -11,7 +11,9 @@ package model.perceptron;
 import java.util.Locale;
 
 /**
- *   Implementation of a matrix system which will be used in the neural network representation and training
+ * <p>
+ *     Implementation of a matrix system which will be used in the neural network representation and training
+ * </p>
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain

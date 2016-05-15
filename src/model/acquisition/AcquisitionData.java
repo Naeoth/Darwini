@@ -14,9 +14,11 @@ import robocode.Rules;
 import robocode.ScannedRobotEvent;
 
 /**
+ * <p>
  * This object is called by a robot in order to create a new InputData with reduced input values.
  * The values are reduced thanks to maximums which are the AcquisitionData's attribute.
  * This reduction is necessary in order to get entries values between -1 and 1 for our perceptron.
+ * </p>
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain

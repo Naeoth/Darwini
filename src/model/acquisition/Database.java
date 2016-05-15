@@ -16,9 +16,11 @@ import model.perceptron.InputData;
 import robocode.RobocodeFileWriter;
 
 /**
+ * <p>
  * The Database object is a database of InputData's.
  * This class is only used in the supervised process.
  * AcquisitionBot uses it to stock its examples before saving it in its SSVM file.
+ * </p>
  *
  * @see controller.AcquisitionBot
  * @see InputData
