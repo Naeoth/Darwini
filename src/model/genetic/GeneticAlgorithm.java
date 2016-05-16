@@ -23,8 +23,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
- * Must extend an operational robot extending AdvancedRobot
+ * This class implements a genetic algorithm to robocode to find the parameters of a perceptron.
  *
  * @version 1.0 - 17/11/15
  * @author BOIZUMAULT Romain
@@ -38,22 +37,32 @@ public class GeneticAlgorithm {
 	/*	----- PATHS -----	*/
 
         /**
-         *
+         * <p>
+		 *     The directory where the population will be saved.
+         * </p>
          */
         private static final String POPULATION_DIRECTORY = "data/population/";
 
         /**
-         *
+         * <p>
+		 *     The directory where the Darwini's perceptron is loaded.
+		 *     This directory can change if you use Eclipse or IntelliJ.
+		 *     Currently, it is set to IntelliJ configuration.
+         * </p>
          */
         private static final String ROBOT_DIRECTORY = "out/production/Darwini/controller/Darwini.data/";
 
         /**
-         *
+         * <p>
+		 *     The name of an xml file.
+         * </p>
          */
         private static final String INDIVIDUAL_FILENAME = "Individual";
 
         /**
-         *
+         * <p>
+		 *
+         * </p>
          */
         private static final String ROBOCODE_PATH = "libs/robocode.jar";
 
@@ -261,17 +270,7 @@ public class GeneticAlgorithm {
 		 */
 		private synchronized Score fitness(int individual) {
             try {
-                // Copy the tested perceptron in the correct directory
-                FileInputStream is = new FileInputStream(POPULATION_DIRECTORY + INDIVIDUAL_FILENAME + (individual + 1) + ".xml");
-                FileOutputStream os = new FileOutputStream(ROBOT_DIRECTORY + Darwini.PERCEPTRON_FILE);
-                byte[] buffer = new byte[1024];
-                int length;
-
-                while ((length = is.read(buffer)) > 0)
-                    os.write(buffer, 0, length);
-
-                is.close();
-                os.close();
+                copyFile(POPULATION_DIRECTORY + INDIVIDUAL_FILENAME + (individual + 1) + ".xml", ROBOT_DIRECTORY + Darwini.PERCEPTRON_FILE);
 
                 // Launch the test in Robocode
                 Runtime.getRuntime().exec("java -Xmx512M -DWORKINGDIRECTORY=data -cp " + ROBOCODE_PATH + " robocode.Robocode -nosound -nodisplay -battle " + BATTLE_PATH + " -results " + RESULTS_PATH).waitFor();
@@ -331,6 +330,23 @@ public class GeneticAlgorithm {
         /**
          *
          */
+        private void copyFile(String inputFile, String outputFile) throws IOException {
+            // Copy the tested perceptron in the specified directory
+            FileInputStream is = new FileInputStream(inputFile);
+            FileOutputStream os = new FileOutputStream(outputFile);
+            byte[] buffer = new byte[1024];
+            int length;
+
+            while ((length = is.read(buffer)) > 0)
+                os.write(buffer, 0, length);
+
+            is.close();
+            os.close();
+        }
+
+        /**
+         *
+         */
 		public void savePopulation() {
             ExecutorService executor = Executors.newFixedThreadPool(NB_THREADS);
             for (int i = 0; i < POPULATION_SIZE; i++) {
@@ -351,8 +367,20 @@ public class GeneticAlgorithm {
             }
         }
 
-        public Score[] getScores() {
-            return this.scores;
-        }
+		/**
+		 *
+		 */
+		public int whoIsTheBest(boolean copy) {
+			int best = keepBest();
+
+			if (copy)
+				try {
+					copyFile(POPULATION_DIRECTORY + INDIVIDUAL_FILENAME + (best + 1) + ".xml", ROBOT_DIRECTORY + Darwini.PERCEPTRON_FILE);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			return best;
+		}
 
 }

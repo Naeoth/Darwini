@@ -24,15 +24,13 @@ public class NaturalSelection {
     /**
      *
      */
-    private static final int NUMBER_GENERATION = 1;
+    private static final int NUMBER_GENERATION = 5;
 
     public static void main(String[] args) {
         GeneticAlgorithm ga = new GeneticAlgorithm();
-        System.out.println("Le meilleur de tous les robots se situe à l'indice n°" +ga.keepBest());
-
-        //ga.generate(1);
-        //ga.savePopulation();
-
+        ga.generate(NUMBER_GENERATION);
+        ga.savePopulation();
+        System.out.println("The best robot is Individual" + (ga.whoIsTheBest(true) + 1) + ".xml, try it !");
     }
 
 }

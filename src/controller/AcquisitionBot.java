@@ -19,12 +19,12 @@ import model.acquisition.AcquisitionData;
 
 /**
  * <p>
- * A robot based on an existing one, however this one is used to collect
- * examples (which are represented by the environment data when the robot does an action and the success
- * of this action as a boolean).
+ * A robot based on an existing one, however this one is used to collect examples (which are represented by the
+ * environment data when the robot does an action and the success of this action as a boolean).
  * Those examples are used in the supervised process only.
- * For now we only collect examples when the robot is shooting.
- * Careful to make AcquisitionBot fight against one robot at a time
+ * For now, we only collect examples when the robot is shooting.
+ * You can easily add some collected data according to output neurons.
+ * Careful to make AcquisitionBot fight against one robot at a time.
  * </p>
  *
  *
@@ -41,7 +41,9 @@ public class AcquisitionBot extends InitialRobot {
 
 		/**
 		 * <p>
-		 *     The name of the SSVM file where AcquisitionBot is saving it examples.
+		 * The name of the SSVM file where the examples are savec.
+		 * Because of the Robocode security, this file will be save in the project compiler output directory in the
+		 * subdirectory "Darwini/controller/AcquisitionBot.data".
 		 * </p>
 		 */
 		private static final String SSVM_FILE = "data.ssvm";
@@ -56,7 +58,6 @@ public class AcquisitionBot extends InitialRobot {
 		 * @see model.perceptron.InputData
 		 */
 		private Database knowledges;
-
 
 		/**
 		 * <p>
@@ -84,12 +85,12 @@ public class AcquisitionBot extends InitialRobot {
 			knowledges = new Database();
 			acquisitionData = new AcquisitionData(this);
 
+			// MUST be call after the initialization (the initial robot can have an infinite loop).
             super.run();
 		}
 		
 		
 	/*	----- OTHER METHODS -----	*/
-
 
 		/**
 		 * <p>
@@ -109,12 +110,9 @@ public class AcquisitionBot extends InitialRobot {
 		public void onScannedRobot(ScannedRobotEvent e) {
 			super.onScannedRobot(e);
 
-            // Get all data required for construct an InputData and save it in a database
+			// Get all data required for construct an InputData and save it in a database.
 			knowledges.insert( acquisitionData.acquisition(e) );
-
-            System.out.println(acquisitionData.acquisition(e).toSSVM());
 		}
-
 
 		/**
 		 * <p>
@@ -131,10 +129,9 @@ public class AcquisitionBot extends InitialRobot {
 		public void onBulletHit(BulletHitEvent e) {
 			super.onBulletHit(e);
 
-            // Set a success for the first output neuron in OutputData when the robot hits another robot
+			// Set a success for the first output neuron in OutputData when the robot hits another robot.
 			knowledges.getLastData().setSuccess(0);
 		}
-
 
 		/**
 		 * <p>
@@ -142,7 +139,7 @@ public class AcquisitionBot extends InitialRobot {
 		 *     We save the database in the SSVM_File
 		 * </p>
 		 *
-		 * @param event
+		 * @param event the event at the end of the game
 		 *
 		 * @see model.perceptron.InputData
 		 *
@@ -151,7 +148,7 @@ public class AcquisitionBot extends InitialRobot {
 		public void onRoundEnded(RoundEndedEvent event) {
 			super.onRoundEnded(event);
 
-            // At the end, save all the data collected in a SSVM format file
+			// At the end of the game, the robot saves all the data collected in a SSVM format file.
 			try {
 				knowledges.printToSSVM( getDataFile(SSVM_FILE) );
 			}
