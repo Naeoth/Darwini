@@ -109,9 +109,8 @@ public class Darwini extends InitialRobot {
 		@Override
 		public void run() {
 			perceptron = new NeuralNetwork( getDataFile(PERCEPTRON_FILE) );
-            acquisitionData = new AcquisitionData(this);
-
-            super.run();
+            		acquisitionData = new AcquisitionData(this);
+			super.run();
 		}
 		
 		/**
@@ -132,7 +131,70 @@ public class Darwini extends InitialRobot {
 		public void onScannedRobot(ScannedRobotEvent e) {
 			decisions = perceptron.train( acquisitionData.acquisition(e) );
 
-            System.out.println(decisions.toString());
+           		 System.out.println(decisions.toString());
 		}
 
+
+
+		public void decisionRobot(OutputData decisions){
+
+            decisions=this.decisions;
+
+			if (decisions.getShoot() > 0 ){
+				fire(10);
+			}
+
+			if (decisions.getTurnRight() > 0 ){
+				turnRightRadians(0);
+			}
+			if (decisions.getTurnLeft() > 0 ){
+				turnLeftRadians(3.14);	//Pi
+			}
+			
+			if (decisions.getTurnRadarRight() > 0 ){
+				turnRadarRightRadians(0);
+			}
+
+			if (decisions.getTurnRadarLeft() > 0 ){
+				turnRadarLeftRadians(3.14);
+			}
+	
+
+			if (decisions.getTurnGunRight() > 0 ){
+				turnGunRightRadians(0);
+			}
+
+			if (decisions.getTurnGunLeft() > 0 ){
+				turnGunLeftRadians(3.14);
+			}
+
+			if (decisions.getMoveAhead() > 0 ){
+				ahead(3);
+			}
+
+
+		}
+        public static void main(String[]arg){
+
+        }
+	
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
