@@ -174,10 +174,7 @@ public class Darwini extends InitialRobot {
 
 
 		}
-        public static void main(String[]arg){
 
-        }
-	
 
 }
 
