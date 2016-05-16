@@ -37,40 +37,50 @@ public class Score implements Comparable<Score> {
 
         /**
          *  <p>
-         *      The robot's number of victories
+         *      The robot's number of victories and its percentage
          *  </p>
          */
         private int victory;
 
         /**
-         *
+         * <p>
+         * 	The survival score for the robot in the battle
+         * </p>
          */
         private int survival;
 
         /**
-         *
+         * <p>
+         *	The last survivor bonus for the robot in the battle
+         * </p>
          */
         private int survivalBonus;
 
         /**
          *  <p>
-         *      The robot's number of damage it gave
+         * 	The bullet damage score for the robot in the battle
          *  </p>
          */
         private int bulletDamage;
 
         /**
-         *
+         * <p>
+         *	The bullet damage bonus for the robot in the battle
+         * </p> 
          */
         private int bulletBonus;
 
         /**
-         *
+         * <p>
+         * 	The ramming damage for the robot in the battle
+         * </p>
          */
         private int ramDamage;
 
         /**
-         *
+         * <p>
+         * 	The ramming damage bonus for the robot in the battle
+         * </p>
          */
         private int ramBonus;
 
@@ -79,9 +89,10 @@ public class Score implements Comparable<Score> {
 
         /**
          * <p>
-         *     The construction of this object is based on the file we get when the games are over.
+         *     The construction of this object is based on the file we get when the games are over. 
+         *     It represents the different parameters we choose to give a compare robots.
          * </p>
-         *
+		 *
          * @param fileName
          */
         public Score(String fileName, String robotName) {
@@ -106,7 +117,9 @@ public class Score implements Comparable<Score> {
 
         /**
          * <p>
-         *     Method used to compare the score of two robots
+         *     Method used to compare two robots thanks to their score. We choose the percentage of victory as 
+	 *	   main selection criterion. Then if two robots have the same percentage, we choose the one which 
+	 * 	   made the more damages.
          * </p>
          *
          * @param o the score of the second robot
@@ -114,16 +127,15 @@ public class Score implements Comparable<Score> {
 
         @Override
         public int compareTo(Score o) {
-			if (victory > o.victory)
-				return 1;
-			else if (victory == o.victory) {
-				if (survival > o.survival)
-					return 1;
-				else if (survival == o.survival)
-					return 0;
-			}
-
-			return -1;
+            if (victory > o.victory)
+                return 1;
+            if (victory == o.victory)
+                    if (bulletDamage >= o.bulletDamage)
+                        return 1;
+                    if (bulletDamage == o.bulletDamage)
+                        return 0;
+            else
+                        return -1 ;
         }
 
 }
