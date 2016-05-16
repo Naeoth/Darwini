@@ -126,8 +126,9 @@ public class Matrix {
 
 		/**
 		 * Print a matrix
+		 *
+		 * @return the printed matrix
 		 */
-
 		public String toString() {
 			StringBuilder sb = new StringBuilder(matrix.length * matrix[0].length);
 			for (int i = 0; i < matrix.length; i++)

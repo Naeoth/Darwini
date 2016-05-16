@@ -142,7 +142,6 @@ public class AcquisitionBot extends InitialRobot {
 		 * @param event the event at the end of the game
 		 *
 		 * @see model.perceptron.InputData
-		 *
 		 */
 		@Override
 		public void onRoundEnded(RoundEndedEvent event) {

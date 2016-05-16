@@ -59,20 +59,25 @@ public class GeneticAlgorithm {
          */
         private static final String INDIVIDUAL_FILENAME = "Individual";
 
-        /**
-         * <p>
-		 *
-         * </p>
+		/**
+		 * <p>
+		 *     The directory containing the Robocode library.
+		 * </p>
          */
         private static final String ROBOCODE_PATH = "libs/robocode.jar";
 
         /**
-         *
+         * <p>
+		 *     The battle configuration for test the individuals.
+		 *     Modify it if you want to change the opponent robot.
+         * </p>
          */
         private static final String BATTLE_PATH = "data/test.battle";
 
         /**
-         *
+         * <p>
+		 *     The path where the temporary file created by Robocode will be saved.
+         * </p>
          */
         private static final String RESULTS_PATH = "/tmp/results.txt";
 
@@ -80,58 +85,79 @@ public class GeneticAlgorithm {
 	/*	----- GENETIC SETTINGS -----	*/
 
         /**
-         *
+         * <p>
+		 *     Take only the third quarter of the available cores of the computer user.
+         * </p>
          */
         private static final int NB_THREADS = 3 * Runtime.getRuntime().availableProcessors() / 4;
 
         /**
-         *
+         * <p>
+		 *     The size of the population.
+         * </p>
          */
-		private static final int POPULATION_SIZE = 11;
+		private static final int POPULATION_SIZE = 10;
 
         /**
-         *
+         * <p>
+		 *     The range size of a tournament for a selection.
+         * </p>
          */
         private static final int TOURNAMENT_SIZE = 5;
 
 		/**
-		 *
+		 * <p>
+		 *     The probability to make a crossover.
+		 * </p>
 		 */
 		private static final double CROSSOVER_PROBABILITY = 0.7;
 
 		/**
-		 *
+		 * <p>
+		 *     The probability to make a mutation.
+		 * </p>
 		 */
 		private static final double MUTATION_PROBABILITY = 0.5;
 
         /**
-         *
+         * <p>
+		 *     The number of minimum mutation when it happens.
+         * </p>
          */
         private static final int MUTATION_MIN = 5;
 
-        /**
-         *
-         */
+		/**
+		 * <p>
+		 *     The number of maximum mutation when it happens.
+		 * </p>
+		 */
         private static final int MUTATION_MAX = 10;
 
 
 	/*	----- ATTRIBUTES -----	*/
 
 		/**
-		 *
+		 * <p>
+		 *     The individuals of the generation.
+		 * </p>
 		 */
 		private NeuralNetwork[] population;
 
-        /**
-         *
-         */
+		/**
+		 * <p>
+		 *     The population's scores.
+		 * </p>
+		 */
         private Score[] scores;
 
 
 	/*	----- CONSTRUCTOR -----	*/
 
 		/**
-		 *
+		 * <p>
+		 *     Initialize the genetic algorithm loading all the available individuals (perceptron) or creating it if it doesn't exist.
+		 *     During the initialization, each perceptron is tested and scored.
+		 * </p>
 		 */
 		public GeneticAlgorithm() {
 			population = new NeuralNetwork[POPULATION_SIZE];
@@ -140,16 +166,18 @@ public class GeneticAlgorithm {
             new File(ROBOT_DIRECTORY).mkdir();
 
             System.out.println(POPULATION_SIZE + " individuals are being initialized...");
+			// Create pools (thread) to execute all the individual loadings.
             ExecutorService executor = Executors.newFixedThreadPool(NB_THREADS);
             for (int i = 0; i < POPULATION_SIZE; i++) {
                 int individual = i;
+				// Send to the pools a runnable action.
                 executor.submit(() -> {
                     File file = new File(POPULATION_DIRECTORY + INDIVIDUAL_FILENAME + (individual + 1) + ".xml");
 
-                    // If the file exist, loading the perceptron
+                    // If the file exist, loading the perceptron.
                     if (file.exists())
                         population[individual] = new NeuralNetwork(file);
-                    // Else create a random perceptron
+                    // Else create a random perceptron.
                     else
                         try {
                             population[individual] = new NeuralNetwork();
@@ -176,7 +204,12 @@ public class GeneticAlgorithm {
 	/*	----- GENETIC METHODS -----	*/
 
         /**
-         *
+		 * <p>
+		 *     Return the best individual among the current population.
+		 *
+		 * </p>
+		 *
+		 * @return the index of best individual
          */
         public int keepBest() {
             int best = 0;
@@ -191,12 +224,16 @@ public class GeneticAlgorithm {
         }
 
         /**
-         *
+		 * <p>
+		 *     Select by tournament an individual.
+		 * </p>
+		 * @return the individual selected
          */
 		private NeuralNetwork selection() {
             int chosen = random(0, POPULATION_SIZE);
 
             int randomIndex;
+			// Select the individual which has the best score according to a random selection
             for (int i = 0; i < TOURNAMENT_SIZE - 1; i++) {
                 randomIndex = random(0, POPULATION_SIZE);
                 if (scores[randomIndex].compareTo(scores[chosen]) > 1)
@@ -207,7 +244,14 @@ public class GeneticAlgorithm {
 		}
 
 		/**
+		 * <p>
+		 *     Cross two individuals and return their descendants.
+		 * </p>
 		 *
+		 * @param mother the first individual to cross
+		 * @param father the second individual to cross
+		 *
+		 * @return the children generated
 		 */
 		private NeuralNetwork[] crossover(NeuralNetwork mother, NeuralNetwork father) {
 			NeuralNetwork[] children = {mother, father};
@@ -222,7 +266,12 @@ public class GeneticAlgorithm {
 		}
 
         /**
-         *
+		 * <p>
+		 *     Make a double crossing over on two matrices.
+		 * </p>
+		 *
+		 * @param m1 the first matrix to cross
+		 * @param m2 the fsecond matrix to cross
          */
         private void cross(Matrix m1, Matrix m2) {
             int size = m1.getRowCount() * m2.getColumnCount();
@@ -243,7 +292,11 @@ public class GeneticAlgorithm {
         }
 
         /**
-         *
+		 * <p>
+		 *     Make a mutation on an individual.
+		 * </p>
+		 *
+		 * @param child the individual to mutate
          */
 		private void mutation(NeuralNetwork child) {
             if (Math.random() < MUTATION_PROBABILITY)
@@ -255,7 +308,11 @@ public class GeneticAlgorithm {
 		}
 
         /**
-         *
+		 * <p>
+		 *     Realize a mutation on a matrix
+		 * </p>
+		 *
+		 * @param m the matrix to mutate
          */
         private void mutate(Matrix m) {
             int rowCount = m.getRowCount();
@@ -266,7 +323,15 @@ public class GeneticAlgorithm {
         }
 
 		/**
+		 * <p>
+		 *     Evaluate an individual with Robocode.
+		 *     This method is synchronized because only one individual can be tested at a time.
 		 *
+		 * </p>
+		 *
+		 * @param individual the index of the individual to test
+		 *
+		 * @return the score of the individual
 		 */
 		private synchronized Score fitness(int individual) {
             try {
@@ -282,7 +347,11 @@ public class GeneticAlgorithm {
         }
 
 		/**
+		 * <p>
+		 *     Launch the generations.
+		 * </p>
 		 *
+		 * @param numberGeneration the number of generation to do
 		 */
 		public void generate(int numberGeneration) throws IllegalArgumentException {
             if (numberGeneration < 1)
@@ -321,15 +390,29 @@ public class GeneticAlgorithm {
 	/*	----- OTHER METHODS -----	*/
 
         /**
-         *
+		 * <p>
+		 *     Return a random number between the min and the max.
+		 * </p>
+		 *
+		 * @param min the minimum value
+		 * @param max the maximum value
+		 *
+		 * @return the random number
          */
         private int random(int min, int max) {
             return (int)(Math.random() * (max - min)) + min;
         }
 
-        /**
-         *
-         */
+		/**
+		 * <p>
+		 *     Copy a file from a path to another path.
+		 * </p>
+		 *
+		 * @param inputFile the source file
+		 * @param outputFile the destination file
+		 *
+		 * @throws IOException if the file paths do not exist
+		 */
         private void copyFile(String inputFile, String outputFile) throws IOException {
             // Copy the tested perceptron in the specified directory
             FileInputStream is = new FileInputStream(inputFile);
@@ -344,9 +427,11 @@ public class GeneticAlgorithm {
             os.close();
         }
 
-        /**
-         *
-         */
+		/**
+		 * <p>
+		 *     Copy all the generation in XML format to allow user to reuse this generation for the genetic algorithm.
+		 * </p>
+		 */
 		public void savePopulation() {
             ExecutorService executor = Executors.newFixedThreadPool(NB_THREADS);
             for (int i = 0; i < POPULATION_SIZE; i++) {
@@ -368,7 +453,13 @@ public class GeneticAlgorithm {
         }
 
 		/**
+		 * <p>
+		 *     Return the best individual of the population.
+		 * </p>
 		 *
+		 * @param copy if true, copy the best individual into the Darwini's perceptron
+		 *
+		 * @return the index of the best individual
 		 */
 		public int whoIsTheBest(boolean copy) {
 			int best = keepBest();

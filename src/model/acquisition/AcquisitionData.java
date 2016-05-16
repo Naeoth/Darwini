@@ -129,6 +129,8 @@ public class AcquisitionData {
 		 * Launch a InputData creation with all the parameters necessary
 		 *
 		 * @param opponentRobot The robot that our robot has scanned.
+		 *
+		 * @return an InputData initialized with the reduced environment data
 		 */
 		public InputData acquisition(ScannedRobotEvent opponentRobot) {
 			this.opponentRobot = opponentRobot;

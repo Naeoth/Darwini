@@ -105,12 +105,12 @@ public class NeuralNetwork {
 		 *     from the supervised process (from iriselm treatment)
 		 * </p>
 		 * 
-		 * @param f The file containing the coefficients
+		 * @param file The file containing the coefficients
 		 */
-		public NeuralNetwork(File f) {
+		public NeuralNetwork(File file) {
 			try {
 			    // Get an input factory and instantiate a reader
-				XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader( new FileInputStream(f) );
+				XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader( new FileInputStream(file) );
 
 				// Skip the first lines
 				for (int i = 0; i < 4; i++)
@@ -131,11 +131,11 @@ public class NeuralNetwork {
 				xmlReader.close();
 			}
 			catch (FileNotFoundException e) {
-                System.out.println(f.getAbsolutePath() + " is not found.");
+                System.out.println(file.getAbsolutePath() + " is not found.");
                 System.out.println("The perceptron is not initialized, please put a perceptron in the correct directory.");
 			}
             catch (XMLStreamException e) {
-                System.out.println(f.getAbsolutePath() + " is invalid.");
+                System.out.println(file.getAbsolutePath() + " is invalid.");
                 System.out.println("The perceptron is not initialized, please put a valid perceptron in the directory.");
             }
 		}
@@ -171,6 +171,10 @@ public class NeuralNetwork {
 		 * <p>
 		 * 		Permute the matrix to the right direction for the xml presentation
 		 * </p>
+		 *
+		 * @param xmlEventReader the XML event to read
+		 *
+		 * @return the matrix loaded from the XML
 		 *
 		 * @see  NeuralNetwork#initMatrix(XMLStreamReader)
 		 */
@@ -250,13 +254,13 @@ public class NeuralNetwork {
 		 *     A neural network is represented by its weighting coefficients.
 		 * </p>
 		 *
-		 * @param f The file where the neural network is printed
+		 * @param file The file where the neural network is printed
 		 *
-		 * @throws FileNotFoundException
-         * @throws XMLStreamException
+		 * @throws FileNotFoundException if the file is not found
+         * @throws XMLStreamException if a problem happens during the reading
 		 */
-		public void printToXML(File f) throws FileNotFoundException, XMLStreamException {
-            XMLStreamWriter xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter( new FileOutputStream(f) );
+		public void printToXML(File file) throws FileNotFoundException, XMLStreamException {
+            XMLStreamWriter xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter( new FileOutputStream(file) );
 
 			xmlWriter.writeStartElement("meta");
 			xmlWriter.writeAttribute("NbOutputNeurons", Integer.toString(outputWeights.getColumnCount()));

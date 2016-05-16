@@ -89,7 +89,7 @@ public class Database {
 		 *
 		 * @return true if the data has been inserted, false otherwise
 		 *
-		 * @throws NullPointerException if obj is null
+		 * @throws NullPointerException if newInputData is null
 		 *
 		 * @see InputData
 		 * @see controller.AcquisitionBot
@@ -108,7 +108,7 @@ public class Database {
 		 *
 		 * @param f The target file where the database will be printed
 		 *
-		 * @throws IOException
+		 * @throws IOException if a problem happens during the print.
 		 *
 		 * @see controller.AcquisitionBot
 		 */
