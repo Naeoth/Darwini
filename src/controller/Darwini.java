@@ -131,7 +131,8 @@ public class Darwini extends InitialRobot {
 		public void onScannedRobot(ScannedRobotEvent e) {
 			decisions = perceptron.train( acquisitionData.acquisition(e) );
 
-           		 System.out.println(decisions.toString());
+			System.out.println(decisions.toString());
+			decisionRobot(decisions);
 		}
 
 
