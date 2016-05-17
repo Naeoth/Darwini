@@ -110,13 +110,9 @@ public class Darwini extends InitialRobot {
 		 */
 		@Override
 		public void run() {
-			setBodyColor(Color.blue);
-			setGunColor(Color.blue);
-			setRadarColor(Color.black);
-			setScanColor(Color.yellow);
-
 			perceptron = new NeuralNetwork( getDataFile(PERCEPTRON_FILE) );
             		acquisitionData = new AcquisitionData(this);
+			super.run();
 		}
 		
 		/**
@@ -145,35 +141,35 @@ public class Darwini extends InitialRobot {
 		public void decisionRobot(OutputData decisions){
 
 			if (decisions.getShoot() > 0 ){
-				this.fire(10);
+				this.fire(10*decisions.getShoot());
 			}
 
 			if (decisions.getTurnRight() > 0 ){
-				turnRightRadians(1);
+				turnRightRadians(6.28*decisions.getTurnRight());
 			}
 			if (decisions.getTurnLeft() > 0 ){
-				turnLeftRadians(1);	//Pi
+				turnLeftRadians(6.28*decisions.getTurnLeft());	//Pi
 			}
 			
 			if (decisions.getTurnRadarRight() > 0 ){
-				turnRadarRightRadians(1);
+				turnRadarRightRadians(6.28*decisions.getTurnRight());
 			}
 
 			if (decisions.getTurnRadarLeft() > 0 ){
-				turnRadarLeftRadians(1);
+				turnRadarLeftRadians(6.28*decisions.getTurnLeft());
 			}
 	
 
 			if (decisions.getTurnGunRight() > 0 ){
-				turnGunRightRadians(1);
+				turnGunRightRadians(6.28*decisions.getTurnRight());
 			}
 
 			if (decisions.getTurnGunLeft() > 0 ){
-				turnGunLeftRadians(1);
+				turnGunLeftRadians(6.28*decisions.getTurnLeft());
 			}
 
 			if (decisions.getMoveAhead() > 0 ){
-				ahead(10);
+				ahead(10*decisions.getMoveAhead());
 			}
 
 
