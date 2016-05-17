@@ -14,6 +14,8 @@ import model.perceptron.NeuralNetwork;
 
 import robocode.ScannedRobotEvent;
 
+import java.awt.*;
+
 /**
  * <p>
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
@@ -108,9 +110,13 @@ public class Darwini extends InitialRobot {
 		 */
 		@Override
 		public void run() {
+			setBodyColor(Color.blue);
+			setGunColor(Color.blue);
+			setRadarColor(Color.black);
+			setScanColor(Color.yellow);
+
 			perceptron = new NeuralNetwork( getDataFile(PERCEPTRON_FILE) );
             		acquisitionData = new AcquisitionData(this);
-			super.run();
 		}
 		
 		/**
@@ -132,45 +138,42 @@ public class Darwini extends InitialRobot {
 			decisions = perceptron.train( acquisitionData.acquisition(e) );
 
 			System.out.println(decisions.toString());
-			decisionRobot(decisions);
+			this.decisionRobot(decisions);
 		}
-
 
 
 		public void decisionRobot(OutputData decisions){
 
-            decisions=this.decisions;
-
 			if (decisions.getShoot() > 0 ){
-				fire(10);
+				this.fire(10);
 			}
 
 			if (decisions.getTurnRight() > 0 ){
-				turnRightRadians(0);
+				turnRightRadians(1);
 			}
 			if (decisions.getTurnLeft() > 0 ){
-				turnLeftRadians(3.14);	//Pi
+				turnLeftRadians(1);	//Pi
 			}
 			
 			if (decisions.getTurnRadarRight() > 0 ){
-				turnRadarRightRadians(0);
+				turnRadarRightRadians(1);
 			}
 
 			if (decisions.getTurnRadarLeft() > 0 ){
-				turnRadarLeftRadians(3.14);
+				turnRadarLeftRadians(1);
 			}
 	
 
 			if (decisions.getTurnGunRight() > 0 ){
-				turnGunRightRadians(0);
+				turnGunRightRadians(1);
 			}
 
 			if (decisions.getTurnGunLeft() > 0 ){
-				turnGunLeftRadians(3.14);
+				turnGunLeftRadians(1);
 			}
 
 			if (decisions.getMoveAhead() > 0 ){
-				ahead(3);
+				ahead(10);
 			}
 
 
