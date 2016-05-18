@@ -141,38 +141,42 @@ public class Darwini extends InitialRobot {
 		public void decisionRobot(OutputData decisions){
 
 			if (decisions.getShoot() > 0 ){
-				this.fire(10*decisions.getShoot());
+				this.fire(10*sigmoid(decisions.getShoot()));
 			}
 
 			if (decisions.getTurnRight() > 0 ){
-				turnRightRadians(6.28*decisions.getTurnRight());
+				turnRightRadians(6.28*sigmoid(decisions.getTurnRight()));
 			}
 			if (decisions.getTurnLeft() > 0 ){
-				turnLeftRadians(6.28*decisions.getTurnLeft());	//Pi
+				turnLeftRadians(6.28*sigmoid(decisions.getTurnLeft()));	//Pi
 			}
 			
 			if (decisions.getTurnRadarRight() > 0 ){
-				turnRadarRightRadians(6.28*decisions.getTurnRight());
+				turnRadarRightRadians(6.28*sigmoid(decisions.getTurnRight()));
 			}
 
 			if (decisions.getTurnRadarLeft() > 0 ){
-				turnRadarLeftRadians(6.28*decisions.getTurnLeft());
+				turnRadarLeftRadians(6.28*sigmoid(decisions.getTurnLeft());
 			}
 	
 
 			if (decisions.getTurnGunRight() > 0 ){
-				turnGunRightRadians(6.28*decisions.getTurnRight());
+				turnGunRightRadians(6.28*sigmoid(decisions.getTurnRight()));
 			}
 
 			if (decisions.getTurnGunLeft() > 0 ){
-				turnGunLeftRadians(6.28*decisions.getTurnLeft());
+				turnGunLeftRadians(6.28*sigmoid(decisions.getTurnLeft()));
 			}
 
 			if (decisions.getMoveAhead() > 0 ){
-				ahead(10*decisions.getMoveAhead());
+				ahead(10*sigmoid(decisions.getMoveAhead()));
 			}
 
 
+		}
+
+		public double sigmoid(double i){
+			return (1/(1 + Math.exp(i)));
 		}
 
 

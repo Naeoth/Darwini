@@ -35,12 +35,13 @@ public class InitialRobot extends AdvancedRobot {
 		 */
 		public void run() {
 			// Set colors
+
 			setBodyColor(Color.blue);
 			setGunColor(Color.blue);
 			setRadarColor(Color.black);
 			setScanColor(Color.yellow);
 	
-			// Loop forever
+			//Loop forever
 			while (true) {
 				// Tell the game that when we take move, we'll also want to turn right... a lot.
 				setTurnRight(10000);
