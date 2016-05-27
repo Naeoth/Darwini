@@ -17,8 +17,8 @@ import java.util.stream.Stream;
 
 /**
  *  <p>
- *  Class called by the Genetic algorithm after the ten games of the individuals. It creates an object Score for every individuals (robots)
- *  generate by the genetic algorithm. It allows us to compare the efficiency of those robots.
+ *     Class called by the Genetic algorithm after the ten games of the individuals. It creates an object Score for every individuals (robots)
+ *     generate by the genetic algorithm. It allows us to compare the efficiency of those robots.
  *  </p>
  *
  * @see GeneticAlgorithm
@@ -35,51 +35,58 @@ public class Score implements Comparable<Score> {
 
     /*	----- ATTRIBUTES -----	*/
 
-        /**
+		/**
+		 *  <p>
+		 *     The robot's total score
+		 *  </p>
+		 */
+		private int totalScore;
+
+		/**
          *  <p>
-         *      The robot's number of victories and its percentage
+		 *     The robot's number of victories and its percentage
          *  </p>
          */
         private int victory;
 
         /**
          * <p>
-         * 	The survival score for the robot in the battle
+		 *     The survival score for the robot in the battle
          * </p>
          */
         private int survival;
 
         /**
          * <p>
-         *	The last survivor bonus for the robot in the battle
+		 *     The last survivor bonus for the robot in the battle
          * </p>
          */
         private int survivalBonus;
 
         /**
          *  <p>
-         * 	The bullet damage score for the robot in the battle
+		 *     The bullet damage score for the robot in the battle
          *  </p>
          */
         private int bulletDamage;
 
         /**
          * <p>
-         *	The bullet damage bonus for the robot in the battle
+		 *     The bullet damage bonus for the robot in the battle
          * </p> 
          */
         private int bulletBonus;
 
         /**
          * <p>
-         * 	The ramming damage for the robot in the battle
+		 *     The ramming damage for the robot in the battle
          * </p>
          */
         private int ramDamage;
 
         /**
          * <p>
-         * 	The ramming damage bonus for the robot in the battle
+		 *     The ramming damage bonus for the robot in the battle
          * </p>
          */
         private int ramBonus;
@@ -89,18 +96,20 @@ public class Score implements Comparable<Score> {
 
         /**
          * <p>
-         *     The construction of this object is based on the file we get when the games are over. 
-         *     It represents the different parameters we choose to give a compare robots.
+		 *     The construction of this object is based on the file we get when the games are over.
+         *     It represents the different criteria to compare two robots.
          * </p>
 		 *
-         * @param fileName
+         * @param fileName the filepath of the score file providing by Robocode
+		 * @param robotName the name of the robot to compare
          */
         public Score(String fileName, String robotName) {
             try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
                 String[] results = stream.filter(line -> line.contains(robotName)).findFirst().get().split("\t");
-                Matcher m = Pattern.compile("\\((.*)\\s").matcher(results[1]);
+                Matcher m = Pattern.compile("(\\d+)\\s\\((\\d+)\\s").matcher(results[1]);
                 m.find();
-                victory = Integer.parseInt(m.group(1));
+				totalScore = Integer.parseInt(m.group(1));
+                victory = Integer.parseInt(m.group(2));
                 survival = Integer.parseInt(results[2]);
                 survivalBonus = Integer.parseInt(results[3]);
                 bulletDamage = Integer.parseInt(results[4]);
@@ -118,24 +127,23 @@ public class Score implements Comparable<Score> {
         /**
          * <p>
          *     Method used to compare two robots thanks to their score. We choose the percentage of victory as 
-	 *	   main selection criterion. Then if two robots have the same percentage, we choose the one which 
-	 * 	   made the more damages.
+		 *	   main selection criterion. Then if two robots have the same percentage, we choose the one which
+		 * 	   made the more damages.
          * </p>
-         *
+		 *
          * @param o the score of the second robot
          */
-
         @Override
         public int compareTo(Score o) {
-            if (victory > o.victory)
+            if (totalScore > o.totalScore)
                 return 1;
-            if (victory == o.victory)
-                    if (bulletDamage >= o.bulletDamage)
-                        return 1;
-                    if (bulletDamage == o.bulletDamage)
-                        return 0;
-            else
-                        return -1 ;
+            else if (totalScore == o.totalScore)
+				if (victory > o.victory)
+					return 1;
+				else if (victory == o.victory)
+					return 0;
+
+			return -1;
         }
 
 }

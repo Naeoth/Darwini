@@ -112,6 +112,7 @@ public class AcquisitionBot extends InitialRobot {
 
 			// Get all data required for construct an InputData and save it in a database.
 			knowledges.insert( acquisitionData.acquisition(e) );
+			System.out.println(knowledges.getLastData().toSSVM());
 		}
 
 		/**

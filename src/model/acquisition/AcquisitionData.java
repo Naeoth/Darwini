@@ -38,7 +38,7 @@ public class AcquisitionData {
 		 *
 		 * @see InputData
 		 */
-		private static final double MAX_BEARING = 180.0;
+		private static final double MAX_BEARING = Math.PI;
 
 		/**
 		 *	<p>
@@ -47,7 +47,7 @@ public class AcquisitionData {
 		 *
 		 * @see InputData
 		 */
-		private static final double MAX_DEGREE = 360.0;
+		private static final double MAX_ANGLE = 2 * Math.PI;
 
 		/**
 		 *	<p>
@@ -56,7 +56,7 @@ public class AcquisitionData {
 		 *
 		 * @see InputData
 		 */
-		private static final double MAX_ENERGY = 100.0 ;
+		private static final double MAX_ENERGY = 100.0;
 
 		/**
 		 *	<p>
@@ -162,7 +162,7 @@ public class AcquisitionData {
 		 * @return the value reduced
 		 */
 		private double reduce(double value, double max) {
-			return 2.0 * (value - max / 2.0) / max;
+			return (2.0 * value - max) / max;
 		}
 
 
@@ -174,7 +174,7 @@ public class AcquisitionData {
 		 * @see InputData
 		 */
 		private double getMyBearing() {
-			return opponentRobot.getBearing() / MAX_BEARING;
+			return opponentRobot.getBearingRadians() / MAX_BEARING;
 		}
 
 		/**
@@ -219,7 +219,7 @@ public class AcquisitionData {
 		 * @see InputData
 		 */
 		private double getOpponentHeading() {
-			return reduce(opponentRobot.getHeading(), MAX_DEGREE);
+			return reduce(opponentRobot.getHeadingRadians(), MAX_ANGLE);
 		}
 
 		/**
@@ -228,7 +228,7 @@ public class AcquisitionData {
 		 * @see InputData
 		 */
 		private double getMyHeading() {
-			return reduce(myRobot.getHeading(), MAX_DEGREE);
+			return reduce(myRobot.getHeadingRadians(), MAX_ANGLE);
 		}
 
 		/**
@@ -237,7 +237,7 @@ public class AcquisitionData {
 		 * @see InputData
 		 */
 		private double getMyRadarHeading() {
-			return reduce(myRobot.getRadarHeading(), MAX_DEGREE);
+			return reduce(myRobot.getRadarHeadingRadians(), MAX_ANGLE);
 		}
 
 		/**
@@ -246,7 +246,7 @@ public class AcquisitionData {
 		 * @see InputData
 		 */
 		private double getMyGunHeading() {
-			return reduce(myRobot.getGunHeading(), MAX_DEGREE);
+			return reduce(myRobot.getGunHeadingRadians(), MAX_ANGLE);
 		}
 
 		/**

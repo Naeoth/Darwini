@@ -239,7 +239,7 @@ public class InputData {
 					sb.append("-1 ");
 
 			return sb
-					.append(" 1:").append(myBearing)
+					.append("1:").append(myBearing)
 					.append(" 2:").append(distance)
 					.append(" 3:").append(myEnergy)
 					.append(" 4:").append(opponentVelocity)

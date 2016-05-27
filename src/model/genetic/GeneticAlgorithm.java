@@ -96,7 +96,7 @@ public class GeneticAlgorithm {
 		 *     The size of the population.
          * </p>
          */
-		private static final int POPULATION_SIZE = 10;
+		private static final int POPULATION_SIZE = 100;
 
         /**
          * <p>
@@ -117,7 +117,7 @@ public class GeneticAlgorithm {
 		 *     The probability to make a mutation.
 		 * </p>
 		 */
-		private static final double MUTATION_PROBABILITY = 0.5;
+		private static final double MUTATION_PROBABILITY = 0.3;
 
         /**
          * <p>
@@ -131,7 +131,7 @@ public class GeneticAlgorithm {
 		 *     The number of maximum mutation when it happens.
 		 * </p>
 		 */
-        private static final int MUTATION_MAX = 10;
+        private static final int MUTATION_MAX = 20;
 
 
 	/*	----- ATTRIBUTES -----	*/
@@ -187,7 +187,7 @@ public class GeneticAlgorithm {
                         }
 
                     scores[individual] = fitness(individual);
-                    System.out.println("\tIndividual n°" + (individual + 1) + "...OK");
+                    System.out.println("\tIndividual n°" + (individual + 1) + "...LOADED");
                 });
             }
             executor.shutdown();
@@ -211,7 +211,7 @@ public class GeneticAlgorithm {
 		 *
 		 * @return the index of best individual
          */
-        public int keepBest() {
+        private int keepBest() {
             int best = 0;
 
             for (int i = 1; i < POPULATION_SIZE; i++) {
@@ -352,6 +352,8 @@ public class GeneticAlgorithm {
 		 * </p>
 		 *
 		 * @param numberGeneration the number of generation to do
+		 *
+		 * @exception IllegalArgumentException if the number of generation specified is less than 1
 		 */
 		public void generate(int numberGeneration) throws IllegalArgumentException {
             if (numberGeneration < 1)
@@ -359,25 +361,26 @@ public class GeneticAlgorithm {
 
             NeuralNetwork[] newPopulation = new NeuralNetwork[POPULATION_SIZE];
             Score[] newScores = new Score[POPULATION_SIZE];
-            NeuralNetwork[] children;
-            int best;
 
             for (int i = 0; i < numberGeneration; i++) {
-                System.out.println("Generation n°" + i + 1 + "...");
+                System.out.println("Generation n°" + (i + 1) + "...");
                 // Keep the best individual
-                best = keepBest();
+				int best = keepBest();
                 newPopulation[0] = population[best];
                 newScores[0] = scores[best];
 
                 for (int j = 1; j < POPULATION_SIZE; j = j + 2) {
-                    children = crossover(selection(), selection());
+					NeuralNetwork[] children = crossover(selection(), selection());
                     mutation(children[0]);
                     newPopulation[j] = children[0];
                     newScores[j] = fitness(j);
+					System.out.println("\tIndividual n°" + (j + 1) + "...CREATED");
+
                     if (j != POPULATION_SIZE - 1) {
                         mutation(children[1]);
                         newPopulation[j + 1] = children[1];
                         newScores[j + 1] = fitness(j + 1);
+						System.out.println("\tIndividual n°" + (j + 2) + "...CREATED");
                     }
                 }
 
@@ -433,6 +436,7 @@ public class GeneticAlgorithm {
 		 * </p>
 		 */
 		public void savePopulation() {
+			System.out.println("The current generation is being saved...");
             ExecutorService executor = Executors.newFixedThreadPool(NB_THREADS);
             for (int i = 0; i < POPULATION_SIZE; i++) {
                 int individual = i;
@@ -442,6 +446,7 @@ public class GeneticAlgorithm {
                     } catch (FileNotFoundException | XMLStreamException e) {
                         e.printStackTrace();
                     }
+					System.out.println("\tIndividual n°" + (individual + 1) + "...SAVED");
                 });
             }
             executor.shutdown();
@@ -450,6 +455,7 @@ public class GeneticAlgorithm {
             } catch (InterruptedException e) {
                 System.out.println("Saving the population takes too much time, please change your computer");
             }
+			System.out.println("DONE");
         }
 
 		/**

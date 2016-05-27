@@ -14,8 +14,6 @@ import model.perceptron.NeuralNetwork;
 
 import robocode.ScannedRobotEvent;
 
-import java.awt.*;
-
 /**
  * <p>
  * A robot based on an existing one, however this one will improve itself over time, by building and following a neural network.
@@ -74,7 +72,6 @@ public class Darwini extends InitialRobot {
 		 * @see NeuralNetwork
 		 * @see controller.Darwini#run()
 		 * @see controller.Darwini#onScannedRobot(ScannedRobotEvent)
-		 * 
 		 */
 		private NeuralNetwork perceptron;
 		
@@ -106,12 +103,13 @@ public class Darwini extends InitialRobot {
 		 * @see controller.Darwini#perceptron
 		 * @see controller.Darwini#acquisitionData
 		 * @see controller.Darwini#PERCEPTRON_FILE
-		 * 
 		 */
 		@Override
 		public void run() {
 			perceptron = new NeuralNetwork( getDataFile(PERCEPTRON_FILE) );
-            		acquisitionData = new AcquisitionData(this);
+            acquisitionData = new AcquisitionData(this);
+
+			// MUST be call after because the initial strategy can have an infinite loop.
 			super.run();
 		}
 		
@@ -133,52 +131,45 @@ public class Darwini extends InitialRobot {
 		public void onScannedRobot(ScannedRobotEvent e) {
 			decisions = perceptron.train( acquisitionData.acquisition(e) );
 
-			System.out.println(decisions.toString());
-			this.decisionRobot(decisions);
+			System.out.println(decisions.getShoot() + " " + 2 * Math.PI * sigmoid(decisions.getTurnRight()) + " " + decisions.getTurnLeft() + " " + decisions.getTurnRadarRight() + " " + decisions.getTurnRadarLeft() + " " + decisions.getTurnGunRight() + " " + decisions.getTurnGunLeft() + " " + decisions.getMoveAhead());
+
+			if (decisions.getShoot() > 0)
+				fire(3);
+
+			if (decisions.getTurnRight() > 0)
+				turnRightRadians(2 * Math.PI * sigmoid(decisions.getTurnRight()));
+
+			if (decisions.getTurnLeft() > 0)
+				turnLeftRadians(2 * Math.PI * sigmoid(decisions.getTurnLeft()));
+
+			if (decisions.getTurnRadarRight() > 0)
+				turnRadarRightRadians(2 * Math.PI * sigmoid(decisions.getTurnRadarRight()));
+
+			if (decisions.getTurnRadarLeft() > 0)
+				turnRadarLeftRadians(2 * Math.PI * sigmoid(decisions.getTurnRadarLeft()));
+
+			if (decisions.getTurnGunRight() > 0)
+				turnGunRightRadians(2 * Math.PI * sigmoid(decisions.getTurnGunRight()));
+
+			if (decisions.getTurnGunLeft() > 0)
+				turnGunLeftRadians(2 * Math.PI * sigmoid(decisions.getTurnGunLeft()));
+
+			if (decisions.getMoveAhead() > 0)
+				ahead(10 * sigmoid(decisions.getMoveAhead()));
 		}
 
-
-		public void decisionRobot(OutputData decisions){
-
-			if (decisions.getShoot() > 0 ){
-				this.fire(10*sigmoid(decisions.getShoot()));
-			}
-
-			if (decisions.getTurnRight() > 0 ){
-				turnRightRadians(6.28*sigmoid(decisions.getTurnRight()));
-			}
-			if (decisions.getTurnLeft() > 0 ){
-				turnLeftRadians(6.28*sigmoid(decisions.getTurnLeft()));	//Pi
-			}
-			
-			if (decisions.getTurnRadarRight() > 0 ){
-				turnRadarRightRadians(6.28*sigmoid(decisions.getTurnRight()));
-			}
-
-			if (decisions.getTurnRadarLeft() > 0 ){
-				turnRadarLeftRadians(6.28*sigmoid(decisions.getTurnLeft());
-			}
-	
-
-			if (decisions.getTurnGunRight() > 0 ){
-				turnGunRightRadians(6.28*sigmoid(decisions.getTurnRight()));
-			}
-
-			if (decisions.getTurnGunLeft() > 0 ){
-				turnGunLeftRadians(6.28*sigmoid(decisions.getTurnLeft()));
-			}
-
-			if (decisions.getMoveAhead() > 0 ){
-				ahead(10*sigmoid(decisions.getMoveAhead()));
-			}
-
-
+		/**
+		 * <p>
+		 *     Apply the sigmoid on the specified value.
+		 * </p>
+		 *
+		 * @param i the value to apply the sigmoid
+		 *
+		 * @return the value after the sigmoid computation
+		 */
+		private double sigmoid(double i) {
+			return 1 / (1 + Math.exp(i));
 		}
-
-		public double sigmoid(double i){
-			return (1/(1 + Math.exp(i)));
-		}
-
 
 }
 
